@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:layout_alignParentBottom="true"
     android:orientation="vertical"
-    android:id="@+id/main"
+    android:id="@+id/main_activity"
     tools:context=".MainActivity">
 
     <Button

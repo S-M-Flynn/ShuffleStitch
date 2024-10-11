@@ -14,31 +14,23 @@
         android:scaleType="fitXY" />
 
     <Button
-        android:id="@+id/camera_button"
+        android:id="@+id/item_type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawableBottom="@drawable/baseline_add_a_photo_24"
-        android:text="@string/button_camera"
+        android:text="Item Type"
         android:textAppearance="@android:style/TextAppearance.Material.Widget.Button.Colored" />
 
     <Button
-        android:id="@+id/goto_closet"
+        android:id="@+id/item_temp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Select Item to Edit"
-        android:textAppearance="@android:style/TextAppearance.Material.Widget.Button.Colored" />
-
-    <Button
-        android:id="@+id/post_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Clear Background"
+        android:text="Season Selector"
         android:textAppearance="@android:style/TextAppearance.Material.Widget.Button.Colored" />
 
     <Button
         android:id="@+id/back_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/button_back"
+        android:text="Back"
         android:textAppearance="@android:style/TextAppearance.Material.Widget.Button.Colored" />
 </LinearLayout>

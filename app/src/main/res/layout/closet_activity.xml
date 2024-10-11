@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -18,7 +19,7 @@
         android:layout_height="wrap_content"
         android:drawableBottom="@drawable/baseline_add_a_photo_24"
         android:text="@string/button_camera"
-        android:textAppearance="@android:style/TextAppearance.Material.Widget.Button.Colored"/>
+        android:textAppearance="@android:style/TextAppearance.Material.Widget.Button.Colored" />
 
     <Button
         android:id="@+id/goto_closet"
@@ -28,16 +29,9 @@
         android:textAppearance="@android:style/TextAppearance.Material.Widget.Button.Colored" />
 
     <Button
-        android:id="@+id/post_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Clear Background"
-        android:textAppearance="@android:style/TextAppearance.Material.Widget.Button.Colored"/>
-
-    <Button
         android:id="@+id/back_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/button_back"
-        android:textAppearance="@android:style/TextAppearance.Material.Widget.Button.Colored"/>
+        android:textAppearance="@android:style/TextAppearance.Material.Widget.Button.Colored" />
 </LinearLayout>
