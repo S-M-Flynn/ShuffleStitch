@@ -3,14 +3,13 @@ package ca.unb.mobiledev.shufflestitch
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.os.Bundle
+import android.os.Environment
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import java.io.File
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,6 +36,16 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        val folderName = "UserMedia"
+        val userFolder = File(getExternalFilesDir(null), "{Environment.DIRECTORY_PICTURES}/UserMedia")
+        if (!userFolder.exists()) {
+            val wasSuccessful = userFolder.mkdirs()
+            if (wasSuccessful) {
+                Log.e(TAG, "FolderCreation User folder created successfully.")
+            } else {
+                Log.e(TAG, "FolderCreation Failed to create user folder or folder already exists.")
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
