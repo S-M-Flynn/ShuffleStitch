@@ -20,7 +20,6 @@
 
         <activity
             android:name=".MainActivity"
-            android:label="Main Activity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -43,7 +42,7 @@
         </activity>
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="mobiledev.unb.ca.shufflestitch.provider"
+            android:authorities="ca.unb.mobiledev.shufflestitch.provider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

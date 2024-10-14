@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".EditItemsActivity">
+        <group android:checkableBehavior="single">
+            <item android:id="@+id/bottoms"
+                android:title="@string/bottoms" />
+            <item android:id="@+id/tops"
+                android:title="@string/tops" />
+            <item android:id="@+id/one_piece"
+                android:title="@string/one_piece" />
+        </group>
+</menu>
