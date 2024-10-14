@@ -6,6 +6,11 @@
     android:gravity="center"
     android:orientation="vertical">
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="300dp"
+        android:layout_height="200dp"
+        android:layout_margin="16dp"/>
     <ImageView
         android:id="@+id/closet_photo"
         android:layout_width="300dp"

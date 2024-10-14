@@ -3,8 +3,10 @@
     <string name="action_settings">Settings</string>
     <string name="title">Your Closet</string>
     <string name="shuffle_button">Shuffle It!</string>
-    <string name="button_start">Start</string>
     <string name="button_camera">Add New Item</string>
     <string name="button_edit">Closet</string>
     <string name="button_back">Back</string>
+    <string name="bottoms">Back</string>
+    <string name="tops">Back</string>
+    <string name="one_piece">Back</string>
 </resources>

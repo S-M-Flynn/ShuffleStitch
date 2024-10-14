@@ -3,7 +3,6 @@ package ca.unb.mobiledev.shufflestitch
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.os.Bundle
-import android.os.Environment
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -15,7 +14,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+        //deleteFilesInUserMedia()
         val shuffleButton = findViewById<Button>(R.id.shuffle_button)
         shuffleButton.setOnClickListener {
             val intent = Intent(this, ShuffleActivity::class.java)
@@ -36,8 +35,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        val folderName = "UserMedia"
-        val userFolder = File(getExternalFilesDir(null), "{Environment.DIRECTORY_PICTURES}/UserMedia")
+        val userFolder = File(getExternalFilesDir(null), "UserMedia")
         if (!userFolder.exists()) {
             val wasSuccessful = userFolder.mkdirs()
             if (wasSuccessful) {
@@ -59,6 +57,15 @@ class MainActivity : AppCompatActivity() {
             true
         } else super.onOptionsItemSelected(item)
     }
+
+//    private fun deleteFilesInUserMedia() {
+//        val userMediaDir = File(getExternalFilesDir(null), "UserMedia")
+//        userMediaDir.listFiles()?.forEach { file ->
+//            if (file.isFile) {
+//                file.delete()
+//            }
+//        }
+//    }
 
     companion object {
         internal const val TAG = "Main Activity"
