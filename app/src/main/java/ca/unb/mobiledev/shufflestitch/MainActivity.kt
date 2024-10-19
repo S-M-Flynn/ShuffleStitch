@@ -60,7 +60,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 //    private fun deleteFilesInUserMedia() {
-//        val userMediaDir = File(getExternalFilesDir(null), "UserMedia")
+//        val userMediaDir = File(getExternalFilesDir(null), "UserMedia/xx*")
 //        userMediaDir.listFiles()?.forEach { file ->
 //            if (file.isFile) {
 //                file.delete()

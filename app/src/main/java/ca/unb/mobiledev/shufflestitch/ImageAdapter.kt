@@ -12,7 +12,7 @@ class ImageAdapter(private val files: List<File>, private val itemClickListener:
     RecyclerView.Adapter<ImageAdapter.ImageViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.edit_items, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.image_layout, parent, false)
         return ImageViewHolder(view)
     }
 
@@ -24,7 +24,7 @@ class ImageAdapter(private val files: List<File>, private val itemClickListener:
 
     inner class ImageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(file: File) {
-            val imageView = itemView.findViewById<ImageView>(R.id.closet_photo)
+            val imageView = itemView.findViewById<ImageView>(R.id.image_list)
             imageView.setImageURI(Uri.fromFile(file))
             itemView.setOnClickListener { itemClickListener(file) }
         }
