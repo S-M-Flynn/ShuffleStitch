@@ -14,7 +14,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        //deleteFilesInUserMedia()
+
+      //  deleteFilesInUserMedia()
         val shuffleButton = findViewById<Button>(R.id.shuffle_button)
         shuffleButton.setOnClickListener {
             val intent = Intent(this, ShuffleFilterActivity::class.java)
@@ -60,7 +61,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 //    private fun deleteFilesInUserMedia() {
-//        val userMediaDir = File(getExternalFilesDir(null), "UserMedia/xx*")
+//        val userMediaDir = File(getExternalFilesDir(null), "UserMedia")
 //        userMediaDir.listFiles()?.forEach { file ->
 //            if (file.isFile) {
 //                file.delete()
