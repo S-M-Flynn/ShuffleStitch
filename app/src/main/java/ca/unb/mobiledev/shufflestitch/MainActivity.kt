@@ -17,11 +17,12 @@ class MainActivity : AppCompatActivity() {
         //deleteFilesInUserMedia()
         val shuffleButton = findViewById<Button>(R.id.shuffle_button)
         shuffleButton.setOnClickListener {
-            val intent = Intent(this, ShuffleActivity::class.java)
+            val intent = Intent(this, ShuffleFilterActivity::class.java)
             try {
                 startActivity(intent)
             } catch (ex: ActivityNotFoundException) {
-                Log.e(TAG, "Unable to start the shuffle activity")
+                Log.e(TAG, "Unable to start the shuffle filter activity")
+                Log.e(TAG, ex.toString())
             }
         }
 

@@ -27,6 +27,11 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".ShuffleFilterActivity"
+            android:label="Shuffle Filter Activity"
+            android:exported="true">
+        </activity>
+        <activity
             android:name=".ClosetActivity"
             android:label="closet activity"
             android:exported="true">
@@ -38,6 +43,11 @@
         <activity
             android:name=".EditItemsActivity"
             android:label="Edit Items activity"
+            android:exported="true">
+        </activity>
+        <activity
+            android:name=".ShuffleActivity"
+            android:label="Shuffle activity"
             android:exported="true">
         </activity>
         <provider

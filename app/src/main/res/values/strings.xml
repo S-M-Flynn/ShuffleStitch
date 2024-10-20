@@ -9,4 +9,6 @@
     <string name="bottoms">Back</string>
     <string name="tops">Back</string>
     <string name="one_piece">Back</string>
+    <string name="choose_outfit">Wearing It</string>
+    <string name="re_shuffle">Shuffle again</string>
 </resources>
