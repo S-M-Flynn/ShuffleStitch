@@ -6,36 +6,25 @@
     android:gravity="center"
     android:orientation="vertical">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="300dp"
-        android:layout_height="200dp"
-        android:orientation="horizontal"
-        android:layout_margin="16dp"/>
     <ImageView
         android:id="@+id/closet_photo"
         android:layout_width="300dp"
         android:layout_height="300dp"
         android:contentDescription="closet image"
         android:scaleType="fitXY" />
+
     <Button
-        android:id="@+id/item_type"
+        android:id="@+id/retake_photo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Item Type"
+        android:drawableBottom="@drawable/baseline_add_a_photo_24"
+        android:text="Retake Photo"
         android:textAppearance="@android:style/TextAppearance.Material.Widget.Button.Colored" />
 
     <Button
-        android:id="@+id/item_temp"
+        android:id="@+id/approve_photo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Season Selector"
-        android:textAppearance="@android:style/TextAppearance.Material.Widget.Button.Colored" />
-
-    <Button
-        android:id="@+id/back_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Back"
+        android:text="Use Photo"
         android:textAppearance="@android:style/TextAppearance.Material.Widget.Button.Colored" />
 </LinearLayout>

@@ -36,7 +36,7 @@ class EditItemsActivity : AppCompatActivity() {
             fileName = imageUri.lastPathSegment.toString()
         }
         recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.layoutManager = LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL, false)
 
         typeButton.setOnClickListener {
             launchTypeSelectionMenu()
@@ -84,7 +84,6 @@ class EditItemsActivity : AppCompatActivity() {
                     2 -> 'O'
                     else -> 'x'
                 }
-
                 val newName: String = prefix + fileName.substring(1)
                 val fileStore = File(getExternalFilesDir(null), "UserMedia")
                 val newFileName = "${fileStore}" + "/${newName}"
@@ -97,11 +96,9 @@ class EditItemsActivity : AppCompatActivity() {
                 } else {
                     Log.e(TAG, "Failed to rename file")
                 }
-
                 Log.d(TAG, "Category selected")
             }
             .setNegativeButton("Cancel", null)
-
         builder.create().show()
     }
 
