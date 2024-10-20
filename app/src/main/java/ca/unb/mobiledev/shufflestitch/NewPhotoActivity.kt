@@ -5,6 +5,9 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Matrix
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
@@ -25,13 +28,14 @@ class NewPhotoActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //will need to set the buttons to inactive while photo background removal
-        //and file saving activities are happening
-        //set a loading bar
+        //TODO:will need to set the buttons to inactive while photo background removal
+        //TODO:add a loading bar
 
         setContentView(R.layout.new_photo_activity)
         val acceptButton = findViewById<Button>(R.id.approve_photo)
         val retakeButton = findViewById<Button>(R.id.retake_photo)
+        val homeButton = findViewById<Button>(R.id.home_button)
+
         val photoURI = intent.getStringExtra("photoURI")?.let { Uri.parse(it) }
 
         removePhotoBackground(photoURI!!)
@@ -48,7 +52,7 @@ class NewPhotoActivity : AppCompatActivity() {
                 val intent = Intent(this, ClosetActivity::class.java)
                 startActivity(intent)
             } catch (ex: ActivityNotFoundException) {
-                Log.e(TAG, "")
+                Log.e(TAG, "Save image launch closet activity error")
             }
 
         }
@@ -59,7 +63,18 @@ class NewPhotoActivity : AppCompatActivity() {
                 val intent = Intent(this, ClosetActivity::class.java)
                 startActivity(intent)
             } catch (ex: ActivityNotFoundException) {
-                Log.e(TAG, "")
+                Log.e(TAG, "Retake closet activity launch error")
+            }
+        }
+
+        homeButton.setOnClickListener {
+            try {
+                deleteOgImage()
+                finish()
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+            } catch (ex: ActivityNotFoundException) {
+                Log.e(TAG, "Home button launch main activity error")
             }
         }
 
@@ -78,8 +93,8 @@ class NewPhotoActivity : AppCompatActivity() {
     private fun removePhotoBackground(photoURI: Uri) {
         val remover = RemoveBg(this)
         val inputImage: Bitmap = getBitmapFromUri(photoURI, this)!!
-
-        collectFlowInThread(remover.clearBackground(inputImage)) { outputImage ->
+        val rImage = rotateImage(inputImage)
+        collectFlowInThread(remover.clearBackground(rImage)) { outputImage ->
             runOnUiThread {
                 imageView.setImageBitmap(outputImage)
             }
@@ -97,9 +112,13 @@ class NewPhotoActivity : AppCompatActivity() {
     }
 
     private fun saveImage(bitmap: Bitmap, file: File) {
+        val outputImage = Bitmap.createBitmap(bitmap.width, bitmap.height, bitmap.config)
+        val canvas = Canvas(outputImage)
+        canvas.drawColor(Color.WHITE)  // Set the background color to white
+        canvas.drawBitmap(bitmap, 0f, 0f, null)
         try {
             FileOutputStream(file).use { out ->
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out)
+                outputImage.compress(Bitmap.CompressFormat.JPEG, 100, out)
             }
         } catch (e: IOException) {
             e.printStackTrace()
@@ -115,7 +134,7 @@ class NewPhotoActivity : AppCompatActivity() {
         }
     }
 
-    private fun deleteOgImage(){
+    private fun deleteOgImage() {
         val userMediaDir = File(getExternalFilesDir(null), "UserMedia")
         val xFiles = userMediaDir.listFiles { _, name ->
             name.startsWith("x")
@@ -124,6 +143,24 @@ class NewPhotoActivity : AppCompatActivity() {
             file.delete()
         }
     }
+
+    private fun checkOrientation(input: Bitmap): Float {
+        return if (input.width > input.height) {
+            270f
+        } else {
+            0f
+        }
+    }
+
+    private fun rotateImage(input: Bitmap):Bitmap {
+        val matrix = Matrix()
+        val rotation = checkOrientation(input)
+        matrix.postRotate(rotation)
+        matrix.preScale(-1f, 1f)
+        val rotatedBitmap = Bitmap.createBitmap(input, 0, 0, input.width, input.height, matrix, true)
+        return rotatedBitmap
+    }
+
     companion object {
         internal const val TAG = "New Photo Activity"
     }
