@@ -16,6 +16,7 @@ class ShuffleActivity : AppCompatActivity() {
         // Call to db will probably go here
 
         val filter = intent.getBooleanArrayExtra("Filters")
+        val temperature = intent.getDoubleExtra("Temperature", 0.00)
 
         var text = ""
 
@@ -28,6 +29,9 @@ class ShuffleActivity : AppCompatActivity() {
                 }
             }
         }
+
+        text += "\n"
+        text += temperature
 
         val textBox = findViewById<TextView>(R.id.displayFilters)
         textBox.text = text

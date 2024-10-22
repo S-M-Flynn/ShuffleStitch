@@ -37,19 +37,27 @@ class ShuffleFilterActivity: AppCompatActivity() {
             filters[7] = sportsCheckBox.isChecked()
 
             // This is where the call to the weather api will go
-
             val intent = Intent(this, ShuffleActivity::class.java)
             intent.putExtra("Filters", filters)
-
-            try {
-                startActivity(intent)
-            } catch (ex: ActivityNotFoundException) {
-                Log.e(TAG, "Unable to start the shuffle filter activity")
-            }
+            getWeather(intent)
         }
     }
 
+    private fun getWeather(intent: Intent) {
+        val weatherFetcher = WeatherFetcher()
+        weatherFetcher.fetchWeather(object : WeatherCallback {
+            override fun onTemperatureFetched(temperature: Double) {
+                Log.i(TAG, "The fetched temperature is: $temperature")
 
+                intent.putExtra("Temperature", temperature)
+                try {
+                    startActivity(intent)
+                } catch (ex: ActivityNotFoundException) {
+                    Log.e(TAG, "Unable to start the shuffle filter activity")
+                }
+            }
+        })
+    }
 
     companion object {
         internal const val TAG = "Shuffle Filter Activity"
