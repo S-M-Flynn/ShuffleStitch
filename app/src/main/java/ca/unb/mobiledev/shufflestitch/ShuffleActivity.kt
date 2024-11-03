@@ -13,6 +13,7 @@ class ShuffleActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.shuffle_activity)
+
         // Call to db will probably go here
 
         val filter = intent.getBooleanArrayExtra("Filters")

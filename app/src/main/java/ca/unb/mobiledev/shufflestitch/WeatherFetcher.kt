@@ -1,7 +1,6 @@
 package ca.unb.mobiledev.shufflestitch
 
 import android.util.Log
-import ca.unb.mobiledev.shufflestitch.ShuffleActivity.Companion.TAG
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
@@ -17,11 +16,9 @@ class WeatherFetcher {
 
     private val client = OkHttpClient()
 
-    fun fetchWeather(callback: WeatherCallback) {
-        val latitude = 45.96
-        val longitude = 66.64
-        val url = "https://api.open-meteo.com/v1/forecast?latitude=$latitude&longitude=$longitude&hourly=temperature_2m"
+    fun fetchWeather(latitude: Double, longitude: Double, callback: WeatherCallback) {
 
+        val url = "https://api.open-meteo.com/v1/forecast?latitude=$latitude&longitude=$longitude&hourly=temperature_2m"
 
         val request = Request.Builder()
             .url(url)
