@@ -11,7 +11,12 @@ import androidx.appcompat.app.AppCompatActivity
 class ShuffleFilterActivity: AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
+
+        val latitude = intent.getDoubleExtra("latitude", 0.0)
+        val longitude = intent.getDoubleExtra("longitude", 0.0)
+
         setContentView(R.layout.shuffle_filter)
         val shuffleButton = findViewById<Button>(R.id.shuffleFilterShuffleButton)
 
@@ -36,16 +41,17 @@ class ShuffleFilterActivity: AppCompatActivity() {
             filters[6] = corporateCheckBox.isChecked()
             filters[7] = sportsCheckBox.isChecked()
 
-            // This is where the call to the weather api will go
+
             val intent = Intent(this, ShuffleActivity::class.java)
             intent.putExtra("Filters", filters)
-            getWeather(intent)
+            //TODO: Handle when no location given (location services not used)
+            getWeather(latitude, longitude,intent)
         }
     }
 
-    private fun getWeather(intent: Intent) {
+    private fun getWeather(latitude:Double, longitude:Double, intent: Intent) {
         val weatherFetcher = WeatherFetcher()
-        weatherFetcher.fetchWeather(object : WeatherCallback {
+        weatherFetcher.fetchWeather(latitude, longitude, object : WeatherCallback {
             override fun onTemperatureFetched(temperature: Double) {
                 Log.i(TAG, "The fetched temperature is: $temperature")
 
@@ -60,6 +66,7 @@ class ShuffleFilterActivity: AppCompatActivity() {
     }
 
     companion object {
+        const val RESULT_OK = 101
         internal const val TAG = "Shuffle Filter Activity"
     }
 }

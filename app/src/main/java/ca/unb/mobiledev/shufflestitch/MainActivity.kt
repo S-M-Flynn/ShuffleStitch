@@ -18,11 +18,11 @@ class MainActivity : AppCompatActivity() {
       //  deleteFilesInUserMedia()
         val shuffleButton = findViewById<Button>(R.id.shuffle_button)
         shuffleButton.setOnClickListener {
-            val intent = Intent(this, ShuffleFilterActivity::class.java)
+            val locationIntent = Intent(this, LocationActivity::class.java)
             try {
-                startActivity(intent)
+            startActivity(locationIntent)
             } catch (ex: ActivityNotFoundException) {
-                Log.e(TAG, "Unable to start the shuffle filter activity")
+                Log.e(TAG, "Unable to start the location activity")
                 Log.e(TAG, ex.toString())
             }
         }
@@ -46,6 +46,7 @@ class MainActivity : AppCompatActivity() {
                 Log.e(TAG, "FolderCreation Failed to create user folder or folder already exists.")
             }
         }
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
