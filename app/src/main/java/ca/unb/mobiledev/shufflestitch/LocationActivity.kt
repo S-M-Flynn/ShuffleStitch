@@ -90,14 +90,14 @@ class LocationActivity : AppCompatActivity() {
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == LOCATION_REQUEST && grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            getLocation()
-            val intent = Intent(this@LocationActivity, ShuffleFilterActivity::class.java)
-            intent.putExtra("latitude", latitude)
-            intent.putExtra("longitude", longitude)
-            startActivity(intent)
-            finish()
-        } else {
+            if (requestCode == LOCATION_REQUEST) {
+                if (grantResults.isNotEmpty()
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED
+                ) {
+                    Log.i(TAG, "onRequestPermissionsResult: Granted")
+                    lastLocation
+                }
+            }else {
             showPermissionDeniedDialog()
         }
     }
