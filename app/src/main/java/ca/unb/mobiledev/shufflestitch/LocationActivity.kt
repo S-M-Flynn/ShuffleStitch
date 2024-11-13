@@ -2,6 +2,7 @@ package ca.unb.mobiledev.shufflestitch
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
@@ -10,7 +11,8 @@ import android.os.Bundle
 import android.os.Looper
 import android.provider.Settings
 import android.util.Log
-import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -24,6 +26,7 @@ import com.google.android.gms.location.Priority
 class LocationActivity : AppCompatActivity() {
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var locationSettingsLauncher: ActivityResultLauncher<Intent>
     var latitude: Double = 0.0
     var longitude: Double = 0.0
 
@@ -31,9 +34,18 @@ class LocationActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_location)
+
         Log.d(TAG, "Location activity created")
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         lastLocation
+        locationSettingsLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == Activity.RESULT_OK || result.resultCode == Activity.RESULT_CANCELED) {
+                    if (isLocationEnabled) {
+                        lastLocation
+                    }
+                }
+            }
     }
 
     @get:SuppressLint("MissingPermission")
@@ -49,16 +61,10 @@ class LocationActivity : AppCompatActivity() {
                         getLocation()
                         Log.d(TAG, "Location updated: Latitude: $latitude, Longitude: $longitude")
                     }
-                    val intent = Intent(this@LocationActivity, ShuffleFilterActivity::class.java)
-                    intent.putExtra("latitude", latitude)
-                    intent.putExtra("longitude", longitude)
-                    startActivity(intent)
-                    finish()
+                    startFilterActivity()
                 }
             } else {
-                Toast.makeText(this, "Please turn location services on", Toast.LENGTH_LONG).show()
-                val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
-                startActivity(intent)
+                showPermissionDeniedDialog()
             }
         }
 
@@ -90,16 +96,20 @@ class LocationActivity : AppCompatActivity() {
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-            if (requestCode == LOCATION_REQUEST) {
-                if (grantResults.isNotEmpty()
-                    && grantResults[0] == PackageManager.PERMISSION_GRANTED
-                ) {
-                    Log.i(TAG, "onRequestPermissionsResult: Granted")
-                    lastLocation
-                }
-            }else {
+        if (requestCode == LOCATION_REQUEST && grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            Log.i(TAG, "onRequestPermissionsResult: Granted")
+            lastLocation
+        } else {
             showPermissionDeniedDialog()
         }
+    }
+
+    private fun startFilterActivity() {
+        val intent = Intent(this@LocationActivity, ShuffleFilterActivity::class.java)
+        intent.putExtra("latitude", latitude)
+        intent.putExtra("longitude", longitude)
+        startActivity(intent)
+        finish()
     }
 
     private fun showPermissionDeniedDialog() {
@@ -107,17 +117,12 @@ class LocationActivity : AppCompatActivity() {
             .setTitle("Location Services")
             .setMessage("Location services are off. Do you want to continue without location services?")
             .setPositiveButton("Continue") { _, _ ->
-                val intent = Intent(this@LocationActivity, ShuffleFilterActivity::class.java)
-                intent.putExtra("latitude", latitude)
-                intent.putExtra("longitude", longitude)
-                startActivity(intent)
-                finish()
+            startFilterActivity()
             }
             .setNegativeButton("Turn On") { _, _ ->
                 val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
-                startActivity(intent)
-            }
-            .show()
+                locationSettingsLauncher.launch(intent)
+            }.show()
     }
 
     @SuppressLint("MissingPermission")
@@ -134,9 +139,7 @@ class LocationActivity : AppCompatActivity() {
                 Looper.myLooper()!!
             )
         } else {
-            Toast.makeText(this, "Please turn location services on", Toast.LENGTH_LONG).show()
-            val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
-            startActivity(intent)
+            showPermissionDeniedDialog()
         }
     }
 
@@ -160,7 +163,7 @@ class LocationActivity : AppCompatActivity() {
 
     companion object {
         private const val TAG = "LocationActivity"
-        private const val UPDATE_INTERVAL: Long = 60 * 60 * 1000
+        private const val UPDATE_INTERVAL: Long = 1000
         private const val LOCATION_REQUEST = 101
     }
 }
