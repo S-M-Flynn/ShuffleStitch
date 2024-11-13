@@ -7,7 +7,6 @@ import android.util.Log
 import android.widget.Button
 import android.widget.CheckBox
 import androidx.appcompat.app.AppCompatActivity
-import ca.unb.mobiledev.shufflestitch.EditItemsActivity.Companion
 import ca.unb.mobiledev.shufflestitch.DB.DatabaseHelper
 import java.util.ArrayList
 
@@ -34,7 +33,7 @@ class ShuffleFilterActivity: AppCompatActivity() {
         val fullBodyCheckBox = findViewById<CheckBox>(R.id.shuffleFilterFullBodyCheckbox)
         val shoesCheckBox = findViewById<CheckBox>(R.id.shuffleFilterShoesCheckbox)
         val casualCheckBox = findViewById<CheckBox>(R.id.shuffleFilterCasualCheckbox)
-        val semiCasualCheckBox = findViewById<CheckBox>(R.id.shuffleFilterSemicasualCheckbox)
+        val semiCasualCheckBox = findViewById<CheckBox>(R.id.shuffleFilterProfessionalCheckbox)
         val corporateCheckBox = findViewById<CheckBox>(R.id.shuffleFilterCorporateCheckbox)
         val sportsCheckBox = findViewById<CheckBox>(R.id.shuffleFilterSportsCheckbox)
 
