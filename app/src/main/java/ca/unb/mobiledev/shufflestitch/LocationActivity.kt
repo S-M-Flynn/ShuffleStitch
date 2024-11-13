@@ -18,7 +18,7 @@ import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 
-interface aLocationCallback {
+interface ALocationCallback {
     fun onLocationRetrieved(location: Location)
     fun onLocationError(exception: Exception)
 }
@@ -51,7 +51,7 @@ class LocationActivity : AppCompatActivity() {
     }
 
     @SuppressLint("MissingPermission")
-    private fun fetchLastLocation(callback: aLocationCallback) {
+    private fun fetchLastLocation(callback: ALocationCallback) {
         checkPermissions()
         if (isLocationEnabled) {
             fusedLocationClient.lastLocation.addOnSuccessListener { lastLocation: Location? ->
@@ -84,7 +84,7 @@ class LocationActivity : AppCompatActivity() {
     }
 
     private fun fetchLocationWithCallback() {
-        fetchLastLocation(object: aLocationCallback {
+        fetchLastLocation(object: ALocationCallback {
             override fun onLocationRetrieved(location: Location) {
                 latitude = location.latitude
                 longitude = location.longitude
@@ -143,7 +143,6 @@ class LocationActivity : AppCompatActivity() {
 
     companion object {
         private const val TAG = "LocationActivity"
-        private const val UPDATE_INTERVAL: Long = 1000
         private const val LOCATION_REQUEST = 101
     }
 }
