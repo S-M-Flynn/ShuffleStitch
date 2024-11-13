@@ -7,18 +7,19 @@ import android.util.Log
 import android.widget.Button
 import android.widget.CheckBox
 import androidx.appcompat.app.AppCompatActivity
+import ca.unb.mobiledev.shufflestitch.EditItemsActivity.Companion
 
 class ShuffleFilterActivity: AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
 
-        val latitude = intent.getDoubleExtra("latitude", 0.0)
+        val latitude = intent.getDoubleExtra("latitude",0.0)
         val longitude = intent.getDoubleExtra("longitude", 0.0)
 
         setContentView(R.layout.shuffle_filter)
         val shuffleButton = findViewById<Button>(R.id.shuffleFilterShuffleButton)
+        val backButton = findViewById<Button>(R.id.back_button)
 
         val filters = BooleanArray(8)
 
@@ -41,11 +42,20 @@ class ShuffleFilterActivity: AppCompatActivity() {
             filters[6] = corporateCheckBox.isChecked()
             filters[7] = sportsCheckBox.isChecked()
 
-
-            val intent = Intent(this, ShuffleActivity::class.java)
-            intent.putExtra("Filters", filters)
+            val shuffleIntent = Intent(this, ShuffleActivity::class.java)
+            shuffleIntent.putExtra("Filters", filters)
+            shuffleIntent.putExtra("latitude", latitude)
+            shuffleIntent.putExtra("longitude", longitude)
             //TODO: Handle when no location given (location services not used)
-            getWeather(latitude, longitude,intent)
+            getWeather(latitude, longitude, shuffleIntent)
+        }
+
+        backButton.setOnClickListener {
+            try {
+                finish()
+            } catch (ex: ActivityNotFoundException) {
+                Log.e(TAG, "Error on back button")
+            }
         }
     }
 
