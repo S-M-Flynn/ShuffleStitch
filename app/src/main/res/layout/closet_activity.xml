@@ -6,6 +6,7 @@
     android:gravity="center"
     android:orientation="vertical">
 
+
     <ImageView
         android:id="@+id/closet_photo"
         android:layout_width="match_parent"
@@ -18,9 +19,9 @@
         android:id="@+id/camera_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_above ="@id/goto_closet"
+        android:layout_marginBottom="16dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="333dp"
         android:drawableBottom="@drawable/baseline_add_a_photo_24"
         android:text="@string/button_camera"
         android:textAppearance="@android:style/TextAppearance.Material.Widget.Button.Colored" />
@@ -29,9 +30,9 @@
         android:id="@+id/goto_closet"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="263dp"
+        android:layout_above ="@id/back_button"
+        android:layout_marginBottom="16dp"
         android:text="Select Item to Edit"
         android:textAppearance="@android:style/TextAppearance.Material.Widget.Button.Colored" />
 
@@ -41,7 +42,15 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="190dp"
+        android:layout_marginBottom="150dp"
         android:text="@string/button_back"
         android:textAppearance="@android:style/TextAppearance.Material.Widget.Button.Colored" />
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="fitCenter"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"
+        android:src="@drawable/banner_image" />
 </RelativeLayout>

@@ -1,19 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout style="@style/Widget.AppCompat.ButtonBar"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_alignParentBottom="true"
+    android:layout_height="match_parent"
+    android:background="@null"
+    android:gravity="center"
     android:orientation="vertical"
-    android:id="@+id/main_activity"
-    tools:context=".MainActivity">
-
+    android:id="@+id/main_activity">
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="fitCenter"
+        android:src="@drawable/tech__1__1" />
     <Button
         android:id="@+id/edit_button"
         style="IconOnlyButton"
         android:layout_width="135dp"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above ="@id/shuffle_button"
+        android:layout_marginBottom="16dp"
+        android:layout_centerHorizontal="true"
         android:text="@string/button_edit"
         android:textAppearance="@android:style/TextAppearance.Material.Widget.Button.Colored"/>
 
@@ -21,22 +27,10 @@
         android:id="@+id/shuffle_button"
         style="IconOnlyButton"
         android:layout_width="135dp"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="120dp"
         android:text="@string/shuffle_button"
         android:textAppearance="@android:style/TextAppearance.Material.Widget.Button.Colored"/>
-
-    <ImageView
-        android:id="@+id/imageView1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:scaleType="fitCenter"
-        android:src="@drawable/banner_image" />
-
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:scaleType="center"
-        android:src="@drawable/group_1" />
-
-</LinearLayout>
+</RelativeLayout>
