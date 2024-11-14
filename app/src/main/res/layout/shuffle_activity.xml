@@ -16,8 +16,7 @@
         android:id="@+id/imageView"
         android:layout_width="300dp"
         android:layout_height="300dp"
-        android:scaleType="fitXY"
-        app:srcCompat="@drawable/closet_image" />
+        android:scaleType="fitXY" />
 
     <Button
         android:id="@+id/selectButton"
