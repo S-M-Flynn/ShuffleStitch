@@ -55,6 +55,11 @@
             android:exported="true">
         </activity>
         <activity
+            android:name=".TagItemsActivity"
+            android:label="Tag Items activity"
+            android:exported="true">
+        </activity>
+        <activity
             android:name=".ShuffleActivity"
             android:label="Shuffle activity"
             android:exported="true">

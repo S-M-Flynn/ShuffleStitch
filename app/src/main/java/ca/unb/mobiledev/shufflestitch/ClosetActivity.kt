@@ -69,7 +69,7 @@ class ClosetActivity : AppCompatActivity() {
         }
     }
 
-    private fun createImageFile(imageName: String): File? {
+    private fun createImageFile(imageName: String): File {
         val storageDir = File(getExternalFilesDir(null), "UserMedia")
         if (!storageDir.exists()) {
             storageDir.mkdirs()
@@ -83,7 +83,7 @@ class ClosetActivity : AppCompatActivity() {
         val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(Date())
         Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
             takePictureIntent.resolveActivity(packageManager)?.also {
-                imageName = "x-xxx-000-xx${timeStamp}"
+                imageName = "XX${timeStamp}"
                 val photoFile: File? = try {
                     createImageFile(imageName)
                 } catch (ex: IOException) {
