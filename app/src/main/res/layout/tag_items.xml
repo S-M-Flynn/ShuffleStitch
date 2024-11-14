@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -18,7 +23,7 @@
         android:autoSizeStepGranularity="1sp"
         android:autoSizeTextType="uniform"
         android:text="Organize Your Closet"
-        android:textAppearance="@android:style/TextAppearance.Material.Headline"
+        android:textAppearance="@android:style/TextAppearance.Material.Widget.Button"
         app:layout_constraintEnd_toStartOf="@id/deleteButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/deleteButton"
@@ -59,7 +64,7 @@
         android:autoSizeTextType="uniform"
         android:ellipsize="end"
         android:singleLine="true"
-        android:text="Item Type - choose only one"
+        android:text="Category - choose one"
         android:textAppearance="@android:style/TextAppearance.Material.Large"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -139,7 +144,7 @@
         android:autoSizeTextType="uniform"
         android:ellipsize="end"
         android:singleLine="true"
-        android:text="Activity -  You can choose multiple"
+        android:text="Activity -  you may choose multiple"
         android:textAppearance="@android:style/TextAppearance.Material.Large"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -218,7 +223,7 @@
         android:autoSizeTextType="uniform"
         android:ellipsize="end"
         android:singleLine="true"
-        android:text="Season - you can choose multiple"
+        android:text="Season - you may choose multiple"
         android:textAppearance="@android:style/TextAppearance.Material.Large"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -305,29 +310,23 @@
             android:gravity="center">
         <Button
             android:id="@+id/saveTagsButton"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:autoSizeMaxTextSize="100sp"
-            android:autoSizeMinTextSize="12sp"
-            android:autoSizeStepGranularity="2sp"
-            android:autoSizeTextType="uniform"
+            android:layout_width="125dp"
+            android:layout_height="53dp"
             android:text="Save"
+            android:textAppearance="@android:style/TextAppearance.Material.Button"
             android:singleLine="true" android:ellipsize="end"
-            android:textAppearance="@android:style/TextAppearance.Material.Headline"
             android:layout_marginEnd="8dp" />
 
         <Button
             android:id="@+id/back_button"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:autoSizeMaxTextSize="100sp"
-            android:autoSizeMinTextSize="12sp"
-            android:autoSizeStepGranularity="2sp"
-            android:autoSizeTextType="uniform"
+            android:layout_width="125dp"
+            android:layout_height="53dp"
+            android:textSize ="12sp"
             android:text="Back"
+            android:textAppearance="@android:style/TextAppearance.Material.Button"
             android:singleLine="true" android:ellipsize="end"
-            android:textAppearance="@android:style/TextAppearance.Material.Headline"
             android:layout_marginStart="8dp" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
