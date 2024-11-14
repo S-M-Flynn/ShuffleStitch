@@ -1,6 +1,7 @@
 package ca.unb.mobiledev.shufflestitch
 
 import android.content.ActivityNotFoundException
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -10,6 +11,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import ca.unb.mobiledev.shufflestitch.ClosetActivity.Companion
 import java.io.File
 
 
@@ -39,7 +41,13 @@ class EditItemsActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL, false)
 
         typeButton.setOnClickListener {
-            launchTypeSelectionMenu()
+            val typeIntent = Intent(this@EditItemsActivity, TagItemsActivity::class.java)
+            typeIntent.putExtra("uri",imageUri.path.toString() )
+            try {
+                startActivity(typeIntent)
+            } catch (ex: ActivityNotFoundException) {
+                Log.e(TAG, "Unable to start tagging activity")
+            }
         }
 
         //remove-delete an item from the closet button activity
@@ -68,43 +76,6 @@ class EditItemsActivity : AppCompatActivity() {
         }
     }
 
-    private fun launchTypeSelectionMenu() {
-        //x(type)-xx-(colour)-000(count)-xxx(season)
-        val items = arrayOf("Bottoms", "Tops", "One-Piece")
-        var selectedItem = 0
-        val builder = AlertDialog.Builder(this)
-        builder.setTitle("Select Options")
-            .setSingleChoiceItems(items, selectedItem) { _, which ->
-                selectedItem = which
-            }
-            .setPositiveButton("OK") { _, _ ->
-                val prefix = when (selectedItem) {
-                    0 -> 'B'
-                    1 -> 'T'
-                    2 -> 'O'
-                    else -> 'x'
-                }
-                val newName: String = prefix + fileName.substring(1)
-                val fileStore = File(getExternalFilesDir(null), "UserMedia")
-                val newFileName = "${fileStore}" + "/${newName}"
-                val oldFile = File(getExternalFilesDir(null), "UserMedia/${fileName}")
-
-                val newFile = renameFile(oldFile, newFileName)
-
-                if (newFile != null) {
-                    Log.d(TAG, "File renamed to ${newFile.absolutePath}")
-                } else {
-                    Log.e(TAG, "Failed to rename file")
-                }
-                Log.d(TAG, "Category selected")
-            }
-            .setNegativeButton("Cancel", null)
-        builder.create().show()
-    }
-
-    //Colour categories
-    //BR- brown, BL-black, WH-white, YL-yellow, OR-orange RD-red
-    //GR- green, BU-blue, PR-purple, PK-pink
     private fun renameFile(oldFile: File, newFileName: String): File? {
         val newFile = File(oldFile.parent, newFileName)
         return if (oldFile.renameTo(newFile)) {

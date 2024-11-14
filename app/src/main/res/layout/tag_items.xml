@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+<RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="match_parent"
+            android:layout_height="57dp"
+            android:text="Select Tags"
+            android:textSize="34sp"
+            android:textAppearance="@android:style/TextAppearance.Material.Headline"/>
+
+    <Button
+        android:id="@+id/deleteButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@id/textView1"
+        android:layout_margin="25dp"
+        android:text="Remove"
+        android:textAppearance="@android:style/TextAppearance.Material.Widget.Button"/>
+</RelativeLayout>
+    <View
+            android:id="@+id/divider1"
+            android:layout_width="match_parent"
+            android:layout_height="75dp"
+            android:background="?android:attr/listDivider" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Item Type"
+            android:textSize="24sp" />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal">
+
+            <androidx.gridlayout.widget.GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingHorizontal="100dp"
+                app:columnCount="2"
+                app:rowCount="2">
+
+                <CheckBox
+                    android:id="@+id/shuffleFilterTopCheckbox"
+                    android:layout_width="107dp"
+                    android:layout_height="wrap_content"
+                    android:text="Top" />
+
+                <CheckBox
+                    android:id="@+id/shuffleFilterBottomCheckbox"
+                    android:layout_width="103dp"
+                    android:layout_height="wrap_content"
+                    android:text="Bottom" />
+
+                <CheckBox
+                    android:id="@+id/shuffleFilterFullBodyCheckbox"
+                    android:layout_width="107dp"
+                    android:layout_height="wrap_content"
+                    android:text="Full Body" />
+
+                <CheckBox
+                    android:id="@+id/shuffleFilterShoesCheckbox"
+                    android:layout_width="105dp"
+                    android:layout_height="wrap_content"
+                    android:text="Shoes" />
+            </androidx.gridlayout.widget.GridLayout>
+        </androidx.cardview.widget.CardView>
+
+        <View
+            android:id="@+id/divider3"
+            android:layout_width="match_parent"
+            android:layout_height="75dp"
+            android:background="?android:attr/listDivider" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Activity"
+            android:textSize="24sp" />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.gridlayout.widget.GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="85dp"
+                app:columnCount="2"
+                app:rowCount="2">
+
+                <CheckBox
+                    android:id="@+id/shuffleFilterCasualCheckbox"
+                    android:layout_width="119dp"
+                    android:layout_height="wrap_content"
+                    android:text="Casual" />
+
+                <CheckBox
+                    android:id="@+id/shuffleFilterProfessionalCheckbox"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:text="Professional" />
+
+                <CheckBox
+                    android:id="@+id/shuffleFilterCorporateCheckbox"
+                    android:layout_width="124dp"
+                    android:layout_height="wrap_content"
+                    android:text="Corporate" />
+
+                <CheckBox
+                    android:id="@+id/shuffleFilterSportsCheckbox"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:text="Sports" />
+            </androidx.gridlayout.widget.GridLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <View
+            android:id="@+id/divider4"
+            android:layout_width="match_parent"
+            android:layout_height="75dp"
+            android:background="?android:attr/listDivider" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Season"
+            android:textSize="24sp" />
+
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.gridlayout.widget.GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="85dp"
+                app:columnCount="2"
+                app:rowCount="2">
+
+                <CheckBox
+                    android:id="@+id/shuffleFilterSpringCheckbox"
+                    android:layout_width="119dp"
+                    android:layout_height="wrap_content"
+                    android:text="Spring" />
+
+                <CheckBox
+                    android:id="@+id/shuffleFilterSummerCheckbox"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:text="Summer" />
+
+                <CheckBox
+                    android:id="@+id/shuffleFilterFallCheckbox"
+                    android:layout_width="124dp"
+                    android:layout_height="wrap_content"
+                    android:text="Fall" />
+
+                <CheckBox
+                    android:id="@+id/shuffleFilterWinterCheckbox"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:text="Winter" />
+            </androidx.gridlayout.widget.GridLayout>
+        </androidx.cardview.widget.CardView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical|center"
+            android:orientation="horizontal">
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1">
+
+            </Space>
+
+            <Button
+                android:id="@+id/saveTagsButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Save"
+                android:textAppearance="@android:style/TextAppearance.Material.Widget.Button" />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1">
+
+            </Space>
+
+            <Button
+                android:id="@+id/back_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Back"
+                android:textAppearance="@android:style/TextAppearance.Material.Widget.Button" />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1">
+
+            </Space>
+        </LinearLayout>
+</LinearLayout>

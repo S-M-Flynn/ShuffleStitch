@@ -25,7 +25,6 @@ class ShuffleFilterActivity: AppCompatActivity() {
         val shuffleButton = findViewById<Button>(R.id.shuffleFilterShuffleButton)
         val backButton = findViewById<Button>(R.id.back_button)
 
-
         databaseHelper = DatabaseHelper(this)
 
         val topCheckBox = findViewById<CheckBox>(R.id.shuffleFilterTopCheckbox)
