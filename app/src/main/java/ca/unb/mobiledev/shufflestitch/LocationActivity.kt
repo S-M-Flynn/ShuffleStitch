@@ -8,7 +8,6 @@ import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
 import android.os.Bundle
-import android.os.Looper
 import android.provider.Settings
 import android.util.Log
 import androidx.activity.result.ActivityResultLauncher
@@ -17,11 +16,12 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationCallback
-import com.google.android.gms.location.LocationRequest
-import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
-import com.google.android.gms.location.Priority
+
+interface ALocationCallback {
+    fun onLocationRetrieved(location: Location)
+    fun onLocationError(exception: Exception)
+}
 
 class LocationActivity : AppCompatActivity() {
 
@@ -37,47 +37,40 @@ class LocationActivity : AppCompatActivity() {
 
         Log.d(TAG, "Location activity created")
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-        lastLocation
-        locationSettingsLauncher =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-                if (result.resultCode == Activity.RESULT_OK || result.resultCode == Activity.RESULT_CANCELED) {
-                    if (isLocationEnabled) {
-                        lastLocation
-                    }
-                }
-            }
-    }
 
-    @get:SuppressLint("MissingPermission")
-    private val lastLocation: Unit
-        get() {
-            checkPermissions()
-            if (isLocationEnabled) {
-                fusedLocationClient.lastLocation.addOnSuccessListener { lastLocation: Location? ->
-                    lastLocation?.let {
-                        latitude = it.latitude
-                        longitude = it.longitude
-                    } ?: run {
-                        getLocation()
-                        Log.d(TAG, "Location updated: Latitude: $latitude, Longitude: $longitude")
-                    }
-                    startFilterActivity()
+        locationSettingsLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK || result.resultCode == Activity.RESULT_CANCELED) {
+                if (isLocationEnabled) {
+                    fetchLocationWithCallback()
+                } else {
+                    showPermissionDeniedDialog()
                 }
-            } else {
-                showPermissionDeniedDialog()
             }
         }
+        fetchLocationWithCallback()
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun fetchLastLocation(callback: ALocationCallback) {
+        checkPermissions()
+        if (isLocationEnabled) {
+            fusedLocationClient.lastLocation.addOnSuccessListener { lastLocation: Location? ->
+                if (lastLocation != null) {
+                    callback.onLocationRetrieved(lastLocation)
+                } else {
+                    callback.onLocationError(Exception("Location not found"))
+                }
+            }.addOnFailureListener { exception ->
+                callback.onLocationError(exception)
+            }
+        } else {
+            showPermissionDeniedDialog()
+        }
+    }
 
     private fun checkPermissions() {
-        if (ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-            && ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+            && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             requestRuntimePermissions()
         }
     }
@@ -90,6 +83,22 @@ class LocationActivity : AppCompatActivity() {
         )
     }
 
+    private fun fetchLocationWithCallback() {
+        fetchLastLocation(object: ALocationCallback {
+            override fun onLocationRetrieved(location: Location) {
+                latitude = location.latitude
+                longitude = location.longitude
+                Log.d(TAG, "Location updated: Latitude: $latitude, Longitude: $longitude")
+                startFilterActivity()
+            }
+
+            override fun onLocationError(exception: Exception) {
+                Log.e(TAG, "Error fetching location", exception)
+                showPermissionDeniedDialog()
+            }
+        })
+    }
+
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -98,7 +107,7 @@ class LocationActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == LOCATION_REQUEST && grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             Log.i(TAG, "onRequestPermissionsResult: Granted")
-            lastLocation
+            fetchLocationWithCallback()
         } else {
             showPermissionDeniedDialog()
         }
@@ -117,7 +126,7 @@ class LocationActivity : AppCompatActivity() {
             .setTitle("Location Services")
             .setMessage("Location services are off. Do you want to continue without location services?")
             .setPositiveButton("Continue") { _, _ ->
-            startFilterActivity()
+                startFilterActivity()
             }
             .setNegativeButton("Turn On") { _, _ ->
                 val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
@@ -125,45 +134,16 @@ class LocationActivity : AppCompatActivity() {
             }.show()
     }
 
-    @SuppressLint("MissingPermission")
-    private fun getLocation() {
-        val locationRequest = LocationRequest.Builder(UPDATE_INTERVAL)
-            .setPriority(Priority.PRIORITY_HIGH_ACCURACY)
-            .setIntervalMillis(UPDATE_INTERVAL)
-            .setMaxUpdateDelayMillis(UPDATE_INTERVAL)
-            .build()
-        if (isLocationEnabled) {
-            fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-            fusedLocationClient.requestLocationUpdates(
-                locationRequest, locationCallback,
-                Looper.myLooper()!!
-            )
-        } else {
-            showPermissionDeniedDialog()
-        }
-    }
-
-    private val locationCallback: LocationCallback = object : LocationCallback() {
-        override fun onLocationResult(locationResult: LocationResult) {
-            locationResult.lastLocation?.let {
-                latitude = it.latitude
-                longitude = it.longitude
-                Log.d(TAG, "Location updated: Latitude: $latitude, Longitude: $longitude")
-            }
-        }
-    }
-
     private val isLocationEnabled: Boolean
         get() {
             val locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
             return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(
-                LocationManager.NETWORK_PROVIDER
-            )
+                LocationManager.NETWORK_PROVIDER)
         }
 
     companion object {
         private const val TAG = "LocationActivity"
-        private const val UPDATE_INTERVAL: Long = 1000
         private const val LOCATION_REQUEST = 101
     }
 }
+
