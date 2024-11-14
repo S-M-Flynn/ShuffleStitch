@@ -24,4 +24,19 @@
         android:layout_height="match_parent"
         android:text="@string/shuffle_button"
         android:textAppearance="@android:style/TextAppearance.Material.Widget.Button.Colored"/>
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="fitCenter"
+        android:src="@drawable/banner_image" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="center"
+        android:src="@drawable/group_1" />
+
 </LinearLayout>
