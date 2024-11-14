@@ -49,5 +49,10 @@
         <item name="colorSurfaceContainerHighest">@color/md_theme_surfaceContainerHighest</item>
     </style>
 
+
+
     <style name="Theme.ShuffleStitch" parent="Base.Theme.ShuffleStitch" />
+    <style name="Button.color" parent="Base.Theme.ShuffleStitch">
+        <item name="colorPrimary">@color/md_theme_secondaryContainer</item>
+    </style>
 </resources>
