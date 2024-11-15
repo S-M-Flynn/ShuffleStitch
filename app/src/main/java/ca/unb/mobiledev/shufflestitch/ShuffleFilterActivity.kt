@@ -1,29 +1,37 @@
 package ca.unb.mobiledev.shufflestitch
 
+import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.CheckBox
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import ca.unb.mobiledev.shufflestitch.DB.DatabaseHelper
 import java.util.ArrayList
 
+interface SeasonCallback { fun onSeasonFetched(season: String) }
+
 class ShuffleFilterActivity: AppCompatActivity() {
 
     private lateinit var databaseHelper: DatabaseHelper
+    private lateinit var tempDisplay:TextView
+    private var currentSeason =""
+    private lateinit var shuffleIntent: Intent
 
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
-
+        setContentView(R.layout.shuffle_filter)
         val latitude = intent.getDoubleExtra("latitude",0.0)
         val longitude = intent.getDoubleExtra("longitude", 0.0)
 
-        setContentView(R.layout.shuffle_filter)
         val shuffleButton = findViewById<Button>(R.id.shuffleFilterShuffleButton)
         val backButton = findViewById<Button>(R.id.back_button)
+        shuffleIntent = Intent(this, ShuffleActivity::class.java)
 
         databaseHelper = DatabaseHelper(this)
 
@@ -36,8 +44,14 @@ class ShuffleFilterActivity: AppCompatActivity() {
         val corporateCheckBox = findViewById<CheckBox>(R.id.shuffleFilterCorporateCheckbox)
         val sportsCheckBox = findViewById<CheckBox>(R.id.shuffleFilterSportsCheckbox)
 
+        getWeather(latitude, longitude,object : SeasonCallback {
+            override fun onSeasonFetched(season: String) {
+                Log.i(TAG, "The determined season is: $season")
+                currentSeason = season
+            }
+        })
+
         shuffleButton.setOnClickListener {
-            // This is where the call to the weather api will go
             val filters = mutableMapOf(
                 "TOPS" to if (topCheckBox.isChecked) "1" else "0",
                 "BOTTOMS" to if (bottomCheckBox.isChecked) "1" else "0",
@@ -48,9 +62,24 @@ class ShuffleFilterActivity: AppCompatActivity() {
                 "FORMAL" to if (corporateCheckBox.isChecked) "1" else "0",
                 "ATHLETIC" to if (sportsCheckBox.isChecked) "1" else "0"
             )
+            filters.put(currentSeason, "1")
 
-            val intent = Intent(this, ShuffleActivity::class.java)
-            getWeather(latitude, longitude, intent, filters)
+
+            val itemMap = databaseHelper.getAllData(filters)
+            val topsList = itemMap["tops"] ?: emptyList()
+            val bottomsList = itemMap["bottoms"] ?: emptyList()
+            val fullBodyList = itemMap["fullBody"] ?: emptyList()
+            val shoesList = itemMap["shoes"] ?: emptyList()
+
+            shuffleIntent.putParcelableArrayListExtra("tops", ArrayList(topsList))
+            shuffleIntent.putParcelableArrayListExtra("bottoms", ArrayList(bottomsList))
+            shuffleIntent.putParcelableArrayListExtra("fullBody", ArrayList(fullBodyList))
+            shuffleIntent.putParcelableArrayListExtra("shoes", ArrayList(shoesList))
+            try {
+                startActivity(shuffleIntent)
+            } catch (ex: ActivityNotFoundException) {
+                Log.e(TAG, "Unable to start the shuffle filter activity")
+            }
         }
 
         backButton.setOnClickListener {
@@ -62,40 +91,23 @@ class ShuffleFilterActivity: AppCompatActivity() {
         }
     }
 
-    private fun getWeather(latitude:Double, longitude:Double, intent:Intent,  filters:MutableMap<String, String>) {
+    private fun getWeather(latitude:Double, longitude:Double, callback:SeasonCallback) {
         val weatherFetcher = WeatherFetcher()
         weatherFetcher.fetchWeather(latitude, longitude, object : WeatherCallback {
             override fun onTemperatureFetched(temperature: Double) {
                 Log.i(TAG, "The fetched temperature is: $temperature")
-                var season = ""
-                season = if (temperature < 3){
-                    "WINTER"
-                } else if (temperature < 18){
-                    "FALL"
-                } else if (temperature < 24){
-                    "SPRING"
-                } else{
-                    "SUMMER"
+                val season = when {
+                    temperature < 3 -> "WINTER"
+                    temperature < 18 && temperature >= 3 -> "FALL"
+                    temperature < 24 -> "SPRING"
+                    else -> "SUMMER"
                 }
-
-                filters.put(season, "1")
-
-                val itemMap = databaseHelper.getAllData(filters)
-                val topsList = itemMap["tops"] ?: emptyList()
-                val bottomsList = itemMap["bottoms"] ?: emptyList()
-                val fullBodyList = itemMap["fullBody"] ?: emptyList()
-                val shoesList = itemMap["shoes"] ?: emptyList()
-
-                intent.putParcelableArrayListExtra("tops", ArrayList(topsList))
-                intent.putParcelableArrayListExtra("bottoms", ArrayList(bottomsList))
-                intent.putParcelableArrayListExtra("fullBody", ArrayList(fullBodyList))
-                intent.putParcelableArrayListExtra("shoes", ArrayList(shoesList))
-
-                try {
-                    startActivity(intent)
-                } catch (ex: ActivityNotFoundException) {
-                    Log.e(TAG, "Unable to start the shuffle filter activity")
-                }
+                runOnUiThread {
+                    tempDisplay = findViewById(R.id.temperature)
+                    val tempLabel = "Current temperature:$temperature oC"
+                    shuffleIntent.putExtra("temperature",temperature)
+                    tempDisplay.text = tempLabel
+                    callback.onSeasonFetched(season) }
             }
         })
     }

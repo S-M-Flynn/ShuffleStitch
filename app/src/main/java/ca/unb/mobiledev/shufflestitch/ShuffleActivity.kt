@@ -8,7 +8,6 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 
-
 class ShuffleActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -17,7 +16,7 @@ class ShuffleActivity : AppCompatActivity() {
         // Call to db will probably go here
 
         val filter = intent.getBooleanArrayExtra("Filters")
-        val temperature = intent.getDoubleExtra("Temperature", 0.00)
+        val temperature = intent.getDoubleExtra("temperature", 0.00)
 
         var text = ""
 
