@@ -20,6 +20,8 @@ class ShuffleFilterActivity: AppCompatActivity() {
 
         val latitude = intent.getDoubleExtra("latitude",0.0)
         val longitude = intent.getDoubleExtra("longitude", 0.0)
+        Log.i(TAG, "The latitude is $latitude")
+        Log.i(TAG, "The longitude is $longitude")
 
         setContentView(R.layout.shuffle_filter)
         val shuffleButton = findViewById<Button>(R.id.shuffleFilterShuffleButton)
