@@ -22,14 +22,14 @@
         android:id="@+id/item_type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Item Type"
+        android:text="Organize Your Closet"
         android:textAppearance="@android:style/TextAppearance.Material.Widget.Button.Colored" />
 
     <Button
-        android:id="@+id/item_temp"
+        android:id="@+id/filter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Season Selector"
+        android:text="Filter"
         android:textAppearance="@android:style/TextAppearance.Material.Widget.Button.Colored" />
 
     <Button

@@ -33,6 +33,7 @@
             android:exported="true">
         </activity>
         <activity android:name=".LocationActivity"
+            android:label="Location Activity"
             android:exported="true">
         </activity>
         <activity
@@ -55,7 +56,6 @@
             android:exported="true">
         </activity>
         <activity
-            android:theme="@style/Theme.ShuffleStitch"
             android:name=".TagItemsActivity"
             android:label="Tag Items activity"
             android:exported="true">

@@ -79,6 +79,72 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         return result != -1L // Returns true if insert is successful
     }
 
+    fun getItemByPath(path: String): Item? {
+        val db = this.readableDatabase
+        val cursor: Cursor? = db.query(
+            TABLE_NAME,
+            null,
+            "$ITEM_PATH = ?",
+            arrayOf(path),
+            null,
+            null,
+            null
+        )
+
+        var item: Item? = null
+        if (cursor != null && cursor.moveToFirst()) {
+            val id = cursor.getLong(cursor.getColumnIndexOrThrow(ITEM_ID))
+            val tops = cursor.getInt(cursor.getColumnIndexOrThrow(TOPS)) == 1
+            val bottoms = cursor.getInt(cursor.getColumnIndexOrThrow(BOTTOMS)) == 1
+            val fullBody = cursor.getInt(cursor.getColumnIndexOrThrow(FULL_BODY)) == 1
+            val shoes = cursor.getInt(cursor.getColumnIndexOrThrow(SHOES)) == 1
+            val casual = cursor.getInt(cursor.getColumnIndexOrThrow(CASUAL)) == 1
+            val professional = cursor.getInt(cursor.getColumnIndexOrThrow(PROFESSIONAL)) == 1
+            val formal = cursor.getInt(cursor.getColumnIndexOrThrow(FORMAL)) == 1
+            val athletic = cursor.getInt(cursor.getColumnIndexOrThrow(ATHLETIC)) == 1
+            val winter = cursor.getInt(cursor.getColumnIndexOrThrow(WINTER)) == 1
+            val fall =  cursor.getInt(cursor.getColumnIndexOrThrow(FALL)) == 1
+            val spring = cursor.getInt(cursor.getColumnIndexOrThrow(SPRING)) == 1
+            val summer = cursor.getInt(cursor.getColumnIndexOrThrow(SUMMER)) == 1
+
+            // Create the Item object
+            item = Item(id, path, tops, bottoms, fullBody, shoes, casual, professional, formal, athletic, winter, fall, spring, summer)
+        }
+
+        cursor?.close()
+        db.close()
+        return item // Returns null if no match is found
+    }
+
+    fun updateItemByPath(path: String, updatedTags: IntArray): Boolean {
+        val db = this.writableDatabase
+        val contentValues = ContentValues().apply {
+            put(TOPS, updatedTags[0])
+            put(BOTTOMS, updatedTags[1])
+            put(FULL_BODY, updatedTags[2])
+            put(SHOES, updatedTags[3])
+            put(CASUAL, updatedTags[4])
+            put(PROFESSIONAL, updatedTags[5])
+            put(FORMAL, updatedTags[6])
+            put(ATHLETIC, updatedTags[7])
+            put(WINTER, updatedTags[8])
+            put(FALL, updatedTags[9])
+            put(SPRING, updatedTags[10])
+            put(SUMMER, updatedTags[11])
+        }
+
+        val rowsUpdated = db.update(
+            TABLE_NAME, // Table name
+            contentValues, // Updated values
+            "$ITEM_PATH = ?", // WHERE clause
+            arrayOf(path) // WHERE arguments
+        )
+
+        db.close()
+        return rowsUpdated > 0 // Returns true if at least one row was updated
+    }
+
+
     // Retrieve all records
     fun getAllData(conditions: Map<String, String>): Map<String, List<Item>> {
         val itemList = mutableListOf<Item>()
@@ -110,8 +176,12 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
                 val professional = cursor.getInt(cursor.getColumnIndexOrThrow(PROFESSIONAL)) == 1
                 val formal = cursor.getInt(cursor.getColumnIndexOrThrow(FORMAL)) == 1
                 val athletic = cursor.getInt(cursor.getColumnIndexOrThrow(ATHLETIC)) == 1
+                val winter = cursor.getInt(cursor.getColumnIndexOrThrow(WINTER)) == 1
+                val fall =  cursor.getInt(cursor.getColumnIndexOrThrow(FALL)) == 1
+                val spring = cursor.getInt(cursor.getColumnIndexOrThrow(SPRING)) == 1
+                val summer = cursor.getInt(cursor.getColumnIndexOrThrow(SUMMER)) == 1
 
-                itemList.add(Item(id, path, tops, bottoms, fullBody, shoes, casual, professional, formal, athletic))
+                itemList.add(Item(id, path, tops, bottoms, fullBody, shoes, casual, professional, formal, athletic, winter, fall, spring, summer))
             } while (cursor.moveToNext())
         }
         cursor.close()
