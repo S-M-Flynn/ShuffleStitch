@@ -137,7 +137,7 @@ class NewPhotoActivity : AppCompatActivity() {
     private fun deleteOgImage() {
         val userMediaDir = File(getExternalFilesDir(null), "UserMedia")
         val xFiles = userMediaDir.listFiles { _, name ->
-            name.startsWith("x")
+            name.startsWith("XX")
         }
         xFiles?.forEach { file ->
             file.delete()
