@@ -15,6 +15,7 @@ import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import ca.unb.mobiledev.shufflestitch.DB.DatabaseHelper
 import dev.eren.removebg.RemoveBg
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.runBlocking
@@ -24,6 +25,7 @@ import java.io.IOException
 
 class NewPhotoActivity : AppCompatActivity() {
     private lateinit var imageView: ImageView
+    private lateinit var databaseHelper: DatabaseHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,13 +44,17 @@ class NewPhotoActivity : AppCompatActivity() {
 
         imageView = findViewById(R.id.closet_photo)
         acceptButton.setOnClickListener {
+            val imageName = "UserMedia/processed_${System.currentTimeMillis()}.jpg"
+            val emptyArray = intArrayOf()
             try {
                 val outputFile = File(
                     getExternalFilesDir(null),
-                    "UserMedia/processed_${System.currentTimeMillis()}.jpg"
+                    imageName
                 )
                 saveImage(imageViewToBitmap(imageView)!!, outputFile)
                 deleteOgImage()
+                databaseHelper = DatabaseHelper(this)
+                databaseHelper.insertData(imageName,emptyArray)
                 val intent = Intent(this, ClosetActivity::class.java)
                 startActivity(intent)
             } catch (ex: ActivityNotFoundException) {
@@ -101,7 +107,7 @@ class NewPhotoActivity : AppCompatActivity() {
         }
     }
 
-    fun collectFlowInThread(flow: Flow<Bitmap?>, onComplete: (Bitmap) -> Unit) {
+    private fun collectFlowInThread(flow: Flow<Bitmap?>, onComplete: (Bitmap) -> Unit) {
         Thread {
             runBlocking {
                 flow.collect { output ->
@@ -125,7 +131,7 @@ class NewPhotoActivity : AppCompatActivity() {
         }
     }
 
-    fun imageViewToBitmap(imageView: ImageView): Bitmap? {
+    private fun imageViewToBitmap(imageView: ImageView): Bitmap? {
         val drawable = imageView.drawable
         return if (drawable is BitmapDrawable) {
             drawable.bitmap

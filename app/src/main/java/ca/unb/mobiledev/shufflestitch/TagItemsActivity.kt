@@ -48,21 +48,20 @@ class TagItemsActivity : AppCompatActivity() {
         bottomCheckBox = findViewById(R.id.shuffleFilterBottomCheckbox)
         fullBodyCheckBox = findViewById(R.id.shuffleFilterFullBodyCheckbox)
         shoesCheckBox = findViewById(R.id.shuffleFilterShoesCheckbox)
-        casualCheckBox = findViewById<CheckBox>(R.id.shuffleFilterCasualCheckbox)
-        semiCasualCheckBox = findViewById<CheckBox>(R.id.shuffleFilterProfessionalCheckbox)
-        corporateCheckBox = findViewById<CheckBox>(R.id.shuffleFilterCorporateCheckbox)
-        sportsCheckBox = findViewById<CheckBox>(R.id.shuffleFilterSportsCheckbox)
-        springCheckBox = findViewById<CheckBox>(R.id.shuffleFilterSpringCheckbox)
-        summerCheckBox = findViewById<CheckBox>(R.id.shuffleFilterSummerCheckbox)
-        fallCheckBox = findViewById<CheckBox>(R.id.shuffleFilterFallCheckbox)
-        winterCheckBox = findViewById<CheckBox>(R.id.shuffleFilterWinterCheckbox)
+        casualCheckBox = findViewById(R.id.shuffleFilterCasualCheckbox)
+        semiCasualCheckBox = findViewById(R.id.shuffleFilterProfessionalCheckbox)
+        corporateCheckBox = findViewById(R.id.shuffleFilterCorporateCheckbox)
+        sportsCheckBox = findViewById(R.id.shuffleFilterSportsCheckbox)
+        springCheckBox = findViewById(R.id.shuffleFilterSpringCheckbox)
+        summerCheckBox = findViewById(R.id.shuffleFilterSummerCheckbox)
+        fallCheckBox = findViewById(R.id.shuffleFilterFallCheckbox)
+        winterCheckBox = findViewById(R.id.shuffleFilterWinterCheckbox)
 
         val newItem = databaseHelper.getItemByPath(imageUri)
         if (newItem != null) { loadItemState(newItem) }
 
         val saveButton = findViewById<Button>(R.id.saveTagsButton)
         val backButton = findViewById<Button>(R.id.back_button)
-
 
         saveButton.setOnClickListener {
             list = updateItem()
@@ -135,9 +134,6 @@ class TagItemsActivity : AppCompatActivity() {
     }
 
     private fun loadItemState(newItem: Item) {
-        //databaseHelper.getItemState
-        //set checkboxes to current values
-        //setCheckboxes(databaseHelper.getItemInfo)
         setCheckboxes(newItem)
     }
 
