@@ -73,14 +73,14 @@ class ShuffleFilterActivity: AppCompatActivity() {
             val fullBodyList = itemMap["fullBody"] ?: emptyList()
             val shoesList = itemMap["shoes"] ?: emptyList()
 
-            shuffleIntent.putParcelableArrayListExtra("tops", ArrayList(topsList))
+            shuffleIntent.putParcelableArrayListExtra("tops",ArrayList(topsList))
             shuffleIntent.putParcelableArrayListExtra("bottoms", ArrayList(bottomsList))
             shuffleIntent.putParcelableArrayListExtra("fullBody", ArrayList(fullBodyList))
             shuffleIntent.putParcelableArrayListExtra("shoes", ArrayList(shoesList))
             try {
                 startActivity(shuffleIntent)
             } catch (ex: ActivityNotFoundException) {
-                Log.e(TAG, "Unable to start the shuffle filter activity")
+                Log.e(TAG, "Unable to start the shuffle activity")
             }
         }
 
