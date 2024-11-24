@@ -55,7 +55,7 @@ class NewPhotoActivity : AppCompatActivity() {
                 deleteOgImage()
                 databaseHelper = DatabaseHelper(this)
                 databaseHelper.insertData(imageName,emptyArray)
-                val intent = Intent(this, ClosetActivity::class.java)
+                val intent = Intent(this, TagItemsActivity::class.java)
                 startActivity(intent)
             } catch (ex: ActivityNotFoundException) {
                 Log.e(TAG, "Save image launch closet activity error")
