@@ -1,6 +1,5 @@
 package ca.unb.mobiledev.shufflestitch
 
-import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.os.Bundle
@@ -21,7 +20,6 @@ class ShuffleFilterActivity: AppCompatActivity() {
     private var currentSeason =""
     private lateinit var shuffleIntent: Intent
 
-    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -36,15 +34,23 @@ class ShuffleFilterActivity: AppCompatActivity() {
         shuffleIntent = Intent(this, ShuffleActivity::class.java)
 
         databaseHelper = DatabaseHelper(this)
-
+        val checkboxes: ArrayList<CheckBox> = ArrayList()
         val topCheckBox = findViewById<CheckBox>(R.id.shuffleFilterTopCheckbox)
+        checkboxes.add(topCheckBox)
         val bottomCheckBox = findViewById<CheckBox>(R.id.shuffleFilterBottomCheckbox)
+        checkboxes.add(bottomCheckBox)
         val fullBodyCheckBox = findViewById<CheckBox>(R.id.shuffleFilterFullBodyCheckbox)
+        checkboxes.add(fullBodyCheckBox)
         val shoesCheckBox = findViewById<CheckBox>(R.id.shuffleFilterShoesCheckbox)
+        checkboxes.add(shoesCheckBox)
         val casualCheckBox = findViewById<CheckBox>(R.id.shuffleFilterCasualCheckbox)
-        val semiCasualCheckBox = findViewById<CheckBox>(R.id.shuffleFilterProfessionalCheckbox)
+        checkboxes.add(casualCheckBox)
+        val formalCheckBox = findViewById<CheckBox>(R.id.shuffleFilterFormalCheckbox)
+        checkboxes.add(formalCheckBox)
         val corporateCheckBox = findViewById<CheckBox>(R.id.shuffleFilterCorporateCheckbox)
+        checkboxes.add(corporateCheckBox)
         val sportsCheckBox = findViewById<CheckBox>(R.id.shuffleFilterSportsCheckbox)
+        checkboxes.add(sportsCheckBox)
 
         getWeather(latitude, longitude,object : SeasonCallback {
             override fun onSeasonFetched(season: String) {
@@ -54,18 +60,31 @@ class ShuffleFilterActivity: AppCompatActivity() {
         })
 
         shuffleButton.setOnClickListener {
-            val filters = mutableMapOf(
-                "TOPS" to if (topCheckBox.isChecked) "1" else "0",
-                "BOTTOMS" to if (bottomCheckBox.isChecked) "1" else "0",
-                "FULL_BODY" to if (fullBodyCheckBox.isChecked) "1" else "0",
-                "SHOES" to if (shoesCheckBox.isChecked) "1" else "0",
-                "CASUAL" to if (casualCheckBox.isChecked) "1" else "0",
-                "PROFESSIONAL" to if (semiCasualCheckBox.isChecked) "1" else "0",
-                "FORMAL" to if (corporateCheckBox.isChecked) "1" else "0",
-                "ATHLETIC" to if (sportsCheckBox.isChecked) "1" else "0"
-            )
+            val filters = if (checkboxes.none { it.isChecked }){
+                 mutableMapOf(
+                    "TOPS" to "1",
+                    "BOTTOMS" to "1",
+                    "FULL_BODY" to "1",
+                    "SHOES" to "1",
+                    "CASUAL" to "1",
+                    "PROFESSIONAL" to "1",
+                    "FORMAL" to "1",
+                    "ATHLETIC" to "1"
+                )
+            }
+            else {
+                mutableMapOf(
+                    "TOPS" to if (topCheckBox.isChecked) "1" else "0",
+                    "BOTTOMS" to if (bottomCheckBox.isChecked) "1" else "0",
+                    "FULL_BODY" to if (fullBodyCheckBox.isChecked) "1" else "0",
+                    "SHOES" to if (shoesCheckBox.isChecked) "1" else "0",
+                    "CASUAL" to if (casualCheckBox.isChecked) "1" else "0",
+                    "PROFESSIONAL" to if (corporateCheckBox.isChecked) "1" else "0",
+                    "FORMAL" to if (formalCheckBox.isChecked) "1" else "0",
+                    "ATHLETIC" to if (sportsCheckBox.isChecked) "1" else "0"
+                )
+            }
             filters.put(currentSeason, "1")
-
 
             val itemMap = databaseHelper.getAllData(filters)
             val topsList = itemMap["tops"] ?: emptyList()

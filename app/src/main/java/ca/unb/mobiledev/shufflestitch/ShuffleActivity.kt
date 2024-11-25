@@ -10,7 +10,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import ca.unb.mobiledev.shufflestitch.DB.DatabaseHelper
 import java.io.File
 
 class ShuffleActivity : AppCompatActivity() {
