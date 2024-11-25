@@ -28,7 +28,7 @@ class TagItemsActivity : AppCompatActivity() {
     private lateinit var bottomCheckBox: CheckBox
     private lateinit var shoesCheckBox: CheckBox
     private lateinit var casualCheckBox: CheckBox
-    private lateinit var semiCasualCheckBox: CheckBox
+    private lateinit var formalCheckBox: CheckBox
     private lateinit var corporateCheckBox: CheckBox
     private lateinit var sportsCheckBox: CheckBox
     private lateinit var springCheckBox: CheckBox
@@ -49,7 +49,7 @@ class TagItemsActivity : AppCompatActivity() {
         fullBodyCheckBox = findViewById(R.id.shuffleFilterFullBodyCheckbox)
         shoesCheckBox = findViewById(R.id.shuffleFilterShoesCheckbox)
         casualCheckBox = findViewById(R.id.shuffleFilterCasualCheckbox)
-        semiCasualCheckBox = findViewById(R.id.shuffleFilterProfessionalCheckbox)
+        formalCheckBox = findViewById(R.id.shuffleFilterFormalCheckbox)
         corporateCheckBox = findViewById(R.id.shuffleFilterCorporateCheckbox)
         sportsCheckBox = findViewById(R.id.shuffleFilterSportsCheckbox)
         springCheckBox = findViewById(R.id.shuffleFilterSpringCheckbox)
@@ -107,7 +107,7 @@ class TagItemsActivity : AppCompatActivity() {
         states[2] = if (fullBodyCheckBox.isChecked) 1 else 0
         states[3] = if (shoesCheckBox.isChecked) 1 else 0
         states[4] = if (casualCheckBox.isChecked) 1 else 0
-        states[5] = if (semiCasualCheckBox.isChecked) 1 else 0
+        states[5] = if (formalCheckBox.isChecked) 1 else 0
         states[6] = if (corporateCheckBox.isChecked) 1 else 0
         states[7] = if (sportsCheckBox.isChecked) 1 else 0
         states[8] = if (winterCheckBox.isChecked) 1 else 0
@@ -124,8 +124,8 @@ class TagItemsActivity : AppCompatActivity() {
         shoesCheckBox.isChecked = item.shoes
         bottomCheckBox.isChecked = item.bottoms
         casualCheckBox.isChecked = item.casual
-        corporateCheckBox.isChecked = item.formal
-        semiCasualCheckBox.isChecked = item.professional
+        corporateCheckBox.isChecked = item.professional
+        formalCheckBox.isChecked = item.formal
         sportsCheckBox.isChecked = item.athletic
         springCheckBox.isChecked = item.spring
         summerCheckBox.isChecked = item.summer
