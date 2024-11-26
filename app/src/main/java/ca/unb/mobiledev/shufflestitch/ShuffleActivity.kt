@@ -11,6 +11,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import java.io.File
+import kotlin.random.Random
 
 class ShuffleActivity : AppCompatActivity() {
 
@@ -23,50 +24,71 @@ class ShuffleActivity : AppCompatActivity() {
         val tempLabel = "Current temperature:$temperature oC"
         tempDisplay.text = tempLabel
 
-        val topsList = intent.getParcelableArrayListExtra("tops", Item::class.java)
-        val bottomList = intent.getParcelableArrayListExtra("bottoms", Item::class.java)
-        val onPieceList =intent.getParcelableArrayListExtra("fullBody", Item::class.java)
-        val shoesList = intent.getParcelableArrayListExtra("shoes", Item::class.java)
+        val topsList = intent.getParcelableArrayListExtra<Item>("tops")!!
+        val bottomList = intent.getParcelableArrayListExtra<Item>("bottoms")!!
+        val onePieceList = intent.getParcelableArrayListExtra<Item>("fullBody")!!
+        val shoesList = intent.getParcelableArrayListExtra<Item>("shoes")!!
 
+
+//        val topsList = intent.extras?.getParcelableArrayList("tops",Item::class.java)
+//        val bottomList = intent.extras?.getParcelableArrayList("bottoms", Item::class.java)
+//        val onPieceList = intent.extras?.getParcelableArrayList("fullBody", Item::class.java)
+//        val shoesList = intent.extras?.getParcelableArrayList("shoes", Item::class.java)
         val textBox = findViewById<TextView>(R.id.displayFilters)
-        val filter = intent.getBooleanArrayExtra("Filters")
-        
+
+        val tops = intent.extras?.getBoolean("TOPS", false)
+        val bottom = intent.extras?.getBoolean("BOTTOMS", false)
+        val onePiece = intent.extras?.getBoolean("FULL_BODY", false)
+        val shoes = intent.extras?.getBoolean("SHOES", false)
+
+        var onePieceOrTwo = 2
+        if (tops == true && onePiece == true && bottom == true) {
+            val randomNum = Random.nextInt(1, 10)
+            onePieceOrTwo =
+                if (randomNum % 2 == 0) {
+                    2
+                } else {
+                    1
+                }
+        } else if (onePiece == true && onePieceList.size > 0) {
+            onePieceOrTwo = 1
+        }
+
         val shoeImage = findViewById<ImageView>(R.id.shoes)
         val onePieceImage = findViewById<ImageView>(R.id.onePiece)
         val topImage = findViewById<ImageView>(R.id.topPiece)
         val bottomImage = findViewById<ImageView>(R.id.bottomPiece)
 
         //depending on filter settings and what is returned (if one piece or two, if getting shoes etc.)
-        if (filter != null) {
-            shoeImage.visibility = View.GONE
-        } else {
-            shoeImage.visibility = View.VISIBLE
-            val imagePath = shoesList?.get(0)?.path
-            if (imagePath != null) {
-                loadImage(imagePath, shoeImage)
-            };
-        }
-        if (filter != null) { //filter returns a one piece suggestion
+        if (onePieceOrTwo == 1) { //filter returns a one piece suggestion
             topImage.visibility = View.GONE
             bottomImage.visibility = View.GONE
             onePieceImage.visibility = View.VISIBLE
-            val imagePath = onPieceList?.get(0)?.path
+            val imagePath = onePieceList.get(0)?.path
             if (imagePath != null) {
-                loadImage(imagePath, bottomImage)
-            };
+                loadImage(imagePath, onePieceImage)
+            }
         }
-        if (filter != null) { //filter returns a two piece suggestion
+
+        if (onePieceOrTwo == 2) { //filter returns a two piece suggestion
             topImage.visibility = View.VISIBLE
             bottomImage.visibility = View.VISIBLE
             onePieceImage.visibility = View.GONE
-            val topImagePath = topsList?.get(0)?.path
+            val topImagePath = topsList.get(0).path
             if (topImagePath != null) {
-                loadImage(topImagePath, bottomImage)
-            };
-            val imagePath = bottomList?.get(0)?.path
+                loadImage(topImagePath, topImage)
+            }
+            val imagePath = bottomList.get(0)?.path
             if (imagePath != null) {
                 loadImage(imagePath, bottomImage)
-            };
+            }
+        }
+        if (shoes == true) {
+            shoeImage.visibility = View.VISIBLE
+            val shoeImagePath = shoesList.get(0)?.path
+            if (shoeImagePath != null) {
+                loadImage(shoeImagePath, shoeImage)
+            }
         }
 
         val reShuffleButton = findViewById<Button>(R.id.reShuffle)
