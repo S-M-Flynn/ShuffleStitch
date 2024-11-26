@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, SelectionActivity::class.java)
             startActivity(intent)
             finish()
-        }, 5000)
+        }, 3000)
       //  deleteFilesInUserMedia()
         shuffleButton.setOnClickListener {
             val locationIntent = Intent(this, LocationActivity::class.java)
