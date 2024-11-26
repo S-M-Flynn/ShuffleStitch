@@ -43,7 +43,7 @@ class LocationActivity : AppCompatActivity() {
                 if (isLocationEnabled) {
                     fetchLocationWithCallback()
                 } else {
-                    showPermissionDeniedDialog()
+                    checkPermissions()
                 }
             }
         }
@@ -84,7 +84,7 @@ class LocationActivity : AppCompatActivity() {
     }
 
     private fun fetchLocationWithCallback() {
-        fetchLastLocation(object: ALocationCallback {
+        fetchLastLocation(object : ALocationCallback {
             override fun onLocationRetrieved(location: Location) {
                 latitude = location.latitude
                 longitude = location.longitude
@@ -132,6 +132,7 @@ class LocationActivity : AppCompatActivity() {
                 val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
                 locationSettingsLauncher.launch(intent)
             }.show()
+
     }
 
     private val isLocationEnabled: Boolean

@@ -13,11 +13,19 @@ data class Item(
     val casual: Boolean,
     val professional: Boolean,
     val formal: Boolean,
-    val athletic: Boolean
+    val athletic: Boolean,
+    val winter: Boolean,
+    val fall: Boolean,
+    val spring: Boolean,
+    val summer: Boolean
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readLong()?: 0,
         parcel.readString() ?: "",
+        parcel.readByte() != 0.toByte(),
+        parcel.readByte() != 0.toByte(),
+        parcel.readByte() != 0.toByte(),
+        parcel.readByte() != 0.toByte(),
         parcel.readByte() != 0.toByte(),
         parcel.readByte() != 0.toByte(),
         parcel.readByte() != 0.toByte(),
@@ -30,6 +38,7 @@ data class Item(
 
     override fun describeContents(): Int {
         TODO("Not yet implemented")
+        return 0
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -43,6 +52,10 @@ data class Item(
         parcel.writeByte(if (professional) 1 else 0)
         parcel.writeByte(if (formal) 1 else 0)
         parcel.writeByte(if (athletic) 1 else 0)
+        parcel.writeByte(if (winter) 1 else 0)
+        parcel.writeByte(if (fall) 1 else 0)
+        parcel.writeByte(if (spring) 1 else 0)
+        parcel.writeByte(if (summer) 1 else 0)
     }
 
     companion object CREATOR : Parcelable.Creator<Item> {

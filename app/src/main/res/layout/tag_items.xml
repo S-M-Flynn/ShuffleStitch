@@ -177,7 +177,7 @@
                 app:layout_gravity="fill_horizontal" />
 
             <CheckBox
-                android:id="@+id/shuffleFilterProfessionalCheckbox"
+                android:id="@+id/shuffleFilterCorporateCheckbox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Professional"
@@ -185,10 +185,10 @@
                 app:layout_gravity="fill_horizontal" />
 
             <CheckBox
-                android:id="@+id/shuffleFilterCorporateCheckbox"
+                android:id="@+id/shuffleFilterFormalCheckbox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Semi-Casual"
+                android:text="Formal"
                 android:textAppearance="@android:style/TextAppearance.Material.Medium"
                 app:layout_gravity="fill_horizontal" />
 
