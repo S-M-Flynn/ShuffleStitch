@@ -3,20 +3,38 @@ package ca.unb.mobiledev.shufflestitch
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Button
+import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import java.io.File
+
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-      //  deleteFilesInUserMedia()
+        val progressBar: ProgressBar = findViewById(R.id.progressBar)
         val shuffleButton = findViewById<Button>(R.id.shuffle_button)
+        val closetButton = findViewById<Button>(R.id.edit_button)
+
+
+        progressBar.visibility = View.VISIBLE
+        shuffleButton.visibility = View.GONE
+        closetButton.visibility = View.GONE
+
+        Handler(Looper.getMainLooper()).postDelayed({
+            val intent = Intent(this, SelectionActivity::class.java)
+            startActivity(intent)
+            finish()
+        }, 5000)
+      //  deleteFilesInUserMedia()
         shuffleButton.setOnClickListener {
             val locationIntent = Intent(this, LocationActivity::class.java)
             try {
@@ -27,7 +45,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        val closetButton = findViewById<Button>(R.id.edit_button)
         closetButton.setOnClickListener {
             val intent = Intent(this, ClosetActivity::class.java)
             try {
