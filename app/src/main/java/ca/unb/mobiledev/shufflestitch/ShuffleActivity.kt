@@ -69,7 +69,6 @@ class ShuffleActivity : AppCompatActivity() {
         val onePieceImage = findViewById<ImageView>(R.id.onePiece)
         val topImage = findViewById<ImageView>(R.id.topPiece)
         val bottomImage = findViewById<ImageView>(R.id.bottomPiece)
-
         //need error handling for list with no items in them (ie, not items match the filters selected)
         //depending on filter settings and what is returned (if one piece or two, if getting shoes etc.)
 
