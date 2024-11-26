@@ -95,12 +95,11 @@ class ShuffleFilterActivity: AppCompatActivity() {
             }
             val itemMap = databaseHelper.getAllData(filters)
             val topsList = itemMap["tops"] ?: emptyList()
-            val arrTops = topsList.toCollection(ArrayList())
             val bottomsList = itemMap["bottoms"] ?: emptyList()
             val fullBodyList = itemMap["fullBody"] ?: emptyList()
             val shoesList = itemMap["shoes"] ?: emptyList()
 
-            shuffleIntent.putParcelableArrayListExtra("tops", arrTops)
+            shuffleIntent.putParcelableArrayListExtra("tops", ArrayList(topsList))
             shuffleIntent.putParcelableArrayListExtra("bottoms", ArrayList(bottomsList))
             shuffleIntent.putParcelableArrayListExtra("fullBody", ArrayList(fullBodyList))
             shuffleIntent.putParcelableArrayListExtra("shoes", ArrayList(shoesList))
