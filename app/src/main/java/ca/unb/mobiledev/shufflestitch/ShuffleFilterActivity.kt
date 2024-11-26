@@ -9,7 +9,7 @@ import android.widget.CheckBox
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import ca.unb.mobiledev.shufflestitch.DB.DatabaseHelper
-import java.util.ArrayList
+
 
 interface SeasonCallback { fun onSeasonFetched(season: String) }
 
@@ -31,26 +31,26 @@ class ShuffleFilterActivity: AppCompatActivity() {
 
         val shuffleButton = findViewById<Button>(R.id.shuffleFilterShuffleButton)
         val backButton = findViewById<Button>(R.id.back_button)
-        shuffleIntent = Intent(this, ShuffleActivity::class.java)
+        shuffleIntent = Intent(this@ShuffleFilterActivity, ShuffleActivity::class.java)
 
         databaseHelper = DatabaseHelper(this)
-        val checkboxes: ArrayList<CheckBox> = ArrayList()
+        val chkbx: ArrayList<CheckBox> = ArrayList()
         val topCheckBox = findViewById<CheckBox>(R.id.shuffleFilterTopCheckbox)
-        checkboxes.add(topCheckBox)
+        chkbx.add(topCheckBox)
         val bottomCheckBox = findViewById<CheckBox>(R.id.shuffleFilterBottomCheckbox)
-        checkboxes.add(bottomCheckBox)
+        chkbx.add(bottomCheckBox)
         val fullBodyCheckBox = findViewById<CheckBox>(R.id.shuffleFilterFullBodyCheckbox)
-        checkboxes.add(fullBodyCheckBox)
+        chkbx.add(fullBodyCheckBox)
         val shoesCheckBox = findViewById<CheckBox>(R.id.shuffleFilterShoesCheckbox)
-        checkboxes.add(shoesCheckBox)
+        chkbx.add(shoesCheckBox)
         val casualCheckBox = findViewById<CheckBox>(R.id.shuffleFilterCasualCheckbox)
-        checkboxes.add(casualCheckBox)
+        chkbx.add(casualCheckBox)
         val formalCheckBox = findViewById<CheckBox>(R.id.shuffleFilterFormalCheckbox)
-        checkboxes.add(formalCheckBox)
+        chkbx.add(formalCheckBox)
         val corporateCheckBox = findViewById<CheckBox>(R.id.shuffleFilterCorporateCheckbox)
-        checkboxes.add(corporateCheckBox)
+        chkbx.add(corporateCheckBox)
         val sportsCheckBox = findViewById<CheckBox>(R.id.shuffleFilterSportsCheckbox)
-        checkboxes.add(sportsCheckBox)
+        chkbx.add(sportsCheckBox)
 
         getWeather(latitude, longitude,object : SeasonCallback {
             override fun onSeasonFetched(season: String) {
@@ -60,7 +60,7 @@ class ShuffleFilterActivity: AppCompatActivity() {
         })
 
         shuffleButton.setOnClickListener {
-            val filters = if (checkboxes.none { it.isChecked }){
+            val filters = if (chkbx.none { it.isChecked }){
                  mutableMapOf(
                     "TOPS" to "1",
                     "BOTTOMS" to "1",
@@ -84,15 +84,23 @@ class ShuffleFilterActivity: AppCompatActivity() {
                     "ATHLETIC" to if (sportsCheckBox.isChecked) "1" else "0"
                 )
             }
-            filters.put(currentSeason, "1")
+            filters[currentSeason] = "1"
 
+            filters.forEach { (key, value) ->
+                val x = if (value.equals("1")) {
+                    true
+                }
+                else { false}
+                shuffleIntent.putExtra(key, x)
+            }
             val itemMap = databaseHelper.getAllData(filters)
             val topsList = itemMap["tops"] ?: emptyList()
+            val arrTops = topsList.toCollection(ArrayList())
             val bottomsList = itemMap["bottoms"] ?: emptyList()
             val fullBodyList = itemMap["fullBody"] ?: emptyList()
             val shoesList = itemMap["shoes"] ?: emptyList()
 
-            shuffleIntent.putParcelableArrayListExtra("tops",ArrayList(topsList))
+            shuffleIntent.putParcelableArrayListExtra("tops", arrTops)
             shuffleIntent.putParcelableArrayListExtra("bottoms", ArrayList(bottomsList))
             shuffleIntent.putParcelableArrayListExtra("fullBody", ArrayList(fullBodyList))
             shuffleIntent.putParcelableArrayListExtra("shoes", ArrayList(shoesList))

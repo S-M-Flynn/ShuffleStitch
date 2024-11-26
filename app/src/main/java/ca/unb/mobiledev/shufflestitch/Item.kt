@@ -38,6 +38,7 @@ data class Item(
 
     override fun describeContents(): Int {
         TODO("Not yet implemented")
+        return 0
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
