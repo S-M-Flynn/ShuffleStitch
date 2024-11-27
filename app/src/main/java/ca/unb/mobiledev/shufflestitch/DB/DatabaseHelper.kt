@@ -146,8 +146,11 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
 
 
     // Retrieve all records
-    fun getAllData(conditions: Map<String, String>): Map<String, List<Item>> {
-        val itemList = mutableListOf<Item>()
+    fun getAllData(conditions: Map<String, String>): Map<String, List<String>> {
+        val topsList = mutableListOf<String>()
+        val bottomsList = mutableListOf<String>()
+        val fullBodyList = mutableListOf<String>()
+        val shoesList = mutableListOf<String>()
         val db = this.readableDatabase
 
         // Build the WHERE clause and arguments dynamically
@@ -172,25 +175,25 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
                 val bottoms = cursor.getInt(cursor.getColumnIndexOrThrow(BOTTOMS)) == 1
                 val fullBody = cursor.getInt(cursor.getColumnIndexOrThrow(FULL_BODY)) == 1
                 val shoes = cursor.getInt(cursor.getColumnIndexOrThrow(SHOES)) == 1
-                val casual = cursor.getInt(cursor.getColumnIndexOrThrow(CASUAL)) == 1
-                val professional = cursor.getInt(cursor.getColumnIndexOrThrow(PROFESSIONAL)) == 1
-                val formal = cursor.getInt(cursor.getColumnIndexOrThrow(FORMAL)) == 1
-                val athletic = cursor.getInt(cursor.getColumnIndexOrThrow(ATHLETIC)) == 1
-                val winter = cursor.getInt(cursor.getColumnIndexOrThrow(WINTER)) == 1
-                val fall =  cursor.getInt(cursor.getColumnIndexOrThrow(FALL)) == 1
-                val spring = cursor.getInt(cursor.getColumnIndexOrThrow(SPRING)) == 1
-                val summer = cursor.getInt(cursor.getColumnIndexOrThrow(SUMMER)) == 1
 
-                itemList.add(Item(id, path, tops, bottoms, fullBody, shoes, casual, professional, formal, athletic, winter, fall, spring, summer))
+                if (tops){
+                    topsList.add(path)
+                }
+                else if (bottoms){
+                    bottomsList.add(path)
+                }
+                else if (fullBody) {
+                    fullBodyList.add(path)
+                }
+                else if (shoes){
+                    shoesList.add(path)
+                }
             } while (cursor.moveToNext())
         }
         cursor.close()
         db.close()
 
-        val topsList = itemList.filter { it.tops }
-        val bottomsList = itemList.filter { it.bottoms }
-        val fullBodyList = itemList.filter { it.fullBody }
-        val shoesList = itemList.filter { it.shoes }
+
 
         // Return a map of the lists for easy access
         return mapOf(
