@@ -13,9 +13,22 @@ import androidx.appcompat.app.AppCompatActivity
 import ca.unb.mobiledev.shufflestitch.DB.DatabaseHelper
 import java.io.File
 import kotlin.random.Random
+import android.os.Build
+import ca.unb.mobiledev.shufflestitch.MainActivity.Companion.TAG
+
 
 class ShuffleActivity : AppCompatActivity() {
     private lateinit var databaseHelper: DatabaseHelper
+    private lateinit var topsList: List<String>
+    private lateinit var bottomsList: List<String>
+    private lateinit var onePieceList: List<String>
+    private lateinit var shoesList: List<String>
+    private var tops = false
+    private var bottom = false
+    private var onePiece = false
+    private var shoes = false
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,89 +38,57 @@ class ShuffleActivity : AppCompatActivity() {
         val temperature = intent.getDoubleExtra("Temperature", 0.00)
         val tempLabel = "Current temperature:$temperature oC"
         tempDisplay.text = tempLabel
-        val filters =
-            mutableMapOf(
-                "TOPS" to if (intent.extras?.getBoolean("TOPS", false) == true) "1" else "0",
-                "BOTTOMS" to if (intent.extras?.getBoolean("TOPS", false) == true) "1" else "0",
-                "FULL_BODY" to if (intent.extras?.getBoolean("TOPS", false) == true) "1" else "0",
-                "SHOES" to if (intent.extras?.getBoolean("TOPS", false) == true) "1" else "0",
-                "CASUAL" to if (intent.extras?.getBoolean("TOPS", false) == true) "1" else "0",
-                "PROFESSIONAL" to if (intent.extras?.getBoolean("TOPS", false) == true) "1" else "0",
-                "FORMAL" to if (intent.extras?.getBoolean("TOPS", false) == true) "1" else "0",
-                "ATHLETIC" to if (intent.extras?.getBoolean("TOPS", false) == true) "1" else "0"
-            )
-        val tops = intent.extras?.getBoolean("TOPS", false)
-        val bottom = intent.extras?.getBoolean("BOTTOMS", false)
-        val onePiece = intent.extras?.getBoolean("FULL_BODY", false)
-        val shoes = intent.extras?.getBoolean("SHOES", false)
+
+        // Remake filter map
+        val filters = mutableMapOf<String, String>()
+
+        tops = intent.extras?.getBoolean("TOPS", false) == true
+        bottom = intent.extras?.getBoolean("BOTTOMS", false) == true
+        onePiece = intent.extras?.getBoolean("FULL_BODY", false) == true
+        shoes = intent.extras?.getBoolean("SHOES", false) == true
+        val casual = intent.extras?.getBoolean("CASUAL", false) == true
+        val professional = intent.extras?.getBoolean("PROFESSIONAL", false) == true
+        val formal = intent.extras?.getBoolean("FORMAL", false) == true
+        val athletic = intent.extras?.getBoolean("ATHLETIC", false) == true
+        val seasonSelected = intent.extras?.getString("SEASON", "FALL").toString()
+        val season = intent.extras?.getBoolean(seasonSelected, false) == true
+
+        if (casual) filters["CASUAL"] = "1"
+        if (professional) filters["PROFESSIONAL"] = "1"
+        if (formal) filters["FORMAL"] = "1"
+        if (athletic) filters["ATHLETIC"] = "1"
+        if (season) filters[seasonSelected] = "1"
+
+
 
         databaseHelper = DatabaseHelper(this)
         val itemMap = databaseHelper.getAllData(filters)
-        val topsList = itemMap["tops"] ?: emptyList()
-        val bottomsList = itemMap["bottoms"] ?: emptyList()
-        val onePieceList = itemMap["fullBody"] ?: emptyList()
-        val shoesList = itemMap["shoes"] ?: emptyList()
+        topsList = itemMap["tops"] ?: emptyList()
+        if (!tops) {
+            topsList = emptyList()
+        }
+        bottomsList = itemMap["bottoms"] ?: emptyList()
+        if (!bottom) {
+            bottomsList = emptyList()
+        }
+        onePieceList = itemMap["fullBody"] ?: emptyList()
+        if (!onePiece) {
+            onePieceList = emptyList()
+        }
+        shoesList = itemMap["shoes"] ?: emptyList()
+        if (!shoes) {
+            shoesList = emptyList()
+        }
 
         val textBox = findViewById<TextView>(R.id.displayFilters)
 
-        var onePieceOrTwo = 2
-        if (tops == true && onePiece == true && bottom == true) {
-            val randomNum = Random.nextInt(1, 10)
-            //could make this based off of the count of 1 piece outfits in the db and use that as a percentage of
-            // one piece/tops + one piece
-            onePieceOrTwo =
-                if (randomNum == 1 || randomNum ==2) {
-                    1
-                } else {
-                    2
-                }
-        } else if (onePiece == true && onePieceList.size > 0) {
-            onePieceOrTwo = 1
-        }
+        shuffle()
 
-        val shoeImage = findViewById<ImageView>(R.id.shoes)
-        val onePieceImage = findViewById<ImageView>(R.id.onePiece)
-        val topImage = findViewById<ImageView>(R.id.topPiece)
-        val bottomImage = findViewById<ImageView>(R.id.bottomPiece)
-
-        //need error handling for list with no items in them (ie, not items match the filters selected)
-        //depending on filter settings and what is returned (if one piece or two, if getting shoes etc.)
-
-        if (onePieceOrTwo == 1) { //filter returns a one piece suggestion
-            topImage.visibility = View.GONE
-            bottomImage.visibility = View.GONE
-            onePieceImage.visibility = View.VISIBLE
-            val imagePath = onePieceList.get(0)?.path
-            if (imagePath != null) {
-                loadImage(imagePath, onePieceImage)
-            }
-        }
-
-        if (onePieceOrTwo == 2) { //filter returns a two piece suggestion
-            topImage.visibility = View.VISIBLE
-            bottomImage.visibility = View.VISIBLE
-            onePieceImage.visibility = View.GONE
-            val topImagePath = topsList.get(0).path
-            if (topImagePath != null) {
-                loadImage(topImagePath, topImage)
-            }
-            val imagePath = bottomsList.get(0)?.path
-            if (imagePath != null) {
-                loadImage(imagePath, bottomImage)
-            }
-        }
-        if (shoes == true) {
-            shoeImage.visibility = View.VISIBLE
-            val shoeImagePath = shoesList.get(0)?.path
-            if (shoeImagePath != null) {
-                loadImage(shoeImagePath, shoeImage)
-            }
-        }
 
         val reShuffleButton = findViewById<Button>(R.id.reShuffle)
         reShuffleButton.setOnClickListener {
             try {
-                //send a call to the database
+                shuffle()
             } catch (ex: ActivityNotFoundException) {
                 Log.e(TAG, "Error on reshuffling")
             }
@@ -138,6 +119,66 @@ class ShuffleActivity : AppCompatActivity() {
             imageView.setImageURI(Uri.fromFile(file))
         } else {
             Toast.makeText(this, "File not found: $fileName", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun shuffle(){
+        var onePieceOrTwo = 2
+        if (tops && onePiece && bottom) {
+            val randomNum = Random.nextInt(1, 10)
+            //could make this based off of the count of 1 piece outfits in the db and use that as a percentage of
+            // one piece/tops + one piece
+            onePieceOrTwo =
+                if (randomNum == 1 || randomNum ==2) {
+                    1
+                } else {
+                    2
+                }
+        } else if (onePiece && onePieceList.isNotEmpty()) {
+            onePieceOrTwo = 2
+        }
+
+        val shoeImage = findViewById<ImageView>(R.id.shoes)
+        val onePieceImage = findViewById<ImageView>(R.id.onePiece)
+        val topImage = findViewById<ImageView>(R.id.topPiece)
+        val bottomImage = findViewById<ImageView>(R.id.bottomPiece)
+        //need error handling for list with no items in them (ie, not items match the filters selected)
+        //depending on filter settings and what is returned (if one piece or two, if getting shoes etc.)
+
+        if (onePieceOrTwo == 1) { //filter returns a one piece suggestion
+            topImage.visibility = View.GONE
+            bottomImage.visibility = View.GONE
+            onePieceImage.visibility = View.VISIBLE
+            if (onePieceList.isNotEmpty()) {
+                val index = Random.nextInt(0, onePieceList.size)
+                val imagePath = onePieceList[index]
+                loadImage(imagePath, onePieceImage)
+            }
+        }
+
+        if (onePieceOrTwo == 2) { //filter returns a two piece suggestion
+            topImage.visibility = View.VISIBLE
+            bottomImage.visibility = View.VISIBLE
+            onePieceImage.visibility = View.GONE
+            if (topsList.isNotEmpty()) {
+                val index = Random.nextInt(0, topsList.size)
+                val topImagePath = topsList[index]
+                loadImage(topImagePath, topImage)
+            }
+
+            if (bottomsList.isNotEmpty()) {
+                val index = Random.nextInt(0, bottomsList.size)
+                val imagePath = bottomsList[index]
+                loadImage(imagePath, bottomImage)
+            }
+        }
+        if (shoes) {
+            shoeImage.visibility = View.VISIBLE
+            if (shoesList.isNotEmpty()) {
+                val index = Random.nextInt(0, shoesList.size)
+                val shoeImagePath = shoesList[index]
+                loadImage(shoeImagePath, shoeImage)
+            }
         }
     }
 
