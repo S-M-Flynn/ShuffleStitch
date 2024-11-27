@@ -45,7 +45,8 @@ class NewPhotoActivity : AppCompatActivity() {
         imageView = findViewById(R.id.closet_photo)
         acceptButton.setOnClickListener {
             val imageName = "UserMedia/processed_${System.currentTimeMillis()}.jpg"
-            val emptyArray = intArrayOf()
+            val array = IntArray(12) // All elements are initialized to 0 by default
+
             try {
                 val outputFile = File(
                     getExternalFilesDir(null),
@@ -54,7 +55,7 @@ class NewPhotoActivity : AppCompatActivity() {
                 saveImage(imageViewToBitmap(imageView)!!, outputFile)
                 deleteOgImage()
                 databaseHelper = DatabaseHelper(this)
-                databaseHelper.insertData(imageName,emptyArray)
+                databaseHelper.insertData(imageName,array)
                 val intent = Intent(this, TagItemsActivity::class.java)
                 startActivity(intent)
             } catch (ex: ActivityNotFoundException) {

@@ -35,48 +35,48 @@ class MainActivity : AppCompatActivity() {
             finish()
         }, 3000)
       //  deleteFilesInUserMedia()
-        shuffleButton.setOnClickListener {
-            val locationIntent = Intent(this, LocationActivity::class.java)
-            try {
-            startActivity(locationIntent)
-            } catch (ex: ActivityNotFoundException) {
-                Log.e(TAG, "Unable to start the location activity")
-                Log.e(TAG, ex.toString())
-            }
-        }
-
-        closetButton.setOnClickListener {
-            val intent = Intent(this, ClosetActivity::class.java)
-            try {
-                startActivity(intent)
-            } catch (ex: ActivityNotFoundException) {
-                Log.e(TAG, "Unable to start the closet activity")
-            }
-        }
-
-        val userFolder = File(getExternalFilesDir(null), "UserMedia")
-        if (!userFolder.exists()) {
-            val wasSuccessful = userFolder.mkdirs()
-            if (wasSuccessful) {
-                Log.e(TAG, "FolderCreation User folder created successfully.")
-            } else {
-                Log.e(TAG, "FolderCreation Failed to create user folder or folder already exists.")
-            }
-        }
-
+//        shuffleButton.setOnClickListener {
+//            val locationIntent = Intent(this, LocationActivity::class.java)
+//            try {
+//            startActivity(locationIntent)
+//            } catch (ex: ActivityNotFoundException) {
+//                Log.e(TAG, "Unable to start the location activity")
+//                Log.e(TAG, ex.toString())
+//            }
+//        }
+//
+//        closetButton.setOnClickListener {
+//            val intent = Intent(this, ClosetActivity::class.java)
+//            try {
+//                startActivity(intent)
+//            } catch (ex: ActivityNotFoundException) {
+//                Log.e(TAG, "Unable to start the closet activity")
+//            }
+//        }
+//
+//        val userFolder = File(getExternalFilesDir(null), "UserMedia")
+//        if (!userFolder.exists()) {
+//            val wasSuccessful = userFolder.mkdirs()
+//            if (wasSuccessful) {
+//                Log.e(TAG, "FolderCreation User folder created successfully.")
+//            } else {
+//                Log.e(TAG, "FolderCreation Failed to create user folder or folder already exists.")
+//            }
+//        }
+//
     }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.main_menu, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val id = item.itemId
-        return if (id == R.id.main) {
-            true
-        } else super.onOptionsItemSelected(item)
-    }
+//
+//    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+//        menuInflater.inflate(R.menu.main_menu, menu)
+//        return true
+//    }
+//
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        val id = item.itemId
+//        return if (id == R.id.main) {
+//            true
+//        } else super.onOptionsItemSelected(item)
+//    }
 
 //    private fun deleteFilesInUserMedia() {
 //        val userMediaDir = File(getExternalFilesDir(null), "UserMedia")

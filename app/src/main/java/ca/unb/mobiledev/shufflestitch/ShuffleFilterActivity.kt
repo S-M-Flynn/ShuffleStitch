@@ -73,26 +73,23 @@ class ShuffleFilterActivity: AppCompatActivity() {
                 )
             }
             else {
-                mutableMapOf(
-                    "TOPS" to if (topCheckBox.isChecked) "1" else "0",
-                    "BOTTOMS" to if (bottomCheckBox.isChecked) "1" else "0",
-                    "FULL_BODY" to if (fullBodyCheckBox.isChecked) "1" else "0",
-                    "SHOES" to if (shoesCheckBox.isChecked) "1" else "0",
-                    "CASUAL" to if (casualCheckBox.isChecked) "1" else "0",
-                    "PROFESSIONAL" to if (corporateCheckBox.isChecked) "1" else "0",
-                    "FORMAL" to if (formalCheckBox.isChecked) "1" else "0",
-                    "ATHLETIC" to if (sportsCheckBox.isChecked) "1" else "0"
-                )
+                mutableMapOf<String, String>()
             }
+            if (topCheckBox.isChecked) filters["TOPS"] = "1"
+            if (bottomCheckBox.isChecked) filters["BOTTOMS"] = "1"
+            if (fullBodyCheckBox.isChecked) filters["FULL_BODY"] = "1"
+            if (shoesCheckBox.isChecked) filters["SHOES"] = "1"
+            if (casualCheckBox.isChecked) filters["CASUAL"] = "1"
+            if (corporateCheckBox.isChecked) filters["PROFESSIONAL"] = "1"
+            if (formalCheckBox.isChecked) filters["FORMAL"] = "1"
+            if (sportsCheckBox.isChecked) filters["ATHLETIC"] = "1"
             filters[currentSeason] = "1"
 
             filters.forEach { (key, value) ->
-                val x = if (value.equals("1")) {
-                    true
-                }
-                else { false}
+                val x = value == "1"
                 shuffleIntent.putExtra(key, x)
             }
+            shuffleIntent.putExtra("SEASON", currentSeason)
 //            val itemMap = databaseHelper.getAllData(filters)
 //            val topsList = itemMap["tops"] ?: emptyList()
 //            val bottomsList = itemMap["bottoms"] ?: emptyList()

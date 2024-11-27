@@ -128,7 +128,7 @@ class EditItemsActivity : AppCompatActivity() {
         builder.create().show()
     }
 
-    private fun updateRecyclerViewWithImages(itemList: List<Item>) {
+    private fun updateRecyclerViewWithImages(itemList: List<String>) {
         val filesList = getImagesFromDatabase(itemList)
         if (filesList.isNotEmpty()) {
             try {
@@ -164,12 +164,12 @@ class EditItemsActivity : AppCompatActivity() {
         recyclerView.adapter = adapter
     }
 
-    private fun getImagesFromDatabase(filterList: List<Item>): List<File> {
+    private fun getImagesFromDatabase(filterList: List<String>): List<File> {
         val userMediaDir = File(getExternalFilesDir(null), "UserMedia")
         val allFiles = userMediaDir.listFiles() ?: emptyArray()
         val fileList = mutableListOf<File>()
         filterList.forEach { item ->
-            val file = File(item.path)
+            val file = File(item)
             val existsInUserMedia = allFiles.any {
                 it.name == file.name && it.extension in listOf(
                     "jpg",
