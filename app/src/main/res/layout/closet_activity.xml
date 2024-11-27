@@ -33,7 +33,7 @@
         android:layout_centerHorizontal="true"
         android:layout_above ="@id/back_button"
         android:layout_marginBottom="16dp"
-        android:text="Select Item to Edit"
+        android:text="Open Closet"
         android:textAppearance="@android:style/TextAppearance.Material.Widget.Button.Colored" />
 
     <Button
