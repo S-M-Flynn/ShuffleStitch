@@ -13,9 +13,6 @@ import androidx.appcompat.app.AppCompatActivity
 import ca.unb.mobiledev.shufflestitch.DB.DatabaseHelper
 import java.io.File
 import kotlin.random.Random
-import android.os.Build
-import ca.unb.mobiledev.shufflestitch.MainActivity.Companion.TAG
-
 
 class ShuffleActivity : AppCompatActivity() {
     private lateinit var databaseHelper: DatabaseHelper
@@ -56,22 +53,26 @@ class ShuffleActivity : AppCompatActivity() {
         var onePieceOrTwo = 2
         if (tops == true && onePiece == true && bottom == true) {
             val randomNum = Random.nextInt(1, 10)
+            //could make this based off of the count of 1 piece outfits in the db and use that as a percentage of
+            // one piece/tops + one piece
             onePieceOrTwo =
-                if (randomNum % 2 == 0) {
-                    2
-                } else {
+                if (randomNum == 1 || randomNum ==2) {
                     1
+                } else {
+                    2
                 }
         } else if (onePiece == true && onePieceList.size > 0) {
-            onePieceOrTwo = 2
+            onePieceOrTwo = 1
         }
 
         val shoeImage = findViewById<ImageView>(R.id.shoes)
         val onePieceImage = findViewById<ImageView>(R.id.onePiece)
         val topImage = findViewById<ImageView>(R.id.topPiece)
         val bottomImage = findViewById<ImageView>(R.id.bottomPiece)
+
         //need error handling for list with no items in them (ie, not items match the filters selected)
         //depending on filter settings and what is returned (if one piece or two, if getting shoes etc.)
+
         if (onePieceOrTwo == 1) { //filter returns a one piece suggestion
             topImage.visibility = View.GONE
             bottomImage.visibility = View.GONE
