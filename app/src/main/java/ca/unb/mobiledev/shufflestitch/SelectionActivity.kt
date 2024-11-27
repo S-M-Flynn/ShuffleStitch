@@ -27,7 +27,7 @@ class SelectionActivity : AppCompatActivity() {
 
         // Set up navigation to ShuffleActivity
         shuffleButton.setOnClickListener {
-            val intent = Intent(this, ShuffleActivity::class.java) // Replace ShuffleActivity with your actual target activity
+            val intent = Intent(this, LocationActivity::class.java) // Replace ShuffleActivity with your actual target activity
             startActivity(intent)
         }
     }
