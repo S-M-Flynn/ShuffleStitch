@@ -37,7 +37,6 @@ class EditItemsActivity : AppCompatActivity() {
         val filesList = getImagesFromUserMedia()
         Log.d(TAG, "Files in UserMedia: ${filesList.joinToString { it.name }}")
 
-
         recyclerView = findViewById(R.id.recyclerView)
         imageView = findViewById(R.id.closet_photo)
         adapter = ImageAdapter(filesList) { file ->

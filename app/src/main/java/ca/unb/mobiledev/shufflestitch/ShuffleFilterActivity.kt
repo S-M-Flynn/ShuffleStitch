@@ -65,11 +65,7 @@ class ShuffleFilterActivity: AppCompatActivity() {
                     "TOPS" to "1",
                     "BOTTOMS" to "1",
                     "FULL_BODY" to "1",
-                    "SHOES" to "1",
-                    "CASUAL" to "1",
-                    "PROFESSIONAL" to "1",
-                    "FORMAL" to "1",
-                    "ATHLETIC" to "1"
+                    "SHOES" to "1"
                 )
             }
             else {
@@ -90,16 +86,7 @@ class ShuffleFilterActivity: AppCompatActivity() {
                 shuffleIntent.putExtra(key, x)
             }
             shuffleIntent.putExtra("SEASON", currentSeason)
-//            val itemMap = databaseHelper.getAllData(filters)
-//            val topsList = itemMap["tops"] ?: emptyList()
-//            val bottomsList = itemMap["bottoms"] ?: emptyList()
-//            val fullBodyList = itemMap["fullBody"] ?: emptyList()
-//            val shoesList = itemMap["shoes"] ?: emptyList()
 
-//            shuffleIntent.putParcelableArrayListExtra("tops", ArrayList(topsList))
-//            shuffleIntent.putParcelableArrayListExtra("bottoms", ArrayList(bottomsList))
-//            shuffleIntent.putParcelableArrayListExtra("fullBody", ArrayList(fullBodyList))
-//            shuffleIntent.putParcelableArrayListExtra("shoes", ArrayList(shoesList))
             try {
                 startActivity(shuffleIntent)
             } catch (ex: ActivityNotFoundException) {

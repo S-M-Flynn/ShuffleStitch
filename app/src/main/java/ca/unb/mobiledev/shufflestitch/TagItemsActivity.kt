@@ -1,22 +1,15 @@
 package ca.unb.mobiledev.shufflestitch
 
 import android.content.ActivityNotFoundException
-import android.content.SharedPreferences
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.CompoundButton
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import ca.unb.mobiledev.shufflestitch.DB.DatabaseHelper
-import ca.unb.mobiledev.shufflestitch.DB.DatabaseHelper.Companion.ATHLETIC
-import ca.unb.mobiledev.shufflestitch.DB.DatabaseHelper.Companion.CASUAL
-import ca.unb.mobiledev.shufflestitch.DB.DatabaseHelper.Companion.FALL
-import ca.unb.mobiledev.shufflestitch.DB.DatabaseHelper.Companion.FORMAL
-import ca.unb.mobiledev.shufflestitch.DB.DatabaseHelper.Companion.PROFESSIONAL
-import ca.unb.mobiledev.shufflestitch.DB.DatabaseHelper.Companion.SPRING
-import ca.unb.mobiledev.shufflestitch.DB.DatabaseHelper.Companion.SUMMER
-import ca.unb.mobiledev.shufflestitch.DB.DatabaseHelper.Companion.WINTER
 
 class TagItemsActivity : AppCompatActivity() {
     private lateinit var imageUri: String
@@ -56,25 +49,35 @@ class TagItemsActivity : AppCompatActivity() {
         summerCheckBox = findViewById(R.id.shuffleFilterSummerCheckbox)
         fallCheckBox = findViewById(R.id.shuffleFilterFallCheckbox)
         winterCheckBox = findViewById(R.id.shuffleFilterWinterCheckbox)
-
-        val newItem = databaseHelper.getItemByPath(imageUri)
-        if (newItem != null) { loadItemState(newItem) }
+        val checkBoxes = listOf( topCheckBox, bottomCheckBox, fullBodyCheckBox, shoesCheckBox, casualCheckBox,
+            formalCheckBox, corporateCheckBox, sportsCheckBox, springCheckBox, summerCheckBox, fallCheckBox, winterCheckBox )
 
         val saveButton = findViewById<Button>(R.id.saveTagsButton)
         val backButton = findViewById<Button>(R.id.back_button)
+        val newItem = databaseHelper.getItemByPath(imageUri)
+        if (newItem != null) {
+            saveButton.isEnabled = false
+            loadItemState(newItem)
+        }
 
+        checkBoxes.forEach { checkBox -> checkBox.setOnCheckedChangeListener { _, _ -> saveButton.isEnabled = true } }
         saveButton.setOnClickListener {
             list = updateItem()
             try {
                 if(newItem == null) {
                     databaseHelper.insertData(imageUri, list)
+                    Toast.makeText(this@TagItemsActivity, "Tags Saved!", Toast.LENGTH_SHORT).show()
                 }
                 else {
                     databaseHelper.updateItemByPath(imageUri, list)
                 }
+                intent = Intent(this@TagItemsActivity,ClosetActivity::class.java)
+                startActivity(intent)
+                finish()
             } catch (ex: ActivityNotFoundException) {
                 Log.e(TAG, "Error on save tags")
             }
+
         }
 
         backButton.setOnClickListener {
