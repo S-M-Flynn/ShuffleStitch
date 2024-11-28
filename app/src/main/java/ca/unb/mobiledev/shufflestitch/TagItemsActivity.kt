@@ -1,6 +1,7 @@
 package ca.unb.mobiledev.shufflestitch
 
 import android.content.ActivityNotFoundException
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
@@ -57,13 +58,18 @@ class TagItemsActivity : AppCompatActivity() {
         summerCheckBox = findViewById(R.id.shuffleFilterSummerCheckbox)
         fallCheckBox = findViewById(R.id.shuffleFilterFallCheckbox)
         winterCheckBox = findViewById(R.id.shuffleFilterWinterCheckbox)
-
-        val newItem = databaseHelper.getItemByPath(imageUri)
-        if (newItem != null) { loadItemState(newItem) }
+        val checkBoxes = listOf( topCheckBox, bottomCheckBox, fullBodyCheckBox, shoesCheckBox, casualCheckBox,
+            formalCheckBox, corporateCheckBox, sportsCheckBox, springCheckBox, summerCheckBox, fallCheckBox, winterCheckBox )
 
         val saveButton = findViewById<Button>(R.id.saveTagsButton)
         val backButton = findViewById<Button>(R.id.back_button)
+        val newItem = databaseHelper.getItemByPath(imageUri)
+        if (newItem != null) {
+            saveButton.isEnabled = false
+            loadItemState(newItem)
+        }
 
+        checkBoxes.forEach { checkBox -> checkBox.setOnCheckedChangeListener { _, _ -> saveButton.isEnabled = true } }
         saveButton.setOnClickListener {
             list = updateItem()
             try {
@@ -74,9 +80,13 @@ class TagItemsActivity : AppCompatActivity() {
                 else {
                     databaseHelper.updateItemByPath(imageUri, list)
                 }
+                intent = Intent(this@TagItemsActivity,ClosetActivity::class.java)
+                startActivity(intent)
+                finish()
             } catch (ex: ActivityNotFoundException) {
                 Log.e(TAG, "Error on save tags")
             }
+
         }
 
         backButton.setOnClickListener {
