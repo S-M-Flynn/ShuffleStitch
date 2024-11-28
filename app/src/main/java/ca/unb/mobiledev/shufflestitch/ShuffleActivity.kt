@@ -14,6 +14,7 @@ import ca.unb.mobiledev.shufflestitch.DB.DatabaseHelper
 import java.io.File
 import kotlin.random.Random
 import android.os.Build
+import android.widget.EditText
 import ca.unb.mobiledev.shufflestitch.MainActivity.Companion.TAG
 
 
@@ -28,14 +29,12 @@ class ShuffleActivity : AppCompatActivity() {
     private var onePiece = false
     private var shoes = false
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.shuffle_activity)
         val tempDisplay = findViewById<TextView>(R.id.temperature)
-        val temperature = intent.getDoubleExtra("Temperature", 0.00)
+        val temperature = intent.getDoubleExtra("temperature", 0.00)
         val tempLabel = "Current temperature:$temperature oC"
         tempDisplay.text = tempLabel
 
@@ -59,8 +58,6 @@ class ShuffleActivity : AppCompatActivity() {
         if (athletic) filters["ATHLETIC"] = "1"
         if (season) filters[seasonSelected] = "1"
 
-
-
         databaseHelper = DatabaseHelper(this)
         val itemMap = databaseHelper.getAllData(filters)
         topsList = itemMap["tops"] ?: emptyList()
@@ -79,11 +76,11 @@ class ShuffleActivity : AppCompatActivity() {
         if (!shoes) {
             shoesList = emptyList()
         }
-
+        var showFilters = filters.filter { it.value == "1" }.keys.joinToString(" ")
+        showFilters = "$showFilters"
         val textBox = findViewById<TextView>(R.id.displayFilters)
-
+        textBox.text = showFilters
         shuffle()
-
 
         val reShuffleButton = findViewById<Button>(R.id.reShuffle)
         reShuffleButton.setOnClickListener {
@@ -124,17 +121,17 @@ class ShuffleActivity : AppCompatActivity() {
 
     private fun shuffle(){
         var onePieceOrTwo = 2
-        if (tops && onePiece && bottom) {
+        if (tops && onePiece && bottom && onePieceList.isNotEmpty()) {
             val randomNum = Random.nextInt(1, 10)
             //could make this based off of the count of 1 piece outfits in the db and use that as a percentage of
             // one piece/tops + one piece
             onePieceOrTwo =
-                if (randomNum == 1 || randomNum ==2) {
+                if (randomNum == 1 || randomNum == 2) {
                     1
                 } else {
                     2
                 }
-        } else if (onePiece && onePieceList.isNotEmpty()) {
+        } else if (onePiece) {
             onePieceOrTwo = 2
         }
 

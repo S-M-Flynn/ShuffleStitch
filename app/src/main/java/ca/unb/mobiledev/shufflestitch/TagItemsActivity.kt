@@ -7,6 +7,7 @@ import android.util.Log
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.CompoundButton
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import ca.unb.mobiledev.shufflestitch.DB.DatabaseHelper
 import ca.unb.mobiledev.shufflestitch.DB.DatabaseHelper.Companion.ATHLETIC
@@ -68,6 +69,7 @@ class TagItemsActivity : AppCompatActivity() {
             try {
                 if(newItem == null) {
                     databaseHelper.insertData(imageUri, list)
+                    Toast.makeText(this@TagItemsActivity, "Tags Saved!", Toast.LENGTH_SHORT).show()
                 }
                 else {
                     databaseHelper.updateItemByPath(imageUri, list)
