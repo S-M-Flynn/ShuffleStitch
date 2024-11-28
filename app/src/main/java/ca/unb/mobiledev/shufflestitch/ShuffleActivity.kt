@@ -13,10 +13,6 @@ import androidx.appcompat.app.AppCompatActivity
 import ca.unb.mobiledev.shufflestitch.DB.DatabaseHelper
 import java.io.File
 import kotlin.random.Random
-import android.os.Build
-import android.widget.EditText
-import ca.unb.mobiledev.shufflestitch.MainActivity.Companion.TAG
-
 
 class ShuffleActivity : AppCompatActivity() {
     private lateinit var databaseHelper: DatabaseHelper

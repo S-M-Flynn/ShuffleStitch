@@ -2,7 +2,6 @@ package ca.unb.mobiledev.shufflestitch
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -11,14 +10,6 @@ import android.widget.CompoundButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import ca.unb.mobiledev.shufflestitch.DB.DatabaseHelper
-import ca.unb.mobiledev.shufflestitch.DB.DatabaseHelper.Companion.ATHLETIC
-import ca.unb.mobiledev.shufflestitch.DB.DatabaseHelper.Companion.CASUAL
-import ca.unb.mobiledev.shufflestitch.DB.DatabaseHelper.Companion.FALL
-import ca.unb.mobiledev.shufflestitch.DB.DatabaseHelper.Companion.FORMAL
-import ca.unb.mobiledev.shufflestitch.DB.DatabaseHelper.Companion.PROFESSIONAL
-import ca.unb.mobiledev.shufflestitch.DB.DatabaseHelper.Companion.SPRING
-import ca.unb.mobiledev.shufflestitch.DB.DatabaseHelper.Companion.SUMMER
-import ca.unb.mobiledev.shufflestitch.DB.DatabaseHelper.Companion.WINTER
 
 class TagItemsActivity : AppCompatActivity() {
     private lateinit var imageUri: String
