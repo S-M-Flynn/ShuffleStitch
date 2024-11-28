@@ -65,11 +65,7 @@ class ShuffleFilterActivity: AppCompatActivity() {
                     "TOPS" to "1",
                     "BOTTOMS" to "1",
                     "FULL_BODY" to "1",
-                    "SHOES" to "1",
-                    "CASUAL" to "1",
-                    "PROFESSIONAL" to "1",
-                    "FORMAL" to "1",
-                    "ATHLETIC" to "1"
+                    "SHOES" to "1"
                 )
             }
             else {

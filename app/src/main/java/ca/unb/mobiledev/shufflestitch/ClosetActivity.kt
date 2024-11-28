@@ -36,10 +36,6 @@ class ClosetActivity : AppCompatActivity() {
         val cameraButton = findViewById<Button>(R.id.camera_button)
         val backButton = findViewById<Button>(R.id.back_button)
         imageView = findViewById(R.id.closet_photo)
-        //put in closet stats
-        //most popular item
-        //least worn item
-        //#items etc.
 
         setCameraActivityResultLauncher()
         cameraButton.setOnClickListener {
