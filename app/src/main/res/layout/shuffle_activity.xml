@@ -22,6 +22,7 @@
             android:autoSizeTextType="uniform"
             app:layout_constraintEnd_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
             android:id="@+id/displayFilters"
             android:layout_width="match_parent"
@@ -36,39 +37,59 @@
             app:layout_constraintTop_toBottomOf="@id/temperature" />
 
         <ImageView
-            android:id="@+id/onePiece"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scaleType="fitCenter"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:id="@+id/outerwear"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:scaleType="fitXY"
+            app:layout_constraintEnd_toEndOf="@id/onePiece"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/displayFilters" />
+        <ImageView
+            android:id="@+id/onePiece"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:scaleType="fitXY"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/outerwear"
             app:layout_constraintTop_toBottomOf="@id/displayFilters" />
 
         <ImageView
             android:id="@+id/topPiece"
-            android:layout_width="300dp"
-            android:layout_height="300dp"
-            android:scaleType="fitCenter"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:scaleType="fitXY"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/onePiece" />
+            app:layout_constraintStart_toStartOf="@id/outerwear"
+            app:layout_constraintTop_toBottomOf="@id/onePiece"
+            app:layout_constraintStart_toEndOf="@id/onePiece"
+            app:layout_constraintTop_toTopOf="@id/onePiece"
+            />
 
         <ImageView
             android:id="@+id/bottomPiece"
-            android:layout_width="300dp"
-            android:layout_height="300dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:scaleType="fitCenter"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/topPiece" />
 
         <ImageView
-            android:id="@+id/shoes"
-            android:layout_width="300dp"
-            android:layout_height="300dp"
-            android:scaleType="fitCenter"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:id="@+id/accessories"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:scaleType="fitXY"
+            app:layout_constraintEnd_toEndOf="@id/shoes"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/bottomPiece" />
+
+        <ImageView
+            android:id="@+id/shoes"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:scaleType="fitXY"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/accessories"
             app:layout_constraintTop_toBottomOf="@id/bottomPiece" />
 
         <Button

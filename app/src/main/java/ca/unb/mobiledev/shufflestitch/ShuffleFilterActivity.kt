@@ -39,13 +39,16 @@ class ShuffleFilterActivity: AppCompatActivity() {
         val bottomCheckBox = findViewById<CheckBox>(R.id.shuffleFilterBottomCheckbox)
         val fullBodyCheckBox = findViewById<CheckBox>(R.id.shuffleFilterFullBodyCheckbox)
         val shoesCheckBox = findViewById<CheckBox>(R.id.shuffleFilterShoesCheckbox)
+        val accessoriesCheckBox = findViewById<CheckBox>(R.id.accessoriesCheckbox)
+        val outerwearCheckBox = findViewById<CheckBox>(R.id.outerwearCheckbox)
+
         val casualCheckBox = findViewById<CheckBox>(R.id.shuffleFilterCasualCheckbox)
         val formalCheckBox = findViewById<CheckBox>(R.id.shuffleFilterFormalCheckbox)
         val corporateCheckBox = findViewById<CheckBox>(R.id.shuffleFilterCorporateCheckbox)
         val sportsCheckBox = findViewById<CheckBox>(R.id.shuffleFilterSportsCheckbox)
 
-        val checkBoxes = listOf( topCheckBox, bottomCheckBox, fullBodyCheckBox, shoesCheckBox, casualCheckBox,
-            formalCheckBox, corporateCheckBox, sportsCheckBox)
+        val checkBoxes = listOf( topCheckBox, bottomCheckBox, fullBodyCheckBox, shoesCheckBox, accessoriesCheckBox,
+            outerwearCheckBox,casualCheckBox, formalCheckBox, corporateCheckBox, sportsCheckBox)
         checkBoxes.forEach { checkBox -> checkBox.setOnCheckedChangeListener { _, _ -> } }
 
         getWeather(latitude, longitude,object : SeasonCallback {
@@ -75,6 +78,8 @@ class ShuffleFilterActivity: AppCompatActivity() {
             filters["BOTTOMS"] = (bottomCheckBox.isChecked)
             filters["FULL_BODY"] = (fullBodyCheckBox.isChecked)
             filters["SHOES"] = (shoesCheckBox.isChecked)
+            filters["OUTERWEAR"] = (outerwearCheckBox.isChecked)
+            filters["ACCESSORIES"] = (accessoriesCheckBox.isChecked)
             filters["CASUAL"] = (casualCheckBox.isChecked)
             filters["FORMAL"] = (formalCheckBox.isChecked)
             filters["PROFESSIONAL"] = (corporateCheckBox.isChecked)

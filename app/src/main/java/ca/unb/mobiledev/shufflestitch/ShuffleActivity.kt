@@ -1,6 +1,7 @@
 package ca.unb.mobiledev.shufflestitch
 
 import android.content.ActivityNotFoundException
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -11,6 +12,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import ca.unb.mobiledev.shufflestitch.DB.DatabaseHelper
 import java.io.File
 import kotlin.random.Random
@@ -21,10 +23,14 @@ class ShuffleActivity : AppCompatActivity() {
     private lateinit var bottomsList: List<String>
     private lateinit var onePieceList: List<String>
     private lateinit var shoesList: List<String>
+    private lateinit var outerwearList: List<String>
+    private lateinit var accessoriesList: List<String>
     private var tops = false
     private var bottom = false
     private var onePiece = false
     private var shoes = false
+    private var outerwear = false
+    private var accessories = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,6 +45,8 @@ class ShuffleActivity : AppCompatActivity() {
         bottom = intent.extras?.getBoolean("BOTTOMS", false) == true
         onePiece = intent.extras?.getBoolean("FULL_BODY", false) == true
         shoes = intent.extras?.getBoolean("SHOES", false) == true
+        outerwear = intent.extras?.getBoolean("OUTERWEAR", false) == true
+        accessories = intent.extras?.getBoolean("ACCESSORIES", false) == true
         val casual = intent.extras?.getBoolean("CASUAL", false) == true
         val professional = intent.extras?.getBoolean("PROFESSIONAL", false) == true
         val formal = intent.extras?.getBoolean("FORMAL", false) == true
@@ -73,6 +81,14 @@ class ShuffleActivity : AppCompatActivity() {
         shoesList = itemMap["shoes"] ?: emptyList()
         if (!shoes) {
             shoesList = emptyList()
+        }
+        outerwearList = itemMap["OUTERWEAR"] ?: emptyList()
+        if (!outerwear) {
+            outerwearList = emptyList()
+        }
+        outerwearList = itemMap["ACCESSORIES"] ?: emptyList()
+        if (!accessories) {
+            accessoriesList = emptyList()
         }
 
         shuffle()
@@ -134,6 +150,8 @@ class ShuffleActivity : AppCompatActivity() {
         val onePieceImage = findViewById<ImageView>(R.id.onePiece)
         val topImage = findViewById<ImageView>(R.id.topPiece)
         val bottomImage = findViewById<ImageView>(R.id.bottomPiece)
+        val outerwearImage = findViewById<ImageView>(R.id.outerwear)
+        val accessoriesImage = findViewById<ImageView>(R.id.accessories)
 
         if (onePieceOrTwo == 1) { //filter returns a one piece suggestion
             topImage.visibility = View.GONE
@@ -165,10 +183,48 @@ class ShuffleActivity : AppCompatActivity() {
         if (shoes) {
             shoeImage.visibility = View.VISIBLE
             if (shoesList.isNotEmpty()) {
-                val index = Random.nextInt(0, shoesList.size)
+                val index = Random.nextInt(shoesList.size)
                 val shoeImagePath = shoesList[index]
                 loadImage(shoeImagePath, shoeImage)
             }
+        }
+        if (accessories) {
+            accessoriesImage.visibility = View.VISIBLE
+            if (accessoriesList.isNotEmpty()) {
+                val index = Random.nextInt(accessoriesList.size)
+                val accessoriesImagePath = accessoriesList[index]
+                loadImage(accessoriesImagePath, accessoriesImage)
+            }
+        }
+        if (outerwear) {
+            outerwearImage.visibility = View.VISIBLE
+            if (outerwearList.isNotEmpty()) {
+                val index = Random.nextInt(outerwearList.size)
+                val outerwearImagePath = outerwearList[index]
+                loadImage(outerwearImagePath, outerwearImage)
+            }
+        }
+        updateImageVisibility(shoes,shoeImage)
+        updateImageVisibility(tops,topImage)
+        updateImageVisibility(bottom,bottomImage)
+        updateImageVisibility(outerwear,outerwearImage)
+        updateImageVisibility(accessories,accessoriesImage)
+    }
+
+    private fun dpToPx(dp: Int, context: Context): Int {
+        return (dp * context.resources.displayMetrics.density).toInt()
+    }
+    private fun updateImageVisibility(imageExists: Boolean, imageView:ImageView ) {
+        val params = imageView.layoutParams as ConstraintLayout.LayoutParams
+
+        if (imageExists) {
+            params.width = dpToPx(100, imageView.context)
+            params.height = dpToPx(100, imageView.context)
+            imageView.layoutParams = params
+        } else {
+            params.width = 0
+            params.height = 0
+            imageView.layoutParams = params
         }
     }
 
