@@ -160,7 +160,7 @@ class ShuffleActivity : AppCompatActivity() {
                 } else {
                     2
                 }
-        } else if (onePiece) {
+        } else if (onePiece && !tops && !bottom) {
             onePieceOrTwo = 1
         }
 
