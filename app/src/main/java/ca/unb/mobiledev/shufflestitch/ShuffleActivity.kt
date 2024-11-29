@@ -40,6 +40,7 @@ class ShuffleActivity : AppCompatActivity() {
         val tempLabel = "Current temperature:$temperature oC"
         tempDisplay.text = tempLabel
 
+
         tops = intent.extras?.getBoolean("TOPS", false) == true
         bottom = intent.extras?.getBoolean("BOTTOMS", false) == true
         onePiece = intent.extras?.getBoolean("FULL_BODY", false) == true
@@ -73,30 +74,12 @@ class ShuffleActivity : AppCompatActivity() {
 
         databaseHelper = DatabaseHelper(this)
         val itemMap = databaseHelper.getAllData(filters)
-        topsList = itemMap["tops"] ?: emptyList()
-        if (!tops) {
-            topsList = emptyList()
-        }
-        bottomsList = itemMap["bottoms"] ?: emptyList()
-        if (!bottom) {
-            bottomsList = emptyList()
-        }
-        onePieceList = itemMap["fullBody"] ?: emptyList()
-        if (!onePiece) {
-            onePieceList = emptyList()
-        }
-        shoesList = itemMap["shoes"] ?: emptyList()
-        if (!shoes) {
-            shoesList = emptyList()
-        }
-        outerwearList = itemMap["OUTERWEAR"] ?: emptyList()
-        if (!outerwear) {
-            outerwearList = emptyList()
-        }
-        outerwearList = itemMap["ACCESSORIES"] ?: emptyList()
-        if (!accessories) {
-            accessoriesList = emptyList()
-        }
+        topsList = if (tops) itemMap["tops"] ?: emptyList() else emptyList()
+        bottomsList = if (bottom) itemMap["bottoms"] ?: emptyList() else emptyList()
+        onePieceList = if (onePiece) itemMap["fullBody"] ?: emptyList() else emptyList()
+        shoesList = if (shoes) itemMap["shoes"] ?: emptyList() else emptyList()
+        outerwearList = if (outerwear) itemMap["OUTERWEAR"] ?: emptyList() else emptyList()
+        accessoriesList = if (accessories) itemMap["ACCESSORIES"] ?: emptyList() else emptyList()
 
         shuffle()
 
