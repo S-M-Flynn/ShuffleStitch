@@ -25,7 +25,6 @@ class ShuffleActivity : AppCompatActivity() {
     private var bottom = false
     private var onePiece = false
     private var shoes = false
-    private lateinit var filterIntent: Intent
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,9 +35,6 @@ class ShuffleActivity : AppCompatActivity() {
         val tempLabel = "Current temperature:$temperature oC"
         tempDisplay.text = tempLabel
 
-        // Remake filter map
-        val filters = mutableMapOf<String, String>()
-
         tops = intent.extras?.getBoolean("TOPS", false) == true
         bottom = intent.extras?.getBoolean("BOTTOMS", false) == true
         onePiece = intent.extras?.getBoolean("FULL_BODY", false) == true
@@ -48,13 +44,17 @@ class ShuffleActivity : AppCompatActivity() {
         val formal = intent.extras?.getBoolean("FORMAL", false) == true
         val athletic = intent.extras?.getBoolean("ATHLETIC", false) == true
         val seasonSelected = intent.extras?.getString("SEASON", "FALL").toString()
-        val season = intent.extras?.getBoolean(seasonSelected, false) == true
-
+        // Remake filter map
+        val filters = mutableMapOf<String, String>()
         if (casual) filters["CASUAL"] = "1"
         if (professional) filters["PROFESSIONAL"] = "1"
         if (formal) filters["FORMAL"] = "1"
         if (athletic) filters["ATHLETIC"] = "1"
-        if (season) filters[seasonSelected] = "1"
+        filters[seasonSelected] = "1"
+
+        val showFilters = filters.filter { it.value == "1" }.keys.joinToString(" ")
+        val textBox = findViewById<TextView>(R.id.displayFilters)
+        textBox.text = showFilters
 
         databaseHelper = DatabaseHelper(this)
         val itemMap = databaseHelper.getAllData(filters)
@@ -74,9 +74,7 @@ class ShuffleActivity : AppCompatActivity() {
         if (!shoes) {
             shoesList = emptyList()
         }
-        val showFilters = filters.filter { it.value == "1" }.keys.joinToString(" ")
-        val textBox = findViewById<TextView>(R.id.displayFilters)
-        textBox.text = showFilters
+
         shuffle()
 
         val reShuffleButton = findViewById<Button>(R.id.reShuffle)
@@ -142,7 +140,7 @@ class ShuffleActivity : AppCompatActivity() {
             bottomImage.visibility = View.GONE
             onePieceImage.visibility = View.VISIBLE
             if (onePieceList.isNotEmpty()) {
-                val index = Random.nextInt(0, onePieceList.size-1)
+                val index = Random.nextInt(bottomsList.size)
                 val imagePath = onePieceList[index]
                 loadImage(imagePath, onePieceImage)
             }
@@ -153,13 +151,13 @@ class ShuffleActivity : AppCompatActivity() {
             bottomImage.visibility = View.VISIBLE
             onePieceImage.visibility = View.GONE
             if (topsList.isNotEmpty()) {
-                val index = Random.nextInt(0, topsList.size-1)
+                val index = Random.nextInt(topsList.size)
                 val topImagePath = topsList[index]
                 loadImage(topImagePath, topImage)
             }
 
             if (bottomsList.isNotEmpty()) {
-                val index = Random.nextInt(0, bottomsList.size-1)
+                val index = Random.nextInt(bottomsList.size)
                 val imagePath = bottomsList[index]
                 loadImage(imagePath, bottomImage)
             }
@@ -167,7 +165,7 @@ class ShuffleActivity : AppCompatActivity() {
         if (shoes) {
             shoeImage.visibility = View.VISIBLE
             if (shoesList.isNotEmpty()) {
-                val index = Random.nextInt(0, shoesList.size-1)
+                val index = Random.nextInt(0, shoesList.size)
                 val shoeImagePath = shoesList[index]
                 loadImage(shoeImagePath, shoeImage)
             }
