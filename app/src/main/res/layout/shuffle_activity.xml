@@ -60,10 +60,7 @@
             android:scaleType="fitXY"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/outerwear"
-            app:layout_constraintTop_toBottomOf="@id/onePiece"
-            app:layout_constraintStart_toEndOf="@id/onePiece"
-            app:layout_constraintTop_toTopOf="@id/onePiece"
-            />
+            app:layout_constraintTop_toBottomOf="@id/onePiece" />
 
         <ImageView
             android:id="@+id/bottomPiece"
