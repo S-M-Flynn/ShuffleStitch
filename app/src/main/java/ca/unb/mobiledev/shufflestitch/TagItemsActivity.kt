@@ -71,13 +71,10 @@ class TagItemsActivity : AppCompatActivity() {
                 else {
                     databaseHelper.updateItemByPath(imageUri, list)
                 }
-                intent = Intent(this@TagItemsActivity,ClosetActivity::class.java)
-                startActivity(intent)
-                finish()
+                handleNavigation()
             } catch (ex: ActivityNotFoundException) {
                 Log.e(TAG, "Error on save tags")
             }
-
         }
 
         backButton.setOnClickListener {
@@ -89,6 +86,7 @@ class TagItemsActivity : AppCompatActivity() {
         }
 
         val listener = { buttonView: CompoundButton, isChecked: Boolean ->
+            saveButton.isEnabled = true
             if (isChecked) {
                 if(buttonView != bottomCheckBox) bottomCheckBox.isChecked = false
                 if(buttonView != shoesCheckBox) shoesCheckBox.isChecked = false
@@ -138,6 +136,16 @@ class TagItemsActivity : AppCompatActivity() {
 
     private fun loadItemState(newItem: Item) {
         setCheckboxes(newItem)
+    }
+
+    private fun handleNavigation(){
+        if (intent.hasExtra("new_photo")){
+            intent = Intent(this@TagItemsActivity,ClosetActivity::class.java)
+            startActivity(intent)
+            finish()
+        } else {
+            finish()
+        }
     }
 
     companion object {
