@@ -194,9 +194,9 @@ class EditItemsActivity : AppCompatActivity() {
         orgButton.isEnabled = isImageLoaded
         if (isImageLoaded) {
             orgButton.isEnabled = true
-            Log.d("GestureDetector", "Image loaded, button enabled")
+            Log.d(TAG, "Image loaded, button enabled")
         } else {
-            Log.d("GestureDetector", "No image loaded, button disabled")
+            Log.d(TAG, "No image loaded, button disabled")
         }
     }
 

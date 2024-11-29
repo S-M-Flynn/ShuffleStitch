@@ -2,7 +2,6 @@ package ca.unb.mobiledev.shufflestitch
 
 import android.content.ActivityNotFoundException
 import android.content.Context
-import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -51,15 +50,23 @@ class ShuffleActivity : AppCompatActivity() {
         val professional = intent.extras?.getBoolean("PROFESSIONAL", false) == true
         val formal = intent.extras?.getBoolean("FORMAL", false) == true
         val athletic = intent.extras?.getBoolean("ATHLETIC", false) == true
-        val seasonSelected = intent.extras?.getString("SEASON", "FALL").toString()
+        var seasonSelected = intent.getStringExtra("SEASON").toString()
         // Remake filter map
         val filters = mutableMapOf<String, String>()
         if (casual) filters["CASUAL"] = "1"
         if (professional) filters["PROFESSIONAL"] = "1"
         if (formal) filters["FORMAL"] = "1"
         if (athletic) filters["ATHLETIC"] = "1"
-        filters[seasonSelected] = "1"
+        if (seasonSelected.isEmpty()) {
+            Toast.makeText(
+                this@ShuffleActivity,
+                "No weather available 'FALL' selected as default",
+                Toast.LENGTH_SHORT
+            ).show()
+            seasonSelected = "FALL"
+        }
 
+        filters[seasonSelected] = "1"
         val showFilters = filters.filter { it.value == "1" }.keys.joinToString(" ")
         val textBox = findViewById<TextView>(R.id.displayFilters)
         textBox.text = showFilters
@@ -130,7 +137,18 @@ class ShuffleActivity : AppCompatActivity() {
         }
     }
 
-    private fun shuffle(){
+    private fun makeImagesVisible(list: List<String>, image: ImageView) {
+        if (list.isNotEmpty()) {
+            val index = Random.nextInt(list.size)
+            val imagePath = list[index]
+            loadImage(imagePath, image)
+        } else {
+            image.setImageResource(R.drawable.banner_image)
+            Toast.makeText(this, "No Images Matching Selected Filters", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun shuffle() {
         var onePieceOrTwo = 2
         if (tops && onePiece && bottom && onePieceList.isNotEmpty()) {
             val randomNum = Random.nextInt(1, 10)
@@ -143,7 +161,7 @@ class ShuffleActivity : AppCompatActivity() {
                     2
                 }
         } else if (onePiece) {
-            onePieceOrTwo = 2
+            onePieceOrTwo = 1
         }
 
         val shoeImage = findViewById<ImageView>(R.id.shoes)
@@ -157,64 +175,39 @@ class ShuffleActivity : AppCompatActivity() {
             topImage.visibility = View.GONE
             bottomImage.visibility = View.GONE
             onePieceImage.visibility = View.VISIBLE
-            if (onePieceList.isNotEmpty()) {
-                val index = Random.nextInt(bottomsList.size)
-                val imagePath = onePieceList[index]
-                loadImage(imagePath, onePieceImage)
-            }
+            makeImagesVisible(onePieceList, onePieceImage)
         }
-
         if (onePieceOrTwo == 2) { //filter returns a two piece suggestion
             topImage.visibility = View.VISIBLE
             bottomImage.visibility = View.VISIBLE
             onePieceImage.visibility = View.GONE
-            if (topsList.isNotEmpty()) {
-                val index = Random.nextInt(topsList.size)
-                val topImagePath = topsList[index]
-                loadImage(topImagePath, topImage)
-            }
-
-            if (bottomsList.isNotEmpty()) {
-                val index = Random.nextInt(bottomsList.size)
-                val imagePath = bottomsList[index]
-                loadImage(imagePath, bottomImage)
-            }
+            makeImagesVisible(topsList, topImage)
+            makeImagesVisible(bottomsList, bottomImage)
         }
         if (shoes) {
             shoeImage.visibility = View.VISIBLE
-            if (shoesList.isNotEmpty()) {
-                val index = Random.nextInt(shoesList.size)
-                val shoeImagePath = shoesList[index]
-                loadImage(shoeImagePath, shoeImage)
-            }
+            makeImagesVisible(shoesList, shoeImage)
         }
         if (accessories) {
             accessoriesImage.visibility = View.VISIBLE
-            if (accessoriesList.isNotEmpty()) {
-                val index = Random.nextInt(accessoriesList.size)
-                val accessoriesImagePath = accessoriesList[index]
-                loadImage(accessoriesImagePath, accessoriesImage)
-            }
+            makeImagesVisible(accessoriesList, accessoriesImage)
         }
         if (outerwear) {
             outerwearImage.visibility = View.VISIBLE
-            if (outerwearList.isNotEmpty()) {
-                val index = Random.nextInt(outerwearList.size)
-                val outerwearImagePath = outerwearList[index]
-                loadImage(outerwearImagePath, outerwearImage)
-            }
+            makeImagesVisible(outerwearList, outerwearImage)
         }
-        updateImageVisibility(shoes,shoeImage)
-        updateImageVisibility(tops,topImage)
-        updateImageVisibility(bottom,bottomImage)
-        updateImageVisibility(outerwear,outerwearImage)
-        updateImageVisibility(accessories,accessoriesImage)
+        updateImageVisibility(shoes, shoeImage)
+        updateImageVisibility(tops, topImage)
+        updateImageVisibility(bottom, bottomImage)
+        updateImageVisibility(outerwear, outerwearImage)
+        updateImageVisibility(accessories, accessoriesImage)
     }
 
     private fun dpToPx(dp: Int, context: Context): Int {
         return (dp * context.resources.displayMetrics.density).toInt()
     }
-    private fun updateImageVisibility(imageExists: Boolean, imageView:ImageView ) {
+
+    private fun updateImageVisibility(imageExists: Boolean, imageView: ImageView) {
         val params = imageView.layoutParams as ConstraintLayout.LayoutParams
 
         if (imageExists) {
