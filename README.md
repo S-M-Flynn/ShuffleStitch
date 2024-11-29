@@ -21,11 +21,11 @@ ShuffleStitch is an Android application that allows users to shuffle and select 
 3. Build the project: Let Android Studio download all necessary dependencies and build the project.
    
 ## Usage
-Launch the App: Open the ShuffleStitch app on your Android device.
-Organize Your Closet: take photos of your items and and tag them.
-Set Filters: Choose your preferred filters for the outfits.
-Shuffle Outfits: Tap the shuffle button to get random outfit suggestions based on your settings.
-Season: If weather data is unavailable, fall will be the default season used.
+- Launch the App: Open the ShuffleStitch app on your Android device.
+- Organize Your Closet: take photos of your items and and tag them.
+- Set Filters: Choose your preferred filters for the outfits.
+- Shuffle Outfits: Tap the shuffle button to get random outfit suggestions based on your settings.
+- Season: If weather data is unavailable, fall will be the default season used.
 
 ## Contributing
 - https://github.com/mzoghaibUNB3035
