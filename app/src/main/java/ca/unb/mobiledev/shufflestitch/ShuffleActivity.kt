@@ -1,6 +1,7 @@
 package ca.unb.mobiledev.shufflestitch
 
 import android.content.ActivityNotFoundException
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -24,6 +25,7 @@ class ShuffleActivity : AppCompatActivity() {
     private var bottom = false
     private var onePiece = false
     private var shoes = false
+    private lateinit var filterIntent: Intent
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,8 +74,7 @@ class ShuffleActivity : AppCompatActivity() {
         if (!shoes) {
             shoesList = emptyList()
         }
-        var showFilters = filters.filter { it.value == "1" }.keys.joinToString(" ")
-        showFilters = "$showFilters"
+        val showFilters = filters.filter { it.value == "1" }.keys.joinToString(" ")
         val textBox = findViewById<TextView>(R.id.displayFilters)
         textBox.text = showFilters
         shuffle()
@@ -135,15 +136,13 @@ class ShuffleActivity : AppCompatActivity() {
         val onePieceImage = findViewById<ImageView>(R.id.onePiece)
         val topImage = findViewById<ImageView>(R.id.topPiece)
         val bottomImage = findViewById<ImageView>(R.id.bottomPiece)
-        //need error handling for list with no items in them (ie, not items match the filters selected)
-        //depending on filter settings and what is returned (if one piece or two, if getting shoes etc.)
 
         if (onePieceOrTwo == 1) { //filter returns a one piece suggestion
             topImage.visibility = View.GONE
             bottomImage.visibility = View.GONE
             onePieceImage.visibility = View.VISIBLE
             if (onePieceList.isNotEmpty()) {
-                val index = Random.nextInt(0, onePieceList.size)
+                val index = Random.nextInt(0, onePieceList.size-1)
                 val imagePath = onePieceList[index]
                 loadImage(imagePath, onePieceImage)
             }
@@ -154,13 +153,13 @@ class ShuffleActivity : AppCompatActivity() {
             bottomImage.visibility = View.VISIBLE
             onePieceImage.visibility = View.GONE
             if (topsList.isNotEmpty()) {
-                val index = Random.nextInt(0, topsList.size)
+                val index = Random.nextInt(0, topsList.size-1)
                 val topImagePath = topsList[index]
                 loadImage(topImagePath, topImage)
             }
 
             if (bottomsList.isNotEmpty()) {
-                val index = Random.nextInt(0, bottomsList.size)
+                val index = Random.nextInt(0, bottomsList.size-1)
                 val imagePath = bottomsList[index]
                 loadImage(imagePath, bottomImage)
             }
@@ -168,7 +167,7 @@ class ShuffleActivity : AppCompatActivity() {
         if (shoes) {
             shoeImage.visibility = View.VISIBLE
             if (shoesList.isNotEmpty()) {
-                val index = Random.nextInt(0, shoesList.size)
+                val index = Random.nextInt(0, shoesList.size-1)
                 val shoeImagePath = shoesList[index]
                 loadImage(shoeImagePath, shoeImage)
             }
