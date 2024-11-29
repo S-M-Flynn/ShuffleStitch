@@ -178,11 +178,15 @@ class ShuffleActivity : AppCompatActivity() {
             makeImagesVisible(onePieceList, onePieceImage)
         }
         if (onePieceOrTwo == 2) { //filter returns a two piece suggestion
-            topImage.visibility = View.VISIBLE
-            bottomImage.visibility = View.VISIBLE
             onePieceImage.visibility = View.GONE
-            makeImagesVisible(topsList, topImage)
-            makeImagesVisible(bottomsList, bottomImage)
+            if(tops) {
+                topImage.visibility = View.VISIBLE
+                makeImagesVisible(topsList, topImage)
+            }
+            if(bottom){
+                bottomImage.visibility = View.VISIBLE
+                makeImagesVisible(bottomsList, bottomImage)
+            }
         }
         if (shoes) {
             shoeImage.visibility = View.VISIBLE
