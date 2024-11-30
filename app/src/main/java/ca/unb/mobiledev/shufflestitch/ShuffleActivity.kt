@@ -49,14 +49,14 @@ class ShuffleActivity : AppCompatActivity() {
         shoes = intent.extras?.getBoolean("SHOES", false) == true
         outerwear = intent.extras?.getBoolean("OUTER_WEAR", false) == true
         accessories = intent.extras?.getBoolean("ACCESSORIES", false) == true
-//        if (!tops && !bottom && !onePiece && !shoes && !outerwear && !accessories) {
-//            tops = true
-//            bottom = true
-//            onePiece = true
-//            shoes = true
-//            outerwear = true
-//            accessories = true
-//        }
+        if (!tops && !bottom && !onePiece && !shoes && !outerwear && !accessories) {
+            tops = true
+            bottom = true
+            onePiece = true
+            shoes = true
+            outerwear = true
+            accessories = true
+        }
         val casual = intent.extras?.getBoolean("CASUAL", false) == true
         val professional = intent.extras?.getBoolean("PROFESSIONAL", false) == true
         val formal = intent.extras?.getBoolean("FORMAL", false) == true
@@ -133,7 +133,6 @@ class ShuffleActivity : AppCompatActivity() {
             loadImage(imagePath, image)
         } else {
             image.setImageResource(R.drawable.banner_image)
-            Toast.makeText(this, "No Images Matching Selected Filters", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -190,29 +189,10 @@ class ShuffleActivity : AppCompatActivity() {
             outerwearImage.visibility = View.VISIBLE
             makeImagesVisible(outerwearList, outerwearImage)
         }
-        updateImageVisibility(shoes, shoeImage)
-        updateImageVisibility(tops, topImage)
-        updateImageVisibility(bottom, bottomImage)
-        updateImageVisibility(outerwear, outerwearImage)
-        updateImageVisibility(accessories, accessoriesImage)
     }
 
     private fun dpToPx(dp: Int, context: Context): Int {
         return (dp * context.resources.displayMetrics.density).toInt()
-    }
-
-    private fun updateImageVisibility(imageExists: Boolean, imageView: ImageView) {
-        val params = imageView.layoutParams as ConstraintLayout.LayoutParams
-
-        if (imageExists) {
-            params.width = dpToPx(100, imageView.context)
-            params.height = dpToPx(100, imageView.context)
-            imageView.layoutParams = params
-        } else {
-            params.width = 0
-            params.height = 0
-            imageView.layoutParams = params
-        }
     }
 
     companion object {
