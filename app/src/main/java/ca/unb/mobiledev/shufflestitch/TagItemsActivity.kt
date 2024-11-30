@@ -76,7 +76,6 @@ class TagItemsActivity : AppCompatActivity() {
         checkBoxes.forEach { checkBox -> checkBox.setOnCheckedChangeListener { _, _ -> saveButton.isEnabled = true } }
 
         deleteButton.setOnClickListener {
-            // Show confirmation dialog
             showDeleteConfirmationDialog(imageUri)
         }
 
@@ -175,43 +174,38 @@ class TagItemsActivity : AppCompatActivity() {
     }
 
     private fun showDeleteConfirmationDialog(itemPath: String) {
-        // Create the AlertDialog
-        val builder = AlertDialog.Builder(this) // Use 'requireContext()' if in a Fragment
+        val builder = AlertDialog.Builder(this)
         builder.setTitle("Delete Item")
         builder.setMessage("Are you sure you want to delete this item?")
-
-        // Set up the "Yes" button
         builder.setPositiveButton("Yes") { dialog, _ ->
-            // Delete the item from the database
             val isDeleted = databaseHelper.deleteItemByPath(itemPath)
-            deleteFilesInUserMedia()
-
-            // Show a success or failure message
-            if (isDeleted) {
+            val fileDeleted = deleteFilesInUserMedia(itemPath)
+            if (isDeleted && fileDeleted) {
                 Toast.makeText(this, "Item deleted successfully!", Toast.LENGTH_SHORT).show()
                 finish()
             } else {
                 Toast.makeText(this, "Failed to delete the item.", Toast.LENGTH_SHORT).show()
             }
-            dialog.dismiss() // Close the dialog
+            dialog.dismiss()
         }
-
-        // Set up the "No" button
         builder.setNegativeButton("No") { dialog, _ ->
-            dialog.dismiss() // Close the dialog without doing anything
+            dialog.dismiss()
         }
-
-        // Show the dialog
         builder.create().show()
     }
 
-    private fun deleteFilesInUserMedia() {
-        val userMediaDir = File(getExternalFilesDir(null), "UserMedia")
-        userMediaDir.listFiles()?.forEach { file ->
-            if (file.name.contains(imageUri)) {
-                file.delete()
+    private fun deleteFilesInUserMedia(filePath: String): Boolean {
+        val file = File(filePath)
+        return if (file.exists()) {
+            if (file.delete()) {
+                Log.d(TAG, "File deleted successfully: $filePath")
+                true
+            } else {
+                Log.e(TAG, "Failed to delete file: $filePath")
+                false
             }
-        }
+        } else { Log.e(TAG, "File does not exist: $filePath")
+            false }
     }
 
     companion object {

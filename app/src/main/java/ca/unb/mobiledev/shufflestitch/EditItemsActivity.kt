@@ -65,23 +65,6 @@ class EditItemsActivity : AppCompatActivity() {
             launchFilterMenu()
         }
 
-        //remove-delete an item from the closet button activity
-//            val typeIntent = Intent(this, TypeSelectionActivity::class.java)
-//            try {
-//                startActivity(typeIntent)
-//            } catch (ex: ActivityNotFoundException) {
-//                Log.e(MainActivity.TAG, "Unable to start type selection activity")
-//            }
-//        }
-//        tempButton.setOnClickListener {
-//            val tempIntent = Intent(this, ItemTempSelection::class.java)
-//            try {
-//                startActivity(tempIntent)
-//            } catch (ex: ActivityNotFoundException) {
-//                Log.e(TAG, "Error unable to start temp selection")
-//            }
-//        }
-
         backButton.setOnClickListener {
             try {
                 finish()
@@ -89,6 +72,11 @@ class EditItemsActivity : AppCompatActivity() {
                 Log.e(TAG, "Error on back button")
             }
         }
+    }
+    override fun onResume(){
+        super.onResume()
+        imageView.setImageDrawable(null)
+        resetRecyclerViewWithAllImages()
     }
 
     private fun launchFilterMenu() {
