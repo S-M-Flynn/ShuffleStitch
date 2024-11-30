@@ -10,6 +10,8 @@ data class Item(
     val bottoms: Boolean,
     val fullBody: Boolean,
     val shoes: Boolean,
+    val outerWear: Boolean,
+    val accessories: Boolean,
     val casual: Boolean,
     val professional: Boolean,
     val formal: Boolean,
@@ -17,7 +19,8 @@ data class Item(
     val winter: Boolean,
     val fall: Boolean,
     val spring: Boolean,
-    val summer: Boolean
+    val summer: Boolean,
+    val count: Int
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readLong()?: 0,
@@ -33,7 +36,10 @@ data class Item(
         parcel.readByte() != 0.toByte(),
         parcel.readByte() != 0.toByte(),
         parcel.readByte() != 0.toByte(),
-        parcel.readByte() != 0.toByte()
+        parcel.readByte() != 0.toByte(),
+        parcel.readByte() != 0.toByte(),
+        parcel.readByte() != 0.toByte(),
+        parcel.readInt()?: 0
     )
 
     override fun describeContents(): Int {
@@ -48,6 +54,8 @@ data class Item(
         parcel.writeByte(if (bottoms) 1 else 0)
         parcel.writeByte(if (fullBody) 1 else 0)
         parcel.writeByte(if (shoes) 1 else 0)
+        parcel.writeByte(if (outerWear) 1 else 0)
+        parcel.writeByte(if (accessories) 1 else 0)
         parcel.writeByte(if (casual) 1 else 0)
         parcel.writeByte(if (professional) 1 else 0)
         parcel.writeByte(if (formal) 1 else 0)
@@ -56,6 +64,7 @@ data class Item(
         parcel.writeByte(if (fall) 1 else 0)
         parcel.writeByte(if (spring) 1 else 0)
         parcel.writeByte(if (summer) 1 else 0)
+        parcel.writeInt(count)
     }
 
     companion object CREATOR : Parcelable.Creator<Item> {

@@ -7,9 +7,12 @@ import android.util.Log
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.CompoundButton
+import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import ca.unb.mobiledev.shufflestitch.DB.DatabaseHelper
+import java.io.File
 
 class TagItemsActivity : AppCompatActivity() {
     private lateinit var imageUri: String
@@ -20,6 +23,8 @@ class TagItemsActivity : AppCompatActivity() {
     private lateinit var fullBodyCheckBox: CheckBox
     private lateinit var bottomCheckBox: CheckBox
     private lateinit var shoesCheckBox: CheckBox
+    private lateinit var outerWearCheckBox: CheckBox
+    private lateinit var accessoriesCheckBox: CheckBox
     private lateinit var casualCheckBox: CheckBox
     private lateinit var formalCheckBox: CheckBox
     private lateinit var corporateCheckBox: CheckBox
@@ -41,6 +46,8 @@ class TagItemsActivity : AppCompatActivity() {
         bottomCheckBox = findViewById(R.id.shuffleFilterBottomCheckbox)
         fullBodyCheckBox = findViewById(R.id.shuffleFilterFullBodyCheckbox)
         shoesCheckBox = findViewById(R.id.shuffleFilterShoesCheckbox)
+        outerWearCheckBox = findViewById(R.id.shuffleFliterOuterWearChekcbox)
+        accessoriesCheckBox = findViewById(R.id.shuffleFilterAccessoriesCheckbox)
         casualCheckBox = findViewById(R.id.shuffleFilterCasualCheckbox)
         formalCheckBox = findViewById(R.id.shuffleFilterFormalCheckbox)
         corporateCheckBox = findViewById(R.id.shuffleFilterCorporateCheckbox)
@@ -49,18 +56,30 @@ class TagItemsActivity : AppCompatActivity() {
         summerCheckBox = findViewById(R.id.shuffleFilterSummerCheckbox)
         fallCheckBox = findViewById(R.id.shuffleFilterFallCheckbox)
         winterCheckBox = findViewById(R.id.shuffleFilterWinterCheckbox)
-        val checkBoxes = listOf( topCheckBox, bottomCheckBox, fullBodyCheckBox, shoesCheckBox, casualCheckBox,
+        val checkBoxes = listOf( topCheckBox, bottomCheckBox, fullBodyCheckBox, shoesCheckBox, outerWearCheckBox, accessoriesCheckBox, casualCheckBox,
             formalCheckBox, corporateCheckBox, sportsCheckBox, springCheckBox, summerCheckBox, fallCheckBox, winterCheckBox )
 
         val saveButton = findViewById<Button>(R.id.saveTagsButton)
         val backButton = findViewById<Button>(R.id.back_button)
+        val deleteButton = findViewById<Button>(R.id.deleteButton)
+        val countText = findViewById<TextView>(R.id.countViewText)
+
         val newItem = databaseHelper.getItemByPath(imageUri)
         if (newItem != null) {
             saveButton.isEnabled = false
+            val count = newItem.count
+            val text = "Times Worn: $count"
+            countText.text = text
             loadItemState(newItem)
         }
 
         checkBoxes.forEach { checkBox -> checkBox.setOnCheckedChangeListener { _, _ -> saveButton.isEnabled = true } }
+
+        deleteButton.setOnClickListener {
+            // Show confirmation dialog
+            showDeleteConfirmationDialog(imageUri)
+        }
+
         saveButton.setOnClickListener {
             list = updateItem()
             try {
@@ -92,29 +111,34 @@ class TagItemsActivity : AppCompatActivity() {
                 if(buttonView != shoesCheckBox) shoesCheckBox.isChecked = false
                 if(buttonView != fullBodyCheckBox) fullBodyCheckBox.isChecked = false
                 if(buttonView != topCheckBox) topCheckBox.isChecked = false
+                if(buttonView != outerWearCheckBox) outerWearCheckBox.isChecked = false
+                if(buttonView != accessoriesCheckBox) accessoriesCheckBox.isChecked = false
             }
         }
         bottomCheckBox.setOnCheckedChangeListener(listener)
         fullBodyCheckBox.setOnCheckedChangeListener (listener)
         shoesCheckBox.setOnCheckedChangeListener (listener)
         topCheckBox.setOnCheckedChangeListener(listener)
-
+        outerWearCheckBox.setOnCheckedChangeListener(listener)
+        accessoriesCheckBox.setOnCheckedChangeListener(listener)
     }
 
     private fun updateItem():IntArray {
-        val states = IntArray(12)
+        val states = IntArray(15)
         states[0] = if (topCheckBox.isChecked) 1 else 0
         states[1] = if (bottomCheckBox.isChecked) 1 else 0
         states[2] = if (fullBodyCheckBox.isChecked) 1 else 0
         states[3] = if (shoesCheckBox.isChecked) 1 else 0
-        states[4] = if (casualCheckBox.isChecked) 1 else 0
-        states[5] = if (formalCheckBox.isChecked) 1 else 0
-        states[6] = if (corporateCheckBox.isChecked) 1 else 0
-        states[7] = if (sportsCheckBox.isChecked) 1 else 0
-        states[8] = if (winterCheckBox.isChecked) 1 else 0
-        states[9] = if (fallCheckBox.isChecked) 1 else 0
-        states[10] = if (springCheckBox.isChecked) 1 else 0
-        states[11] = if (summerCheckBox.isChecked) 1 else 0
+        states[4] = if (outerWearCheckBox.isChecked) 1 else 0
+        states[5] = if (accessoriesCheckBox.isChecked) 1 else 0
+        states[6] = if (casualCheckBox.isChecked) 1 else 0
+        states[7] = if (formalCheckBox.isChecked) 1 else 0
+        states[8] = if (corporateCheckBox.isChecked) 1 else 0
+        states[9] = if (sportsCheckBox.isChecked) 1 else 0
+        states[10] = if (winterCheckBox.isChecked) 1 else 0
+        states[11] = if (fallCheckBox.isChecked) 1 else 0
+        states[12] = if (springCheckBox.isChecked) 1 else 0
+        states[13] = if (summerCheckBox.isChecked) 1 else 0
 
         return states
      }
@@ -124,6 +148,8 @@ class TagItemsActivity : AppCompatActivity() {
         fullBodyCheckBox.isChecked = item.fullBody
         shoesCheckBox.isChecked = item.shoes
         bottomCheckBox.isChecked = item.bottoms
+        outerWearCheckBox.isChecked = item.outerWear
+        accessoriesCheckBox.isChecked = item.accessories
         casualCheckBox.isChecked = item.casual
         corporateCheckBox.isChecked = item.professional
         formalCheckBox.isChecked = item.formal
@@ -145,6 +171,46 @@ class TagItemsActivity : AppCompatActivity() {
             finish()
         } else {
             finish()
+        }
+    }
+
+    private fun showDeleteConfirmationDialog(itemPath: String) {
+        // Create the AlertDialog
+        val builder = AlertDialog.Builder(this) // Use 'requireContext()' if in a Fragment
+        builder.setTitle("Delete Item")
+        builder.setMessage("Are you sure you want to delete this item?")
+
+        // Set up the "Yes" button
+        builder.setPositiveButton("Yes") { dialog, _ ->
+            // Delete the item from the database
+            val isDeleted = databaseHelper.deleteItemByPath(itemPath)
+            deleteFilesInUserMedia()
+
+            // Show a success or failure message
+            if (isDeleted) {
+                Toast.makeText(this, "Item deleted successfully!", Toast.LENGTH_SHORT).show()
+                finish()
+            } else {
+                Toast.makeText(this, "Failed to delete the item.", Toast.LENGTH_SHORT).show()
+            }
+            dialog.dismiss() // Close the dialog
+        }
+
+        // Set up the "No" button
+        builder.setNegativeButton("No") { dialog, _ ->
+            dialog.dismiss() // Close the dialog without doing anything
+        }
+
+        // Show the dialog
+        builder.create().show()
+    }
+
+    private fun deleteFilesInUserMedia() {
+        val userMediaDir = File(getExternalFilesDir(null), "UserMedia")
+        userMediaDir.listFiles()?.forEach { file ->
+            if (file.name.contains(imageUri)) {
+                file.delete()
+            }
         }
     }
 

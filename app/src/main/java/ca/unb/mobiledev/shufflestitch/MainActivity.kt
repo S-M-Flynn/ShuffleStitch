@@ -12,6 +12,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
+import ca.unb.mobiledev.shufflestitch.DB.DatabaseHelper
 import java.io.File
 
 
@@ -29,12 +30,16 @@ class MainActivity : AppCompatActivity() {
         shuffleButton.visibility = View.GONE
         closetButton.visibility = View.GONE
 
+//        deleteFilesInUserMedia()
+//        val databaseHelper = DatabaseHelper(this)
+//        databaseHelper.deleteDatabaseFiles()
+
         Handler(Looper.getMainLooper()).postDelayed({
             val intent = Intent(this, SelectionActivity::class.java)
             startActivity(intent)
             finish()
         }, 3000)
-      //  deleteFilesInUserMedia()
+      //
 //        shuffleButton.setOnClickListener {
 //            val locationIntent = Intent(this, LocationActivity::class.java)
 //            try {
@@ -78,14 +83,14 @@ class MainActivity : AppCompatActivity() {
 //        } else super.onOptionsItemSelected(item)
 //    }
 
-//    private fun deleteFilesInUserMedia() {
-//        val userMediaDir = File(getExternalFilesDir(null), "UserMedia")
-//        userMediaDir.listFiles()?.forEach { file ->
-//            if (file.isFile) {
-//                file.delete()
-//            }
-//        }
-//    }
+    private fun deleteFilesInUserMedia() {
+        val userMediaDir = File(getExternalFilesDir(null), "UserMedia")
+        userMediaDir.listFiles()?.forEach { file ->
+            if (file.isFile) {
+                file.delete()
+            }
+        }
+    }
 
     companion object {
         internal const val TAG = "Main Activity"

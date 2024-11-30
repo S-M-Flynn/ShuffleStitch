@@ -84,7 +84,7 @@ class ShuffleFilterActivity: AppCompatActivity() {
             filters["BOTTOMS"] = (bottomCheckBox.isChecked)
             filters["FULL_BODY"] = (fullBodyCheckBox.isChecked)
             filters["SHOES"] = (shoesCheckBox.isChecked)
-            filters["OUTERWEAR"] = (outerwearCheckBox.isChecked)
+            filters["OUTER_WEAR"] = (outerwearCheckBox.isChecked)
             filters["ACCESSORIES"] = (accessoriesCheckBox.isChecked)
             filters["CASUAL"] = (casualCheckBox.isChecked)
             filters["FORMAL"] = (formalCheckBox.isChecked)

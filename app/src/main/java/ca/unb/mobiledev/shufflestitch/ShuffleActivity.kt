@@ -31,6 +31,8 @@ class ShuffleActivity : AppCompatActivity() {
     private var outerwear = false
     private var accessories = false
 
+    private var currentList = mutableListOf<String>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -45,7 +47,7 @@ class ShuffleActivity : AppCompatActivity() {
         bottom = intent.extras?.getBoolean("BOTTOMS", false) == true
         onePiece = intent.extras?.getBoolean("FULL_BODY", false) == true
         shoes = intent.extras?.getBoolean("SHOES", false) == true
-        outerwear = intent.extras?.getBoolean("OUTERWEAR", false) == true
+        outerwear = intent.extras?.getBoolean("OUTER_WEAR", false) == true
         accessories = intent.extras?.getBoolean("ACCESSORIES", false) == true
         val casual = intent.extras?.getBoolean("CASUAL", false) == true
         val professional = intent.extras?.getBoolean("PROFESSIONAL", false) == true
@@ -78,8 +80,8 @@ class ShuffleActivity : AppCompatActivity() {
         bottomsList = if (bottom) itemMap["bottoms"] ?: emptyList() else emptyList()
         onePieceList = if (onePiece) itemMap["fullBody"] ?: emptyList() else emptyList()
         shoesList = if (shoes) itemMap["shoes"] ?: emptyList() else emptyList()
-        outerwearList = if (outerwear) itemMap["OUTERWEAR"] ?: emptyList() else emptyList()
-        accessoriesList = if (accessories) itemMap["ACCESSORIES"] ?: emptyList() else emptyList()
+        outerwearList = if (outerwear) itemMap["outerWear"] ?: emptyList() else emptyList()
+        accessoriesList = if (accessories) itemMap["accessories"] ?: emptyList() else emptyList()
 
         shuffle()
 
@@ -95,7 +97,10 @@ class ShuffleActivity : AppCompatActivity() {
         val selectButton = findViewById<Button>(R.id.selectButton)
         selectButton.setOnClickListener {
             try {
-                //update count on items shown
+                for (path in currentList){
+                    databaseHelper.incrementCountByPath(path)
+                }
+                Toast.makeText(this, "Selection Added", Toast.LENGTH_SHORT).show()
             } catch (ex: ActivityNotFoundException) {
                 Log.e(TAG, "Error on writing count to database")
             }
@@ -124,6 +129,7 @@ class ShuffleActivity : AppCompatActivity() {
         if (list.isNotEmpty()) {
             val index = Random.nextInt(list.size)
             val imagePath = list[index]
+            currentList.add(imagePath)
             loadImage(imagePath, image)
         } else {
             image.setImageResource(R.drawable.banner_image)
@@ -132,6 +138,7 @@ class ShuffleActivity : AppCompatActivity() {
     }
 
     private fun shuffle() {
+        currentList = mutableListOf<String>()
         var onePieceOrTwo = 2
         if (tops && onePiece && bottom && onePieceList.isNotEmpty()) {
             val randomNum = Random.nextInt(1, 10)
