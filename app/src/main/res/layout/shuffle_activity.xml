@@ -38,55 +38,56 @@
 
         <ImageView
             android:id="@+id/outerwear"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:scaleType="fitXY"
-            app:layout_constraintEnd_toEndOf="@id/onePiece"
+            app:layout_constraintEnd_toStartOf="@id/onePiece"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/bottomPiece"
             app:layout_constraintTop_toBottomOf="@id/displayFilters" />
         <ImageView
             android:id="@+id/onePiece"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:scaleType="fitXY"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@id/outerwear"
-            app:layout_constraintTop_toBottomOf="@id/displayFilters" />
+            app:layout_constraintStart_toEndOf="@id/outerwear"
+            app:layout_constraintTop_toBottomOf="@id/displayFilters"
+            app:layout_constraintEnd_toStartOf="@id/topPiece" />
 
         <ImageView
             android:id="@+id/topPiece"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:scaleType="fitXY"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@id/outerwear"
-            app:layout_constraintTop_toBottomOf="@id/onePiece" />
+            app:layout_constraintStart_toEndOf="@id/onePiece"
+            app:layout_constraintTop_toBottomOf="@id/displayFilters" />
 
         <ImageView
             android:id="@+id/bottomPiece"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:scaleType="fitCenter"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:scaleType="fitXY"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/topPiece" />
+            app:layout_constraintTop_toBottomOf="@id/outerwear" />
 
         <ImageView
             android:id="@+id/accessories"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:scaleType="fitXY"
-            app:layout_constraintEnd_toEndOf="@id/shoes"
+            app:layout_constraintEnd_toStartOf="@id/shoes"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/bottomPiece" />
 
         <ImageView
             android:id="@+id/shoes"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:scaleType="fitXY"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@id/accessories"
+            app:layout_constraintStart_toEndOf="@id/accessories"
             app:layout_constraintTop_toBottomOf="@id/bottomPiece" />
 
         <Button
@@ -97,7 +98,7 @@
             android:textAppearance="@android:style/TextAppearance.Material.Button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/shoes" />
+            app:layout_constraintBottom_toTopOf="@id/reShuffle" />
 
         <Button
             android:id="@+id/reShuffle"
@@ -108,7 +109,7 @@
             android:textAppearance="@android:style/TextAppearance.Material.Button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/selectButton" />
+            app:layout_constraintBottom_toTopOf="@id/backButtonShuffleActivity" />
 
         <Button
             android:id="@+id/backButtonShuffleActivity"
@@ -118,7 +119,7 @@
             android:textAppearance="@android:style/TextAppearance.Material.Button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/reShuffle" />
+            app:layout_constraintBottom_toBottomOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

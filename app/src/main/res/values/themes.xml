@@ -53,6 +53,6 @@
 
     <style name="Theme.ShuffleStitch" parent="Base.Theme.ShuffleStitch" />
     <style name="Button.color" parent="Base.Theme.ShuffleStitch">
-        <item name="colorPrimary">@color/md_theme_secondaryContainer</item>
+        <item name="colorPrimary">@color/md_theme_tertiary</item>
     </style>
 </resources>

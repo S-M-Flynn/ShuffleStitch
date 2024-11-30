@@ -46,7 +46,7 @@ class TagItemsActivity : AppCompatActivity() {
         bottomCheckBox = findViewById(R.id.shuffleFilterBottomCheckbox)
         fullBodyCheckBox = findViewById(R.id.shuffleFilterFullBodyCheckbox)
         shoesCheckBox = findViewById(R.id.shuffleFilterShoesCheckbox)
-        outerWearCheckBox = findViewById(R.id.shuffleFliterOuterWearChekcbox)
+        outerWearCheckBox = findViewById(R.id.shuffleFilterOuterWearCheckbox)
         accessoriesCheckBox = findViewById(R.id.shuffleFilterAccessoriesCheckbox)
         casualCheckBox = findViewById(R.id.shuffleFilterCasualCheckbox)
         formalCheckBox = findViewById(R.id.shuffleFilterFormalCheckbox)
