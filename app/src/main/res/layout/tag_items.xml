@@ -2,15 +2,48 @@
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true">
 <androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
     android:orientation="vertical">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="411dp"
+        android:layout_height="63dp"
+        app:layout_constraintBottom_toTopOf="@+id/textView1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center|right"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/countViewText"
+                android:layout_width="227dp"
+                android:layout_height="35dp"
+                tools:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+            <Button
+                android:id="@+id/deleteButton"
+                android:layout_width="125dp"
+                android:layout_height="53dp"
+                android:layout_alignEnd="@id/textView1"
+                android:layout_margin="25dp"
+                android:layout_marginTop="8dp"
+                android:text="Delete"
+                android:textAppearance="@android:style/TextAppearance.Material.Button"
+                android:theme="@style/Base.Theme.ShuffleStitch" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
     <TextView
         android:id="@+id/textView1"
@@ -24,23 +57,8 @@
         android:autoSizeTextType="uniform"
         android:text="Organize Your Closet"
         android:textAppearance="@android:style/TextAppearance.Material.Widget.Button"
-        app:layout_constraintEnd_toStartOf="@id/deleteButton"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/deleteButton"
-        tools:layout_editor_absoluteY="56dp" />
-
-    <Button
-        android:id="@+id/deleteButton"
-        android:layout_width="125dp"
-        android:layout_height="53dp"
-        android:layout_alignEnd="@id/textView1"
-        android:layout_margin="25dp"
-        android:layout_marginTop="8dp"
-        android:text="Delete"
-        android:textAppearance="@android:style/TextAppearance.Material.Button"
-        android:theme="@style/Button.color"
-        app:layout_constraintEnd_toEndOf="@+id/textView1"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/cardView" />
 
     <View
         android:id="@+id/divider1"
@@ -88,7 +106,7 @@
             android:stretchMode="columnWidth"
             app:columnCount="2"
             app:orientation="horizontal"
-            app:rowCount="2">
+            app:rowCount="3">
 
             <CheckBox
                 android:id="@+id/shuffleFilterTopCheckbox"
@@ -121,6 +139,20 @@
                 android:text="Shoes"
                 android:textAppearance="@android:style/TextAppearance.Material.Medium"
                 app:layout_gravity="fill_horizontal" />
+
+            <CheckBox
+                android:id="@+id/shuffleFliterOuterWearChekcbox"
+                android:layout_width="139dp"
+                android:layout_height="wrap_content"
+                android:text="Outer Wear"
+                tools:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+            <CheckBox
+                android:id="@+id/shuffleFilterAccessoriesCheckbox"
+                android:layout_width="149dp"
+                android:layout_height="wrap_content"
+                android:text="Accessories"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
         </androidx.gridlayout.widget.GridLayout>
     </androidx.cardview.widget.CardView>
 
@@ -170,7 +202,7 @@
 
             <CheckBox
                 android:id="@+id/shuffleFilterCasualCheckbox"
-                android:layout_width="wrap_content"
+                android:layout_width="99dp"
                 android:layout_height="wrap_content"
                 android:text="Casual"
                 android:textAppearance="@android:style/TextAppearance.Material.Medium"

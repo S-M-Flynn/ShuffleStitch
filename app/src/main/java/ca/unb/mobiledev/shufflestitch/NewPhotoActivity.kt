@@ -46,7 +46,7 @@ class NewPhotoActivity : AppCompatActivity() {
             homeButton.isEnabled = false
 
             val imageName = "UserMedia/processed_${System.currentTimeMillis()}.jpg"
-            val array = IntArray(12) // All elements are initialized to 0 by default
+            val array = IntArray(14) // All elements are initialized to 0 by default
 
             try {
                 val outputFile = File(
