@@ -1,7 +1,6 @@
 package ca.unb.mobiledev.shufflestitch
 
 import android.content.ActivityNotFoundException
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -9,11 +8,9 @@ import android.widget.Button
 import android.widget.CheckBox
 import android.widget.CompoundButton
 import android.widget.TextView
-import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import ca.unb.mobiledev.shufflestitch.DB.DatabaseHelper
-import java.io.IOException
-
 
 interface SeasonCallback { fun onSeasonFetched(season: String) }
 
@@ -94,12 +91,15 @@ class ShuffleFilterActivity: AppCompatActivity() {
             filters.forEach { (key, value) ->
                 shuffleIntent.putExtra(key, value)
             }
-            shuffleIntent.putExtra("SEASON", currentSeason)
-
-            try {
-                startActivity(shuffleIntent)
-            } catch (ex: ActivityNotFoundException) {
-                Log.e(TAG, "Unable to start the shuffle activity")
+            if (currentSeason.isEmpty()) {
+                manualSeasonSelectDialog()
+            } else {
+                shuffleIntent.putExtra("SEASON", currentSeason)
+                try {
+                    startActivity(shuffleIntent)
+                } catch (ex: ActivityNotFoundException) {
+                    Log.e(TAG, "Unable to start the shuffle activity")
+                }
             }
         }
 
@@ -131,6 +131,27 @@ class ShuffleFilterActivity: AppCompatActivity() {
                     callback.onSeasonFetched(season) }
             }
         })
+    }
+
+    private fun manualSeasonSelectDialog() {
+        val items = arrayOf("FALL", "WINTER", "SPRING", "SUMMER")
+        var selectedItem = 0
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Select Season")
+            .setSingleChoiceItems(items, selectedItem) { _, which ->
+                selectedItem = which
+            }
+            .setPositiveButton("OK") { _, _ ->
+                val selected = items[selectedItem]
+                currentSeason = selected
+                Log.d(TAG, "Category selected")
+                shuffleIntent.putExtra("SEASON", currentSeason)
+                startActivity(shuffleIntent)
+            }
+            .setNegativeButton("Cancel") { dialog, _ ->
+                dialog.dismiss()
+            }
+        builder.create().show()
     }
 
     companion object {

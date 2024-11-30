@@ -34,7 +34,7 @@ class ClosetActivity : AppCompatActivity() {
         setContentView(R.layout.closet_activity)
         val gotoCloset = findViewById<Button>(R.id.goto_closet)
         val cameraButton = findViewById<Button>(R.id.camera_button)
-        val backButton = findViewById<Button>(R.id.back_button)
+        val homeButton = findViewById<Button>(R.id.home_button)
         imageView = findViewById(R.id.closet_photo)
 
         setCameraActivityResultLauncher()
@@ -56,9 +56,10 @@ class ClosetActivity : AppCompatActivity() {
             }
         }
 
-        backButton.setOnClickListener {
+        homeButton.setOnClickListener {
+            val homeIntent = Intent(this, SelectionActivity::class.java)
             try {
-                finish()
+                startActivity(homeIntent)
             } catch (ex: ActivityNotFoundException) {
                 Log.e(TAG, "Error on back button finish")
             }
