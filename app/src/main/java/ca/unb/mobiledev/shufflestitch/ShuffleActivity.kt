@@ -24,6 +24,7 @@ class ShuffleActivity : AppCompatActivity() {
     private lateinit var shoesList: List<String>
     private lateinit var outerwearList: List<String>
     private lateinit var accessoriesList: List<String>
+    private lateinit var seasonSelected: String
     private var tops = false
     private var bottom = false
     private var onePiece = false
@@ -42,32 +43,31 @@ class ShuffleActivity : AppCompatActivity() {
         val tempLabel = "Current temperature:$temperature oC"
         tempDisplay.text = tempLabel
 
-
         tops = intent.extras?.getBoolean("TOPS", false) == true
         bottom = intent.extras?.getBoolean("BOTTOMS", false) == true
         onePiece = intent.extras?.getBoolean("FULL_BODY", false) == true
         shoes = intent.extras?.getBoolean("SHOES", false) == true
         outerwear = intent.extras?.getBoolean("OUTER_WEAR", false) == true
         accessories = intent.extras?.getBoolean("ACCESSORIES", false) == true
+//        if (!tops && !bottom && !onePiece && !shoes && !outerwear && !accessories) {
+//            tops = true
+//            bottom = true
+//            onePiece = true
+//            shoes = true
+//            outerwear = true
+//            accessories = true
+//        }
         val casual = intent.extras?.getBoolean("CASUAL", false) == true
         val professional = intent.extras?.getBoolean("PROFESSIONAL", false) == true
         val formal = intent.extras?.getBoolean("FORMAL", false) == true
         val athletic = intent.extras?.getBoolean("ATHLETIC", false) == true
-        var seasonSelected = intent.getStringExtra("SEASON").toString()
+        seasonSelected = intent.getStringExtra("SEASON").toString()
         // Remake filter map
         val filters = mutableMapOf<String, String>()
         if (casual) filters["CASUAL"] = "1"
         if (professional) filters["PROFESSIONAL"] = "1"
         if (formal) filters["FORMAL"] = "1"
         if (athletic) filters["ATHLETIC"] = "1"
-        if (seasonSelected.isEmpty()) {
-            Toast.makeText(
-                this@ShuffleActivity,
-                "No weather available 'FALL' selected as default",
-                Toast.LENGTH_SHORT
-            ).show()
-            seasonSelected = "FALL"
-        }
 
         filters[seasonSelected] = "1"
         val showFilters = filters.filter { it.value == "1" }.keys.joinToString(" ")
@@ -169,11 +169,11 @@ class ShuffleActivity : AppCompatActivity() {
         }
         if (onePieceOrTwo == 2) { //filter returns a two piece suggestion
             onePieceImage.visibility = View.GONE
-            if(tops) {
+            if (tops) {
                 topImage.visibility = View.VISIBLE
                 makeImagesVisible(topsList, topImage)
             }
-            if(bottom){
+            if (bottom) {
                 bottomImage.visibility = View.VISIBLE
                 makeImagesVisible(bottomsList, bottomImage)
             }

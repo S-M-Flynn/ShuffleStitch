@@ -31,19 +31,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_above ="@id/back_button"
+        android:layout_above ="@id/home_button"
         android:layout_marginBottom="16dp"
         android:text="Open Closet"
         android:textAppearance="@android:style/TextAppearance.Material.Widget.Button.Colored" />
 
     <Button
-        android:id="@+id/back_button"
+        android:id="@+id/home_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="150dp"
-        android:text="@string/button_back"
+        android:text="HOME"
         android:textAppearance="@android:style/TextAppearance.Material.Widget.Button.Colored" />
     <ImageView
         android:id="@+id/imageView1"
