@@ -30,9 +30,6 @@ class NewPhotoActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //TODO:will need to set the buttons to inactive while photo background removal
-        //TODO:add a loading bar
-
         setContentView(R.layout.new_photo_activity)
         val acceptButton = findViewById<Button>(R.id.approve_photo)
         val retakeButton = findViewById<Button>(R.id.retake_photo)
@@ -44,8 +41,13 @@ class NewPhotoActivity : AppCompatActivity() {
 
         imageView = findViewById(R.id.closet_photo)
         acceptButton.setOnClickListener {
+            acceptButton.isEnabled = false
+            retakeButton.isEnabled = false
+            homeButton.isEnabled = false
+
             val imageName = "UserMedia/processed_${System.currentTimeMillis()}.jpg"
-            val emptyArray = intArrayOf()
+            val array = IntArray(14) // All elements are initialized to 0 by default
+
             try {
                 val outputFile = File(
                     getExternalFilesDir(null),
@@ -54,9 +56,16 @@ class NewPhotoActivity : AppCompatActivity() {
                 saveImage(imageViewToBitmap(imageView)!!, outputFile)
                 deleteOgImage()
                 databaseHelper = DatabaseHelper(this)
-                databaseHelper.insertData(imageName,emptyArray)
-                val intent = Intent(this, TagItemsActivity::class.java)
+                databaseHelper.insertData(imageName,array)
+                val intent = Intent(this@NewPhotoActivity, TagItemsActivity::class.java)
+
+                val baseDir = getExternalFilesDir(null).toString()
+                val imagePath = "$baseDir/$imageName"
+                val imageUri = Uri.parse(imagePath)
+                intent.putExtra("uri", imageUri.path.toString())
+                intent.putExtra("new_photo", true)
                 startActivity(intent)
+                finish()
             } catch (ex: ActivityNotFoundException) {
                 Log.e(TAG, "Save image launch closet activity error")
             }

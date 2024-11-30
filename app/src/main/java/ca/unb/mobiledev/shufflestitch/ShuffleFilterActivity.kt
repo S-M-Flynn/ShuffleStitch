@@ -6,10 +6,11 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.CheckBox
+import android.widget.CompoundButton
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import ca.unb.mobiledev.shufflestitch.DB.DatabaseHelper
-
 
 interface SeasonCallback { fun onSeasonFetched(season: String) }
 
@@ -24,89 +25,81 @@ class ShuffleFilterActivity: AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.shuffle_filter)
+        shuffleIntent = Intent(this@ShuffleFilterActivity, ShuffleActivity::class.java)
+
         val latitude = intent.getDoubleExtra("latitude",0.0)
         val longitude = intent.getDoubleExtra("longitude", 0.0)
         Log.i(TAG, "The latitude is $latitude")
         Log.i(TAG, "The longitude is $longitude")
-
         val shuffleButton = findViewById<Button>(R.id.shuffleFilterShuffleButton)
         val backButton = findViewById<Button>(R.id.back_button)
-        shuffleIntent = Intent(this@ShuffleFilterActivity, ShuffleActivity::class.java)
 
         databaseHelper = DatabaseHelper(this)
-        val chkbx: ArrayList<CheckBox> = ArrayList()
         val topCheckBox = findViewById<CheckBox>(R.id.shuffleFilterTopCheckbox)
-        chkbx.add(topCheckBox)
         val bottomCheckBox = findViewById<CheckBox>(R.id.shuffleFilterBottomCheckbox)
-        chkbx.add(bottomCheckBox)
         val fullBodyCheckBox = findViewById<CheckBox>(R.id.shuffleFilterFullBodyCheckbox)
-        chkbx.add(fullBodyCheckBox)
         val shoesCheckBox = findViewById<CheckBox>(R.id.shuffleFilterShoesCheckbox)
-        chkbx.add(shoesCheckBox)
-        val casualCheckBox = findViewById<CheckBox>(R.id.shuffleFilterCasualCheckbox)
-        chkbx.add(casualCheckBox)
-        val formalCheckBox = findViewById<CheckBox>(R.id.shuffleFilterFormalCheckbox)
-        chkbx.add(formalCheckBox)
-        val corporateCheckBox = findViewById<CheckBox>(R.id.shuffleFilterCorporateCheckbox)
-        chkbx.add(corporateCheckBox)
-        val sportsCheckBox = findViewById<CheckBox>(R.id.shuffleFilterSportsCheckbox)
-        chkbx.add(sportsCheckBox)
+        val accessoriesCheckBox = findViewById<CheckBox>(R.id.accessoriesCheckbox)
+        val outerwearCheckBox = findViewById<CheckBox>(R.id.outerwearCheckbox)
 
-        getWeather(latitude, longitude,object : SeasonCallback {
-            override fun onSeasonFetched(season: String) {
-                Log.i(TAG, "The determined season is: $season")
-                currentSeason = season
+        val casualCheckBox = findViewById<CheckBox>(R.id.shuffleFilterCasualCheckbox)
+        val formalCheckBox = findViewById<CheckBox>(R.id.shuffleFilterFormalCheckbox)
+        val corporateCheckBox = findViewById<CheckBox>(R.id.shuffleFilterCorporateCheckbox)
+        val sportsCheckBox = findViewById<CheckBox>(R.id.shuffleFilterSportsCheckbox)
+
+        val checkBoxes = listOf( topCheckBox, bottomCheckBox, fullBodyCheckBox, shoesCheckBox, accessoriesCheckBox,
+            outerwearCheckBox,casualCheckBox, formalCheckBox, corporateCheckBox, sportsCheckBox)
+        checkBoxes.forEach { checkBox -> checkBox.setOnCheckedChangeListener { _, _ -> } }
+
+        try {
+            getWeather(latitude, longitude, object : SeasonCallback {
+                override fun onSeasonFetched(season: String) {
+                    Log.i(TAG, "The determined season is: $season")
+                    currentSeason = season
+                }
+            })
+        } catch(_: Exception){
+        }
+
+        val listener = { buttonView: CompoundButton, isChecked: Boolean ->
+            if (isChecked) {
+                if(buttonView != formalCheckBox) formalCheckBox.isChecked = false
+                if(buttonView != corporateCheckBox) corporateCheckBox.isChecked = false
+                if(buttonView != casualCheckBox) casualCheckBox.isChecked = false
+                if(buttonView != sportsCheckBox) sportsCheckBox.isChecked = false
             }
-        })
+        }
+        sportsCheckBox.setOnCheckedChangeListener(listener)
+        casualCheckBox.setOnCheckedChangeListener (listener)
+        corporateCheckBox.setOnCheckedChangeListener (listener)
+        formalCheckBox.setOnCheckedChangeListener(listener)
 
         shuffleButton.setOnClickListener {
-            val filters = if (chkbx.none { it.isChecked }){
-                 mutableMapOf(
-                    "TOPS" to "1",
-                    "BOTTOMS" to "1",
-                    "FULL_BODY" to "1",
-                    "SHOES" to "1",
-                    "CASUAL" to "1",
-                    "PROFESSIONAL" to "1",
-                    "FORMAL" to "1",
-                    "ATHLETIC" to "1"
-                )
-            }
-            else {
-                mutableMapOf(
-                    "TOPS" to if (topCheckBox.isChecked) "1" else "0",
-                    "BOTTOMS" to if (bottomCheckBox.isChecked) "1" else "0",
-                    "FULL_BODY" to if (fullBodyCheckBox.isChecked) "1" else "0",
-                    "SHOES" to if (shoesCheckBox.isChecked) "1" else "0",
-                    "CASUAL" to if (casualCheckBox.isChecked) "1" else "0",
-                    "PROFESSIONAL" to if (corporateCheckBox.isChecked) "1" else "0",
-                    "FORMAL" to if (formalCheckBox.isChecked) "1" else "0",
-                    "ATHLETIC" to if (sportsCheckBox.isChecked) "1" else "0"
-                )
-            }
-            filters[currentSeason] = "1"
+
+            val filters = mutableMapOf<String, Boolean>()
+            filters["TOPS"] = (topCheckBox.isChecked)
+            filters["BOTTOMS"] = (bottomCheckBox.isChecked)
+            filters["FULL_BODY"] = (fullBodyCheckBox.isChecked)
+            filters["SHOES"] = (shoesCheckBox.isChecked)
+            filters["OUTER_WEAR"] = (outerwearCheckBox.isChecked)
+            filters["ACCESSORIES"] = (accessoriesCheckBox.isChecked)
+            filters["CASUAL"] = (casualCheckBox.isChecked)
+            filters["FORMAL"] = (formalCheckBox.isChecked)
+            filters["PROFESSIONAL"] = (corporateCheckBox.isChecked)
+            filters["ATHLETIC"] = (sportsCheckBox.isChecked)
 
             filters.forEach { (key, value) ->
-                val x = if (value.equals("1")) {
-                    true
-                }
-                else { false}
-                shuffleIntent.putExtra(key, x)
+                shuffleIntent.putExtra(key, value)
             }
-            val itemMap = databaseHelper.getAllData(filters)
-            val topsList = itemMap["tops"] ?: emptyList()
-            val bottomsList = itemMap["bottoms"] ?: emptyList()
-            val fullBodyList = itemMap["fullBody"] ?: emptyList()
-            val shoesList = itemMap["shoes"] ?: emptyList()
-
-            shuffleIntent.putParcelableArrayListExtra("tops", ArrayList(topsList))
-            shuffleIntent.putParcelableArrayListExtra("bottoms", ArrayList(bottomsList))
-            shuffleIntent.putParcelableArrayListExtra("fullBody", ArrayList(fullBodyList))
-            shuffleIntent.putParcelableArrayListExtra("shoes", ArrayList(shoesList))
-            try {
-                startActivity(shuffleIntent)
-            } catch (ex: ActivityNotFoundException) {
-                Log.e(TAG, "Unable to start the shuffle activity")
+            if (currentSeason.isEmpty()) {
+                manualSeasonSelectDialog()
+            } else {
+                shuffleIntent.putExtra("SEASON", currentSeason)
+                try {
+                    startActivity(shuffleIntent)
+                } catch (ex: ActivityNotFoundException) {
+                    Log.e(TAG, "Unable to start the shuffle activity")
+                }
             }
         }
 
@@ -138,6 +131,27 @@ class ShuffleFilterActivity: AppCompatActivity() {
                     callback.onSeasonFetched(season) }
             }
         })
+    }
+
+    private fun manualSeasonSelectDialog() {
+        val items = arrayOf("FALL", "WINTER", "SPRING", "SUMMER")
+        var selectedItem = 0
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Select Season")
+            .setSingleChoiceItems(items, selectedItem) { _, which ->
+                selectedItem = which
+            }
+            .setPositiveButton("OK") { _, _ ->
+                val selected = items[selectedItem]
+                currentSeason = selected
+                Log.d(TAG, "Category selected")
+                shuffleIntent.putExtra("SEASON", currentSeason)
+                startActivity(shuffleIntent)
+            }
+            .setNegativeButton("Cancel") { dialog, _ ->
+                dialog.dismiss()
+            }
+        builder.create().show()
     }
 
     companion object {

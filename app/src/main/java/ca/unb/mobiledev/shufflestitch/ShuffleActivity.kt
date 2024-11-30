@@ -1,6 +1,7 @@
 package ca.unb.mobiledev.shufflestitch
 
 import android.content.ActivityNotFoundException
+import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -10,86 +11,191 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
+import ca.unb.mobiledev.shufflestitch.DB.DatabaseHelper
 import java.io.File
 import kotlin.random.Random
-import android.os.Build
-import ca.unb.mobiledev.shufflestitch.MainActivity.Companion.TAG
-
 
 class ShuffleActivity : AppCompatActivity() {
+    private lateinit var databaseHelper: DatabaseHelper
+    private lateinit var topsList: List<String>
+    private lateinit var bottomsList: List<String>
+    private lateinit var onePieceList: List<String>
+    private lateinit var shoesList: List<String>
+    private lateinit var outerwearList: List<String>
+    private lateinit var accessoriesList: List<String>
+    private lateinit var seasonSelected: String
+    private var tops = false
+    private var bottom = false
+    private var onePiece = false
+    private var shoes = false
+    private var outerwear = false
+    private var accessories = false
+
+    private var currentList = mutableListOf<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.shuffle_activity)
+        val tempDisplay = findViewById<TextView>(R.id.temperature)
+        val temperature = intent.getDoubleExtra("temperature", 0.00)
+        val tempLabel = "Current temperature:$temperature oC"
+        tempDisplay.text = tempLabel
 
-        // Initialize views
-        val topImage = findViewById<ImageView>(R.id.topPiece)
-        val bottomImage = findViewById<ImageView>(R.id.bottomPiece)
-        val onePieceImage = findViewById<ImageView>(R.id.onePiece)
-        val shoeImage = findViewById<ImageView>(R.id.shoes)
+        tops = intent.extras?.getBoolean("TOPS", false) == true
+        bottom = intent.extras?.getBoolean("BOTTOMS", false) == true
+        onePiece = intent.extras?.getBoolean("FULL_BODY", false) == true
+        shoes = intent.extras?.getBoolean("SHOES", false) == true
+        outerwear = intent.extras?.getBoolean("OUTER_WEAR", false) == true
+        accessories = intent.extras?.getBoolean("ACCESSORIES", false) == true
+        if (!tops && !bottom && !onePiece && !shoes && !outerwear && !accessories) {
+            tops = true
+            bottom = true
+            onePiece = true
+            shoes = true
+            outerwear = true
+            accessories = true
+        }
+        val casual = intent.extras?.getBoolean("CASUAL", false) == true
+        val professional = intent.extras?.getBoolean("PROFESSIONAL", false) == true
+        val formal = intent.extras?.getBoolean("FORMAL", false) == true
+        val athletic = intent.extras?.getBoolean("ATHLETIC", false) == true
+        seasonSelected = intent.getStringExtra("SEASON").toString()
+        // Remake filter map
+        val filters = mutableMapOf<String, String>()
+        if (casual) filters["CASUAL"] = "1"
+        if (professional) filters["PROFESSIONAL"] = "1"
+        if (formal) filters["FORMAL"] = "1"
+        if (athletic) filters["ATHLETIC"] = "1"
 
-        // Retrieve data from Intent
-        val topsList: ArrayList<Item> = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
-            intent.getParcelableArrayListExtra("tops", Item::class.java)
-        } else {
-            @Suppress("DEPRECATION")
-            intent.getParcelableArrayListExtra("tops")
-        } ?: arrayListOf()
+        filters[seasonSelected] = "1"
+        val showFilters = filters.filter { it.value == "1" }.keys.joinToString(" ")
+        val textBox = findViewById<TextView>(R.id.displayFilters)
+        textBox.text = showFilters
 
-        val bottomList: ArrayList<Item> = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
-            intent.getParcelableArrayListExtra("bottoms", Item::class.java)
-        } else {
-            @Suppress("DEPRECATION")
-            intent.getParcelableArrayListExtra("bottoms")
-        } ?: arrayListOf()
+        databaseHelper = DatabaseHelper(this)
+        val itemMap = databaseHelper.getAllData(filters)
+        topsList = if (tops) itemMap["tops"] ?: emptyList() else emptyList()
+        bottomsList = if (bottom) itemMap["bottoms"] ?: emptyList() else emptyList()
+        onePieceList = if (onePiece) itemMap["fullBody"] ?: emptyList() else emptyList()
+        shoesList = if (shoes) itemMap["shoes"] ?: emptyList() else emptyList()
+        outerwearList = if (outerwear) itemMap["outerWear"] ?: emptyList() else emptyList()
+        accessoriesList = if (accessories) itemMap["accessories"] ?: emptyList() else emptyList()
 
-        val onePieceList: ArrayList<Item> = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
-            intent.getParcelableArrayListExtra("fullBody", Item::class.java)
-        } else {
-            @Suppress("DEPRECATION")
-            intent.getParcelableArrayListExtra("fullBody")
-        } ?: arrayListOf()
+        shuffle()
 
-        val shoesList: ArrayList<Item> = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
-            intent.getParcelableArrayListExtra("shoes", Item::class.java)
-        } else {
-            @Suppress("DEPRECATION")
-            intent.getParcelableArrayListExtra("shoes")
-        } ?: arrayListOf()
-
-        // Debugging logs
-        Log.d(TAG, "Received topsList: $topsList")
-        Log.d(TAG, "Received bottomList: $bottomList")
-        Log.d(TAG, "Received onePieceList: $onePieceList")
-        Log.d(TAG, "Received shoesList: $shoesList")
-
-        // Load data into views
-        if (onePieceList.isNotEmpty()) {
-            val onePiecePath = onePieceList[0].path
-            loadImage(onePiecePath, onePieceImage)
-        } else if (topsList.isNotEmpty() && bottomList.isNotEmpty()) {
-            val topPath = topsList[0].path
-            val bottomPath = bottomList[0].path
-            loadImage(topPath, topImage)
-            loadImage(bottomPath, bottomImage)
-        } else {
-            Log.e(TAG, "No items available to display.")
-            // Optional: Show a default image or error message
+        val reShuffleButton = findViewById<Button>(R.id.reShuffle)
+        reShuffleButton.setOnClickListener {
+            try {
+                shuffle()
+            } catch (ex: ActivityNotFoundException) {
+                Log.e(TAG, "Error on reshuffling")
+            }
         }
 
-        if (shoesList.isNotEmpty()) {
-            val shoePath = shoesList[0].path
-            loadImage(shoePath, shoeImage)
-        } else {
-            Log.e(TAG, "No shoes available to display.")
-            // Optional: Show a default image or error message
+        val selectButton = findViewById<Button>(R.id.selectButton)
+        selectButton.setOnClickListener {
+            try {
+                for (path in currentList){
+                    databaseHelper.incrementCountByPath(path)
+                }
+                Toast.makeText(this, "Selection Added", Toast.LENGTH_SHORT).show()
+            } catch (ex: ActivityNotFoundException) {
+                Log.e(TAG, "Error on writing count to database")
+            }
+        }
+
+        val backButton = findViewById<Button>(R.id.backButtonShuffleActivity)
+        backButton.setOnClickListener {
+            try {
+                finish()
+            } catch (ex: ActivityNotFoundException) {
+                Log.e(TAG, "Error on back button finish")
+            }
         }
     }
 
-    // Helper method to load images into an ImageView
-    private fun loadImage(imagePath: String, imageView: ImageView) {
-        // Example implementation, replace with your preferred image loading library
-        // Glide.with(this).load(imagePath).into(imageView)
-        Log.d(TAG, "Loading image: $imagePath into ${imageView.id}")
+    private fun loadImage(fileName: String, imageView: ImageView) {
+        val file = File(fileName)
+        if (file.exists()) {
+            imageView.setImageURI(Uri.fromFile(file))
+        } else {
+            Toast.makeText(this, "File not found: $fileName", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun makeImagesVisible(list: List<String>, image: ImageView) {
+        if (list.isNotEmpty()) {
+            val index = Random.nextInt(list.size)
+            val imagePath = list[index]
+            currentList.add(imagePath)
+            loadImage(imagePath, image)
+        } else {
+            image.setImageResource(R.drawable.banner_image)
+        }
+    }
+
+    private fun shuffle() {
+        currentList = mutableListOf<String>()
+        var onePieceOrTwo = 2
+        if (tops && onePiece && bottom && onePieceList.isNotEmpty()) {
+            val randomNum = Random.nextInt(1, 10)
+            //could make this based off of the count of 1 piece outfits in the db and use that as a percentage of
+            // one piece/tops + one piece
+            onePieceOrTwo =
+                if (randomNum == 1 || randomNum == 2) {
+                    1
+                } else {
+                    2
+                }
+        } else if (onePiece && !tops && !bottom) {
+            onePieceOrTwo = 1
+        }
+
+        val shoeImage = findViewById<ImageView>(R.id.shoes)
+        val onePieceImage = findViewById<ImageView>(R.id.onePiece)
+        val topImage = findViewById<ImageView>(R.id.topPiece)
+        val bottomImage = findViewById<ImageView>(R.id.bottomPiece)
+        val outerwearImage = findViewById<ImageView>(R.id.outerwear)
+        val accessoriesImage = findViewById<ImageView>(R.id.accessories)
+
+        if (onePieceOrTwo == 1) { //filter returns a one piece suggestion
+            topImage.visibility = View.GONE
+            bottomImage.visibility = View.GONE
+            onePieceImage.visibility = View.VISIBLE
+            makeImagesVisible(onePieceList, onePieceImage)
+        }
+        if (onePieceOrTwo == 2) { //filter returns a two piece suggestion
+            onePieceImage.visibility = View.GONE
+            if (tops) {
+                topImage.visibility = View.VISIBLE
+                makeImagesVisible(topsList, topImage)
+            }
+            if (bottom) {
+                bottomImage.visibility = View.VISIBLE
+                makeImagesVisible(bottomsList, bottomImage)
+            }
+        }
+        if (shoes) {
+            shoeImage.visibility = View.VISIBLE
+            makeImagesVisible(shoesList, shoeImage)
+        }
+        if (accessories) {
+            accessoriesImage.visibility = View.VISIBLE
+            makeImagesVisible(accessoriesList, accessoriesImage)
+        }
+        if (outerwear) {
+            outerwearImage.visibility = View.VISIBLE
+            makeImagesVisible(outerwearList, outerwearImage)
+        }
+    }
+
+    private fun dpToPx(dp: Int, context: Context): Int {
+        return (dp * context.resources.displayMetrics.density).toInt()
+    }
+
+    companion object {
+        internal const val TAG = "Shuffle Activity"
     }
 }

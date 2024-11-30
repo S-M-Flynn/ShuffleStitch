@@ -32,41 +32,38 @@ class ClosetActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.closet_activity)
-        //val gotoCloset = findViewById<Button>(R.id.goto_closet)
-        //val cameraButton = findViewById<Button>(R.id.camera_button)
-        //val backButton = findViewById<Button>(R.id.back_button)
-        //imageView = findViewById(R.id.closet_photo)
-        //put in closet stats
-        //most popular item
-        //least worn item
-        //#items etc.
+        val gotoCloset = findViewById<Button>(R.id.goto_closet)
+        val cameraButton = findViewById<Button>(R.id.camera_button)
+        val homeButton = findViewById<Button>(R.id.home_button)
+        imageView = findViewById(R.id.closet_photo)
 
-//        setCameraActivityResultLauncher()
-//        cameraButton.setOnClickListener {
-//            try {
-//               dispatchTakePictureIntent()
-//            } catch (ex: ActivityNotFoundException) {
-//                Log.e(TAG, "Unable to start the camera activity")
-//            }
-//
-//        }
-//
-//        gotoCloset.setOnClickListener {
-//            val typeIntent = Intent(this, EditItemsActivity::class.java)
-//            try {
-//                startActivity(typeIntent)
-//            } catch (ex: ActivityNotFoundException) {
-//                Log.e(TAG, "Unable to start type selection activity")
-//            }
-//        }
-//
-//        backButton.setOnClickListener {
-//            try {
-//                finish()
-//            } catch (ex: ActivityNotFoundException) {
-//                Log.e(TAG, "Error on back button finish")
-//            }
-//        }
+        setCameraActivityResultLauncher()
+        cameraButton.setOnClickListener {
+            try {
+               dispatchTakePictureIntent()
+            } catch (ex: ActivityNotFoundException) {
+                Log.e(TAG, "Unable to start the camera activity")
+            }
+
+        }
+
+        gotoCloset.setOnClickListener {
+            val typeIntent = Intent(this, EditItemsActivity::class.java)
+            try {
+                startActivity(typeIntent)
+            } catch (ex: ActivityNotFoundException) {
+                Log.e(TAG, "Unable to start type selection activity")
+            }
+        }
+
+        homeButton.setOnClickListener {
+            val homeIntent = Intent(this, SelectionActivity::class.java)
+            try {
+                startActivity(homeIntent)
+            } catch (ex: ActivityNotFoundException) {
+                Log.e(TAG, "Error on back button finish")
+            }
+        }
     }
 
     private fun createImageFile(imageName: String): File {

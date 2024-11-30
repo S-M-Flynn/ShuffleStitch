@@ -114,6 +114,20 @@
                 android:text="Shoes"
                 android:textAppearance="@android:style/TextAppearance.Material.Medium"
                 app:layout_gravity="fill_horizontal" />
+            <CheckBox
+                android:id="@+id/outerwearCheckbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Outerwear"
+                android:textAppearance="@android:style/TextAppearance.Material.Medium"
+                app:layout_gravity="fill_horizontal" />
+            <CheckBox
+                android:id="@+id/accessoriesCheckbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Accessories"
+                android:textAppearance="@android:style/TextAppearance.Material.Medium"
+                app:layout_gravity="fill_horizontal" />
         </androidx.gridlayout.widget.GridLayout>
     </androidx.cardview.widget.CardView>
 
@@ -137,7 +151,7 @@
         android:autoSizeTextType="uniform"
         android:ellipsize="end"
         android:singleLine="true"
-        android:text="Select Activity"
+        android:text="Select Activity(choose only one)"
         android:textAppearance="@android:style/TextAppearance.Material.Large"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -211,7 +225,6 @@
         android:autoSizeMinTextSize="12sp"
         android:autoSizeStepGranularity="1sp"
         android:autoSizeTextType="uniform"
-        android:text="Let chaos reign by leaving all filters blank!"
         android:textAppearance="@android:style/TextAppearance.Material.Medium"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

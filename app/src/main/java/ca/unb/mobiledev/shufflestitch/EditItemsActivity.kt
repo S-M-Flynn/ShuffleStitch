@@ -37,7 +37,6 @@ class EditItemsActivity : AppCompatActivity() {
         val filesList = getImagesFromUserMedia()
         Log.d(TAG, "Files in UserMedia: ${filesList.joinToString { it.name }}")
 
-
         recyclerView = findViewById(R.id.recyclerView)
         imageView = findViewById(R.id.closet_photo)
         adapter = ImageAdapter(filesList) { file ->
@@ -66,23 +65,6 @@ class EditItemsActivity : AppCompatActivity() {
             launchFilterMenu()
         }
 
-        //remove-delete an item from the closet button activity
-//            val typeIntent = Intent(this, TypeSelectionActivity::class.java)
-//            try {
-//                startActivity(typeIntent)
-//            } catch (ex: ActivityNotFoundException) {
-//                Log.e(MainActivity.TAG, "Unable to start type selection activity")
-//            }
-//        }
-//        tempButton.setOnClickListener {
-//            val tempIntent = Intent(this, ItemTempSelection::class.java)
-//            try {
-//                startActivity(tempIntent)
-//            } catch (ex: ActivityNotFoundException) {
-//                Log.e(TAG, "Error unable to start temp selection")
-//            }
-//        }
-
         backButton.setOnClickListener {
             try {
                 finish()
@@ -90,6 +72,11 @@ class EditItemsActivity : AppCompatActivity() {
                 Log.e(TAG, "Error on back button")
             }
         }
+    }
+    override fun onResume(){
+        super.onResume()
+        imageView.setImageDrawable(null)
+        resetRecyclerViewWithAllImages()
     }
 
     private fun launchFilterMenu() {
@@ -128,7 +115,7 @@ class EditItemsActivity : AppCompatActivity() {
         builder.create().show()
     }
 
-    private fun updateRecyclerViewWithImages(itemList: List<Item>) {
+    private fun updateRecyclerViewWithImages(itemList: List<String>) {
         val filesList = getImagesFromDatabase(itemList)
         if (filesList.isNotEmpty()) {
             try {
@@ -164,12 +151,12 @@ class EditItemsActivity : AppCompatActivity() {
         recyclerView.adapter = adapter
     }
 
-    private fun getImagesFromDatabase(filterList: List<Item>): List<File> {
+    private fun getImagesFromDatabase(filterList: List<String>): List<File> {
         val userMediaDir = File(getExternalFilesDir(null), "UserMedia")
         val allFiles = userMediaDir.listFiles() ?: emptyArray()
         val fileList = mutableListOf<File>()
         filterList.forEach { item ->
-            val file = File(item.path)
+            val file = File(item)
             val existsInUserMedia = allFiles.any {
                 it.name == file.name && it.extension in listOf(
                     "jpg",
@@ -195,9 +182,9 @@ class EditItemsActivity : AppCompatActivity() {
         orgButton.isEnabled = isImageLoaded
         if (isImageLoaded) {
             orgButton.isEnabled = true
-            Log.d("GestureDetector", "Image loaded, button enabled")
+            Log.d(TAG, "Image loaded, button enabled")
         } else {
-            Log.d("GestureDetector", "No image loaded, button disabled")
+            Log.d(TAG, "No image loaded, button disabled")
         }
     }
 
