@@ -1,69 +1,180 @@
-<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@null"
+    android:background="@color/white"
     android:gravity="center"
     android:orientation="vertical">
 
+    <!-- Row 1: Tops and Accessories -->
+    <ImageView
+        android:id="@+id/tops_icon"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/top"
+        android:contentDescription="Tops Icon"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="45dp" />
+
+    <Button
+        android:id="@+id/tops_label"
+        android:layout_width="150dp"
+        android:layout_height="48dp"
+        android:layout_below="@id/tops_icon"
+        android:layout_alignStart="@id/tops_icon"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@color/purple"
+        android:text="Tops"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+        android:textStyle="bold" />
 
     <ImageView
-        android:id="@+id/closet_photo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:contentDescription="closet image"
-        android:scaleType="fitCenter"
-        android:src="@drawable/group_2" />
+        android:id="@+id/accessories_icon"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/accessories"
+        android:contentDescription="Accessories Icon"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="45dp" />
 
     <Button
-        android:id="@+id/camera_button"
-        android:layout_width="343dp"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#6e00b3"
-        android:gravity="center"
-        android:padding="0dp"
-        android:textSize="35sp"
-        android:textStyle="bold"
-        android:layout_above ="@id/goto_closet"
-        android:layout_marginBottom="0dp"
-        android:layout_centerHorizontal="true"
-        android:text="@string/button_camera"/>
+        android:id="@+id/accessories_label"
+        android:layout_width="150dp"
+        android:layout_height="48dp"
+        android:layout_below="@id/accessories_icon"
+        android:layout_alignEnd="@id/accessories_icon"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@color/purple"
+        android:text="Accessories"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+        android:textStyle="bold" />
 
-    <Button
-        android:id="@+id/goto_closet"
-        android:layout_width="343dp"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#DB56A6"
-        android:textSize="35sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:padding="0dp"
-        android:textColor="@android:color/white"
-        android:layout_centerHorizontal="true"
-        android:layout_above ="@id/home_button"
-        android:layout_marginBottom="0dp"
-        android:text="@string/goto_closet"/>
-
-    <Button
-        android:id="@+id/home_button"
-        android:layout_width="343dp"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/md_theme_onSecondaryFixedVariant"
-        android:textSize="35sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:padding="0dp"
-        android:textColor="@android:color/white"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="150dp"
-        android:text="@string/home_button" />
+    <!-- Row 2: Bottoms and Shoes -->
     <ImageView
-        android:id="@+id/imageView1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:scaleType="fitCenter"
+        android:id="@+id/bottoms_icon"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/bottoms"
+        android:contentDescription="Bottoms Icon"
+        android:layout_below="@id/tops_label"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="16dp" />
+
+    <Button
+        android:id="@+id/bottoms_label"
+        android:layout_width="150dp"
+        android:layout_height="48dp"
+        android:layout_below="@id/bottoms_icon"
+        android:layout_alignStart="@id/bottoms_icon"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@color/purple"
+        android:text="Bottoms"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/shoes_icon"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/shoes"
+        android:contentDescription="Shoes Icon"
+        android:layout_below="@id/accessories_label"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="16dp" />
+
+    <Button
+        android:id="@+id/shoes_label"
+        android:layout_width="150dp"
+        android:layout_height="48dp"
+        android:layout_below="@id/shoes_icon"
+        android:layout_alignEnd="@id/shoes_icon"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@color/purple"
+        android:text="Shoes"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+
+    <!-- Row 3: Full Body and Outerwear -->
+    <ImageView
+        android:id="@+id/full_body_icon"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/fullbody"
+        android:contentDescription="Full Body Icon"
+        android:layout_below="@id/bottoms_label"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="16dp" />
+
+    <Button
+        android:id="@+id/full_body_label"
+        android:layout_width="150dp"
+        android:layout_height="48dp"
+        android:layout_below="@id/full_body_icon"
+        android:layout_alignStart="@id/full_body_icon"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@color/purple"
+        android:text="Full Body"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/outerwear_icon"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/outerwear"
+        android:contentDescription="Outerwear Icon"
+        android:layout_below="@id/shoes_label"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="16dp" />
+
+    <Button
+        android:id="@+id/outerwear_label"
+        android:layout_width="150dp"
+        android:layout_height="48dp"
+        android:layout_below="@id/outerwear_icon"
+        android:layout_alignEnd="@id/outerwear_icon"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@color/purple"
+        android:text="Outerwear"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+    <!-- Bottom Buttons -->
+    <Button
+        android:id="@+id/add_item_button"
+        android:layout_width="165dp"
+        android:layout_height="55dp"
+        android:text="Add Item"
+        android:backgroundTint="#E91E63"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:textSize="15sp"
+        android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="0dp"
-        android:src="@drawable/banner_image" />
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="32dp"/>
+
+    <Button
+        android:id="@+id/see_all_clothing_button"
+        android:layout_width="165dp"
+        android:layout_height="55dp"
+        android:text="See All Clothing"
+        android:backgroundTint="#E91E63"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:textSize="15sp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="32dp"/>
 </RelativeLayout>
