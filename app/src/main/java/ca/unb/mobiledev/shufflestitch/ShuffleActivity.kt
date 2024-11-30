@@ -10,13 +10,10 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import ca.unb.mobiledev.shufflestitch.DB.DatabaseHelper
 import java.io.File
-import java.util.concurrent.CountDownLatch
-//import java.util.concurrent.CountDownLatch
 import kotlin.random.Random
 
 class ShuffleActivity : AppCompatActivity() {
