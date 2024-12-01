@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView
 import ca.unb.mobiledev.shufflestitch.DB.DatabaseHelper
 import java.io.File
 
-
 class EditItemsActivity : AppCompatActivity() {
     private lateinit var imageUri: Uri
     private lateinit var fileName: String
@@ -76,6 +75,7 @@ class EditItemsActivity : AppCompatActivity() {
     override fun onResume(){
         super.onResume()
         imageView.setImageDrawable(null)
+        checkImageLoaded()
         resetRecyclerViewWithAllImages()
     }
 
@@ -117,6 +117,8 @@ class EditItemsActivity : AppCompatActivity() {
 
     private fun updateRecyclerViewWithImages(itemList: List<String>) {
         val filesList = getImagesFromDatabase(itemList)
+        imageView.setImageDrawable(null)
+        checkImageLoaded()
         if (filesList.isNotEmpty()) {
             try {
                 adapter = ImageAdapter(filesList) { file ->
@@ -142,6 +144,8 @@ class EditItemsActivity : AppCompatActivity() {
 
     private fun resetRecyclerViewWithAllImages() {
         val filesList = getImagesFromUserMedia()
+        imageView.setImageDrawable(null)
+        checkImageLoaded()
         adapter = ImageAdapter(filesList) { file ->
             imageView.setImageURI(Uri.fromFile(file))
             imageUri = Uri.fromFile(file)
@@ -179,11 +183,11 @@ class EditItemsActivity : AppCompatActivity() {
 
     private fun checkImageLoaded() {
         val isImageLoaded = imageView.drawable != null
-        orgButton.isEnabled = isImageLoaded
         if (isImageLoaded) {
             orgButton.isEnabled = true
             Log.d(TAG, "Image loaded, button enabled")
         } else {
+            orgButton.isEnabled = false
             Log.d(TAG, "No image loaded, button disabled")
         }
     }
