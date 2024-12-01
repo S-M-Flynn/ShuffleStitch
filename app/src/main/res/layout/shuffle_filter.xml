@@ -42,7 +42,7 @@
         android:layout_height="20dp"
         android:layout_above="@id/textView2"
         android:layout_centerHorizontal="true"
-        android:background="@color/md_theme_tertiary"
+        android:background="@color/md_theme_onSecondaryFixedVariant"
         app:layout_constraintTop_toBottomOf="@id/textView1" />
 
     <TextView
@@ -136,7 +136,7 @@
         android:layout_width="match_parent"
         android:layout_height="20dp"
         android:layout_above="@id/textView2"
-        android:background="@color/md_theme_tertiary"
+        android:background="@color/md_theme_onSecondaryFixedVariant"
         app:layout_constraintTop_toBottomOf="@id/card1" />
 
     <TextView
@@ -213,12 +213,12 @@
         android:id="@+id/divider4"
         android:layout_width="match_parent"
         android:layout_height="20dp"
-        android:background="@color/md_theme_tertiary"
+        android:background="@color/md_theme_onSecondaryFixedVariant"
         app:layout_constraintTop_toBottomOf="@id/card2" />
     <TextView
         android:id="@+id/textView4"
         android:layout_width="0dp"
-        android:layout_height="30dp"
+        android:layout_height="0dp"
         android:layout_above="@id/card2"
         android:layout_marginStart="8dp"
         android:autoSizeMaxTextSize="100sp"
@@ -246,27 +246,40 @@
 
             <Button
                 android:id="@+id/shuffleFilterShuffleButton"
-                android:layout_width="150dp"
-                android:layout_height="50dp"
+                android:layout_width="343dp"
+                android:layout_height="60dp"
+                android:textSize="35sp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:padding="0dp"
+                android:backgroundTint="#DB56A6"
+                android:textColor="@android:color/white"
+                android:layout_marginTop="200dp"
                 android:layout_marginBottom="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/imageView2"
+                app:layout_constraintTop_toBottomOf="@+id/textView4"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:text="Shuffle"
+                android:text="@string/shuffle_button"
                 android:textAppearance= "@android:style/TextAppearance.Material.Button"/>
 
             <Button
                 android:id="@+id/back_button"
-                android:layout_width="150dp"
-                android:layout_height="50dp"
+                android:layout_width="343dp"
+                android:layout_height="60dp"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                android:textSize="35sp"
+                android:gravity="center"
+                android:padding="0dp"
+                android:backgroundTint="#6e00b3"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/shuffleFilterShuffleButton"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:text="Back"
+                android:text="@string/button_back"
                 android:textAppearance="@android:style/TextAppearance.Material.Button"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
