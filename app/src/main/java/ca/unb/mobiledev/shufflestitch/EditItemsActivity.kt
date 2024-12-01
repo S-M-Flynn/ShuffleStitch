@@ -113,8 +113,8 @@ class EditItemsActivity : AppCompatActivity() {
                     Log.d(TAG, "Category selected")
                 }
             }
-            .setNegativeButton("Cancel") { _, _ ->
-                resetRecyclerViewWithAllImages()
+            .setNegativeButton("Cancel") { dialog, _ ->
+               dialog.dismiss()
             }
         builder.create().show()
     }
