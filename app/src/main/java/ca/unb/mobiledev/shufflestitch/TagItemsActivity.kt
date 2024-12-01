@@ -176,7 +176,7 @@ class TagItemsActivity : AppCompatActivity() {
     private fun showDeleteConfirmationDialog(itemPath: String) {
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Delete Item")
-        builder.setMessage("Are you sure you want to delete this item?")
+        builder.setMessage("Are you sure you want to delete this item? This will delete the image as well.")
         builder.setPositiveButton("Yes") { dialog, _ ->
             val isDeleted = databaseHelper.deleteItemByPath(itemPath)
             val fileDeleted = deleteFilesInUserMedia(itemPath)

@@ -15,24 +15,37 @@
 
     <Button
         android:id="@+id/retake_photo"
-        android:layout_width="wrap_content"
+        android:layout_width="343dp"
         android:layout_height="wrap_content"
-        android:drawableBottom="@drawable/baseline_add_a_photo_24"
+        android:backgroundTint="#6e00b3"
+        android:gravity="center"
+        android:padding="0dp"
         android:text="Retake Photo"
-        android:textAppearance="@android:style/TextAppearance.Material.Widget.Button.Colored" />
+        android:textSize="35sp"
+        android:textStyle="bold" />
 
     <Button
         android:id="@+id/approve_photo"
-        android:layout_width="wrap_content"
+        android:layout_width="343dp"
         android:layout_height="wrap_content"
-        android:text="Use Photo"
-        android:textAppearance="@android:style/TextAppearance.Material.Widget.Button.Colored" />
+        android:backgroundTint="#DB56A6"
+        android:textSize="35sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:padding="0dp"
+        android:textColor="@android:color/white"
+        android:text="Use Photo" />
 
     <Button
         android:id="@+id/home_button"
-        android:layout_width="wrap_content"
+        android:layout_width="343dp"
         android:layout_height="wrap_content"
-        android:text="@string/home_button"
-        android:textAppearance="@android:style/TextAppearance.Material.Widget.Button.Colored" />
+        android:backgroundTint="@color/md_theme_onSecondaryFixedVariant"
+        android:textSize="35sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:padding="0dp"
+        android:textColor="@android:color/white"
+        android:text="@string/home_button" />
 
 </LinearLayout>

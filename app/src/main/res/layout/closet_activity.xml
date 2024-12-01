@@ -17,40 +17,53 @@
 
     <Button
         android:id="@+id/camera_button"
-        android:layout_width="wrap_content"
+        android:layout_width="343dp"
         android:layout_height="wrap_content"
+        android:backgroundTint="#6e00b3"
+        android:gravity="center"
+        android:padding="0dp"
+        android:textSize="35sp"
+        android:textStyle="bold"
         android:layout_above ="@id/goto_closet"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="0dp"
         android:layout_centerHorizontal="true"
-        android:drawableBottom="@drawable/baseline_add_a_photo_24"
-        android:text="@string/button_camera"
-        android:textAppearance="@android:style/TextAppearance.Material.Widget.Button.Colored" />
+        android:text="@string/button_camera"/>
 
     <Button
         android:id="@+id/goto_closet"
-        android:layout_width="wrap_content"
+        android:layout_width="343dp"
         android:layout_height="wrap_content"
+        android:backgroundTint="#DB56A6"
+        android:textSize="35sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:padding="0dp"
+        android:textColor="@android:color/white"
         android:layout_centerHorizontal="true"
         android:layout_above ="@id/home_button"
-        android:layout_marginBottom="16dp"
-        android:text="Open Closet"
-        android:textAppearance="@android:style/TextAppearance.Material.Widget.Button.Colored" />
+        android:layout_marginBottom="0dp"
+        android:text="@string/goto_closet"/>
 
     <Button
         android:id="@+id/home_button"
-        android:layout_width="wrap_content"
+        android:layout_width="343dp"
         android:layout_height="wrap_content"
+        android:backgroundTint="@color/md_theme_onSecondaryFixedVariant"
+        android:textSize="35sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:padding="0dp"
+        android:textColor="@android:color/white"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="150dp"
-        android:text="HOME"
-        android:textAppearance="@android:style/TextAppearance.Material.Widget.Button.Colored" />
+        android:text="@string/home_button" />
     <ImageView
         android:id="@+id/imageView1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scaleType="fitCenter"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="0dp"
         android:src="@drawable/banner_image" />
 </RelativeLayout>

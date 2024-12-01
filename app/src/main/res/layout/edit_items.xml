@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:background="@null"
     android:gravity="center"
     android:orientation="vertical">
@@ -11,31 +15,51 @@
         android:layout_width="300dp"
         android:layout_height="200dp"
         android:orientation="horizontal"
-        android:layout_margin="16dp"/>
+        android:padding="0dp"
+        android:layout_marginBottom="0dp"
+        android:layout_margin="10dp"/>
     <ImageView
         android:id="@+id/closet_photo"
         android:layout_width="300dp"
         android:layout_height="300dp"
+        android:layout_marginTop="-40dp"
         android:contentDescription="closet image"
+        android:padding="0dp"
         android:scaleType="fitXY" />
     <Button
         android:id="@+id/item_type"
-        android:layout_width="wrap_content"
+        android:layout_width="343dp"
         android:layout_height="wrap_content"
-        android:text="Organize Your Closet"
-        android:textAppearance="@android:style/TextAppearance.Material.Widget.Button.Colored" />
+        android:textColor="@android:color/white"
+        android:textSize="35sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:padding="0dp"
+        android:theme="@style/Button.color"
+        android:text="Tag Your Items" />
 
     <Button
         android:id="@+id/filter"
-        android:layout_width="wrap_content"
+        android:layout_width="343dp"
         android:layout_height="wrap_content"
-        android:text="Filter"
-        android:textAppearance="@android:style/TextAppearance.Material.Widget.Button.Colored" />
+        android:backgroundTint="#6e00b3"
+        android:textStyle="bold"
+        android:textSize="35sp"
+        android:gravity="center"
+        android:padding="0dp"
+        android:textColor="@android:color/white"
+        android:text="Filter" />
 
     <Button
         android:id="@+id/back_button"
-        android:layout_width="wrap_content"
+        android:layout_width="343dp"
         android:layout_height="wrap_content"
-        android:text="Back"
-        android:textAppearance="@android:style/TextAppearance.Material.Widget.Button.Colored" />
+        android:backgroundTint="@color/md_theme_onSecondaryFixedVariant"
+        android:textSize="35sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:padding="0dp"
+        android:textColor="@android:color/white"
+        android:text="@string/button_back" />
 </LinearLayout>
+</ScrollView>

@@ -5,12 +5,12 @@
     <string name="title">Your Closet</string>
     <string name="shuffle_button">Shuffle It!</string>
     <string name="goto_closet">Open Closet</string>
-    <string name="button_camera">Add New Item</string>
+    <string name="button_camera">Add A New Item</string>
     <string name="button_edit">Closet</string>
     <string name="button_back">Back</string>
     <string name="bottoms">Back</string>
     <string name="tops">Back</string>
     <string name="one_piece">Back</string>
     <string name="choose_outfit">Wearing It</string>
-    <string name="re_shuffle">Shuffle again</string>
+    <string name="re_shuffle">Shuffle Again</string>
 </resources>
