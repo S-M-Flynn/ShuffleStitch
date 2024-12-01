@@ -80,7 +80,7 @@ class EditItemsActivity : AppCompatActivity() {
     }
 
     private fun launchFilterMenu() {
-        val items = arrayOf("Tops", "Bottoms", "One-Piece", "Shoes", "All")
+        val items = arrayOf("Tops", "Bottoms", "One-Piece", "Shoes","Outerwear", "Accessories", "All")
         var selectedItem = 0
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Select Options")
@@ -88,7 +88,7 @@ class EditItemsActivity : AppCompatActivity() {
                 selectedItem = which
             }
             .setPositiveButton("OK") { _, _ ->
-                if (selectedItem == 4) {
+                if (selectedItem == 6) {
                     resetRecyclerViewWithAllImages()
                 } else {
                     databaseHelper = DatabaseHelper(this)
@@ -96,14 +96,18 @@ class EditItemsActivity : AppCompatActivity() {
                         "TOPS" to if (selectedItem == 0) "1" else "0",
                         "BOTTOMS" to if (selectedItem == 1) "1" else "0",
                         "FULL_BODY" to if (selectedItem == 2) "1" else "0",
-                        "SHOES" to if (selectedItem == 3) "1" else "0"
+                        "SHOES" to if (selectedItem == 3) "1" else "0",
+                        "OUTER_WEAR" to if (selectedItem == 4) "1" else "0",
+                        "ACCESSORIES" to if (selectedItem == 5) "1" else "0",
                     )
                     val itemMap = databaseHelper.getAllData(filters)
                     val topsList = itemMap["tops"] ?: emptyList()
                     val bottomsList = itemMap["bottoms"] ?: emptyList()
                     val fullBodyList = itemMap["fullBody"] ?: emptyList()
                     val shoesList = itemMap["shoes"] ?: emptyList()
-                    val filesList = topsList + bottomsList + fullBodyList + shoesList
+                    val outerwear = itemMap["outerWear"]?: emptyList()
+                    val accessories = itemMap["accessories"]?: emptyList()
+                    val filesList = topsList + bottomsList + fullBodyList + shoesList + accessories + outerwear
 
                     updateRecyclerViewWithImages(filesList)
                     Log.d(TAG, "Category selected")
