@@ -92,31 +92,45 @@
 
         <Button
             android:id="@+id/selectButton"
-            android:layout_width="wrap_content"
+            android:layout_width="343dp"
             android:layout_height="wrap_content"
+            android:backgroundTint="#6e00b3"
+            android:gravity="center"
+            android:padding="0dp"
             android:text="@string/choose_outfit"
-            android:textAppearance="@android:style/TextAppearance.Material.Button"
+            android:textSize="35sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toTopOf="@id/reShuffle" />
 
         <Button
             android:id="@+id/reShuffle"
-            android:layout_width="wrap_content"
+            android:layout_width="343dp"
             android:layout_height="wrap_content"
+            android:backgroundTint="#DB56A6"
+            android:textSize="35sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:padding="0dp"
+            android:textColor="@android:color/white"
             android:layout_centerHorizontal="true"
             android:text="@string/re_shuffle"
-            android:textAppearance="@android:style/TextAppearance.Material.Button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toTopOf="@id/backButtonShuffleActivity" />
 
         <Button
             android:id="@+id/backButtonShuffleActivity"
-            android:layout_width="wrap_content"
+            android:layout_width="343dp"
             android:layout_height="wrap_content"
-            android:text="Back"
-            android:textAppearance="@android:style/TextAppearance.Material.Button"
+            android:backgroundTint="@color/md_theme_onSecondaryFixedVariant"
+            android:textSize="35sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:padding="0dp"
+            android:textColor="@android:color/white"
+            android:text="@string/button_back"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent" />

@@ -86,7 +86,7 @@ class NewPhotoActivity : AppCompatActivity() {
             try {
                 deleteOgImage()
                 finish()
-                val intent = Intent(this, MainActivity::class.java)
+                val intent = Intent(this, SelectionActivity::class.java)
                 startActivity(intent)
             } catch (ex: ActivityNotFoundException) {
                 Log.e(TAG, "Home button launch main activity error")
