@@ -36,7 +36,6 @@ android {
 }
 
 dependencies {
-    implementation(libs.androidx.constraintlayout)
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
     implementation(libs.removebg)
     implementation(libs.androidx.core.ktx)
@@ -51,5 +50,4 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-
 }

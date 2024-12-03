@@ -1,193 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="@null"
+    android:gravity="center"
+    android:orientation="vertical">
 
-
-    <!-- Row 1: Tops and Accessories -->
-    <ImageView
-        android:id="@+id/tops_icon"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_marginStart="20dp"
-        android:contentDescription="Tops Icon"
-        android:src="@drawable/top"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/tops_label"
-        android:layout_width="150dp"
-        android:layout_height="48dp"
-        android:text="Tops"
-        android:textSize="14sp"
-        android:textColor="#FFFFFF"
-        android:backgroundTint="@color/purple"
-        android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/tops_icon"
-        app:layout_constraintStart_toStartOf="@id/tops_icon"
-        android:layout_marginTop="8dp" />
 
     <ImageView
-        android:id="@+id/accessories_icon"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_marginEnd="20dp"
-        android:contentDescription="Accessories Icon"
-        android:src="@drawable/accessories"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:id="@+id/closet_photo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:contentDescription="closet image"
+        android:scaleType="fitCenter"
+        android:src="@drawable/group_2" />
 
-    <Button
-        android:id="@+id/accessories_label"
-        android:layout_width="150dp"
-        android:layout_height="48dp"
-        android:text="Accessories"
-        android:textSize="14sp"
-        android:textColor="#FFFFFF"
-        android:backgroundTint="@color/purple"
-        android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/accessories_icon"
-        app:layout_constraintEnd_toEndOf="@id/accessories_icon"
-        android:layout_marginTop="8dp" />
-
-    <!-- Row 2: Bottoms and Shoes -->
-    <ImageView
-        android:id="@+id/bottoms_icon"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:src="@drawable/bottoms"
-        android:contentDescription="Bottoms Icon"
-        app:layout_constraintTop_toBottomOf="@id/tops_label"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="20dp"
-        android:layout_marginStart="20dp" />
-
-    <Button
-        android:id="@+id/bottoms_label"
-        android:layout_width="150dp"
-        android:layout_height="48dp"
-        android:text="Bottoms"
-        android:textSize="14sp"
-        android:textColor="#FFFFFF"
-        android:backgroundTint="@color/purple"
-        android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/bottoms_icon"
-        app:layout_constraintStart_toStartOf="@id/bottoms_icon"
-        android:layout_marginTop="8dp" />
-
-    <ImageView
-        android:id="@+id/shoes_icon"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:src="@drawable/shoes"
-        android:contentDescription="Shoes Icon"
-        app:layout_constraintTop_toBottomOf="@id/accessories_label"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="20dp" />
-
-    <Button
-        android:id="@+id/shoes_label"
-        android:layout_width="150dp"
-        android:layout_height="48dp"
-        android:text="Shoes"
-        android:textSize="14sp"
-        android:textColor="#FFFFFF"
-        android:backgroundTint="@color/purple"
-        android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/shoes_icon"
-        app:layout_constraintEnd_toEndOf="@id/shoes_icon"
-        android:layout_marginTop="8dp" />
-
-    <!-- Row 3: Full Body and Outerwear -->
-    <ImageView
-        android:id="@+id/full_body_icon"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:contentDescription="Full Body Icon"
-        android:src="@drawable/fullbody"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/bottoms_label" />
-
-    <Button
-        android:id="@+id/full_body_label"
-        android:layout_width="150dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="8dp"
-        android:backgroundTint="@color/purple"
-        android:text="Full Body"
-        android:textColor="#FFFFFF"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@id/full_body_icon"
-        app:layout_constraintTop_toBottomOf="@+id/full_body_icon" />
-
-    <ImageView
-        android:id="@+id/outerwear_icon"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:src="@drawable/outerwear"
-        android:contentDescription="Outerwear Icon"
-        app:layout_constraintTop_toBottomOf="@id/shoes_label"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="20dp" />
-
-    <Button
-        android:id="@+id/outerwear_label"
-        android:layout_width="150dp"
-        android:layout_height="48dp"
-        android:backgroundTint="@color/purple"
-        android:text="Outerwear"
-        android:textColor="#FFFFFF"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@id/outerwear_icon"
-        app:layout_constraintTop_toBottomOf="@+id/outerwear_icon" />
-
-    <!-- Bottom Buttons -->
     <Button
         android:id="@+id/camera_button"
-        android:layout_width="wrap_content"
+        android:layout_width="343dp"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/pink"
-        android:drawableBottom="@drawable/baseline_add_a_photo_24"
-        android:text="@string/button_camera"
-        android:textAppearance="@android:style/TextAppearance.Material.Widget.Button.Colored"
-        app:layout_constraintBottom_toTopOf="@+id/goto_closet"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:backgroundTint="#6e00b3"
+        android:gravity="center"
+        android:padding="0dp"
+        android:textSize="35sp"
+        android:textStyle="bold"
+        android:layout_above ="@id/goto_closet"
+        android:layout_marginBottom="0dp"
+        android:layout_centerHorizontal="true"
+        android:text="@string/button_camera"/>
 
     <Button
         android:id="@+id/goto_closet"
-        android:layout_width="wrap_content"
+        android:layout_width="343dp"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/pink"
-        android:layout_marginBottom="16dp"
-        android:text="Closet"
-        android:textAppearance="@android:style/TextAppearance.Material.Widget.Button.Colored"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.064"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:backgroundTint="#DB56A6"
+        android:textSize="35sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:padding="0dp"
+        android:textColor="@android:color/white"
+        android:layout_centerHorizontal="true"
+        android:layout_above ="@id/home_button"
+        android:layout_marginBottom="0dp"
+        android:text="@string/goto_closet"/>
 
     <Button
         android:id="@+id/home_button"
-        android:layout_width="90dp"
-        android:layout_height="49dp"
-        android:backgroundTint="@color/pink"
-        android:layout_marginBottom="16dp"
-        android:text="HOME"
-        android:textAppearance="@android:style/TextAppearance.Material.Widget.Button.Colored"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.937"
-        app:layout_constraintStart_toStartOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_width="343dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/md_theme_onSecondaryFixedVariant"
+        android:textSize="35sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:padding="0dp"
+        android:textColor="@android:color/white"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="150dp"
+        android:text="@string/home_button" />
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="fitCenter"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="0dp"
+        android:src="@drawable/banner_image" />
+</RelativeLayout>
