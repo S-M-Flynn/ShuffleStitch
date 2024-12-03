@@ -78,7 +78,7 @@ class ClosetActivity : AppCompatActivity() {
         }
     }
     private fun navigateToCategory(category: String) {
-        val intent = Intent(this, ShuffleFilterActivity::class.java).apply {
+        val intent = Intent(this, EditItemsActivity::class.java).apply {
             putExtra("CATEGORY_NAME", category)
         }
         try {

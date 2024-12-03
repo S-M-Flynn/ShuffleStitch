@@ -32,21 +32,46 @@ class EditItemsActivity : AppCompatActivity() {
         orgButton.isEnabled = false
         val filterButton = findViewById<Button>(R.id.filter)
         val backButton = findViewById<Button>(R.id.back_button)
-
-        val filesList = getImagesFromUserMedia()
-        Log.d(TAG, "Files in UserMedia: ${filesList.joinToString { it.name }}")
-
         recyclerView = findViewById(R.id.recyclerView)
         imageView = findViewById(R.id.closet_photo)
-        adapter = ImageAdapter(filesList) { file ->
-            imageView.setImageURI(Uri.fromFile(file))
-            imageUri = Uri.fromFile(file)
-            fileName = imageUri.lastPathSegment.toString()
-            checkImageLoaded()
-        }
-        recyclerView.adapter = adapter
         recyclerView.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+
+        val filterOnCategory = intent.getStringExtra("CATEGORY_NAME")
+        if (filterOnCategory != null) {
+            if (filterOnCategory.isNotEmpty()) {
+                databaseHelper = DatabaseHelper(this)
+                val filters = mutableMapOf(
+                    "TOPS" to if (filterOnCategory == "TOPS") "1" else "0",
+                    "BOTTOMS" to if (filterOnCategory == "BOTTOMS") "1" else "0",
+                    "FULL_BODY" to if (filterOnCategory == "FULL_BODY") "1" else "0",
+                    "SHOES" to if (filterOnCategory == "SHOES") "1" else "0",
+                    "OUTER_WEAR" to if (filterOnCategory == "OUTERWEAR") "1" else "0",
+                    "ACCESSORIES" to if (filterOnCategory == "ACCESSORIES") "1" else "0",
+                )
+                val itemMap = databaseHelper.getAllData(filters)
+                val topsList = itemMap["tops"] ?: emptyList()
+                val bottomsList = itemMap["bottoms"] ?: emptyList()
+                val fullBodyList = itemMap["fullBody"] ?: emptyList()
+                val shoesList = itemMap["shoes"] ?: emptyList()
+                val outerwear = itemMap["outerWear"] ?: emptyList()
+                val accessories = itemMap["accessories"] ?: emptyList()
+                val filesList =
+                    topsList + bottomsList + fullBodyList + shoesList + accessories + outerwear
+                updateRecyclerViewWithImages(filesList)
+            }
+        }
+        else {
+            val filesList = getImagesFromUserMedia()
+            adapter = ImageAdapter(filesList) { file ->
+                imageView.setImageURI(Uri.fromFile(file))
+                imageUri = Uri.fromFile(file)
+                fileName = imageUri.lastPathSegment.toString()
+                checkImageLoaded()
+            }
+            Log.d(TAG, "Files in UserMedia: ${filesList.joinToString { it.name }}")
+            recyclerView.adapter = adapter
+        }
 
         orgButton.setOnClickListener {
             val typeIntent = Intent(this@EditItemsActivity, TagItemsActivity::class.java)
@@ -72,7 +97,8 @@ class EditItemsActivity : AppCompatActivity() {
             }
         }
     }
-    override fun onResume(){
+
+    override fun onResume() {
         super.onResume()
         imageView.setImageDrawable(null)
         checkImageLoaded()
@@ -80,7 +106,8 @@ class EditItemsActivity : AppCompatActivity() {
     }
 
     private fun launchFilterMenu() {
-        val items = arrayOf("Tops", "Bottoms", "One-Piece", "Shoes","Outerwear", "Accessories", "All")
+        val items =
+            arrayOf("Tops", "Bottoms", "One-Piece", "Shoes", "Outerwear", "Accessories", "All")
         var selectedItem = 0
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Select Options")
@@ -105,16 +132,17 @@ class EditItemsActivity : AppCompatActivity() {
                     val bottomsList = itemMap["bottoms"] ?: emptyList()
                     val fullBodyList = itemMap["fullBody"] ?: emptyList()
                     val shoesList = itemMap["shoes"] ?: emptyList()
-                    val outerwear = itemMap["outerWear"]?: emptyList()
-                    val accessories = itemMap["accessories"]?: emptyList()
-                    val filesList = topsList + bottomsList + fullBodyList + shoesList + accessories + outerwear
+                    val outerwear = itemMap["outerWear"] ?: emptyList()
+                    val accessories = itemMap["accessories"] ?: emptyList()
+                    val filesList =
+                        topsList + bottomsList + fullBodyList + shoesList + accessories + outerwear
 
                     updateRecyclerViewWithImages(filesList)
                     Log.d(TAG, "Category selected")
                 }
             }
             .setNegativeButton("Cancel") { dialog, _ ->
-               dialog.dismiss()
+                dialog.dismiss()
             }
         builder.create().show()
     }
