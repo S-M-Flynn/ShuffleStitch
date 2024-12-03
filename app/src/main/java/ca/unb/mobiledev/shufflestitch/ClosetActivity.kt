@@ -35,7 +35,19 @@ class ClosetActivity : AppCompatActivity() {
         val gotoCloset = findViewById<Button>(R.id.goto_closet)
         val cameraButton = findViewById<Button>(R.id.camera_button)
         val homeButton = findViewById<Button>(R.id.home_button)
-        imageView = findViewById(R.id.closet_photo)
+        val topsButton = findViewById<Button>(R.id.tops_label)
+        val accessoriesButton = findViewById<Button>(R.id.accessories_label)
+        val bottomsButton = findViewById<Button>(R.id.bottoms_label)
+        val shoesButton = findViewById<Button>(R.id.shoes_label)
+        val fullBodyButton = findViewById<Button>(R.id.full_body_label)
+        val outerwearButton = findViewById<Button>(R.id.outerwear_label)
+
+        topsButton.setOnClickListener { navigateToCategory("TOPS") }
+        accessoriesButton.setOnClickListener { navigateToCategory("ACCESSORIES") }
+        bottomsButton.setOnClickListener { navigateToCategory("BOTTOMS") }
+        shoesButton.setOnClickListener { navigateToCategory("SHOES") }
+        fullBodyButton.setOnClickListener { navigateToCategory("FULL_BODY") }
+        outerwearButton.setOnClickListener { navigateToCategory("OUTERWEAR") }
 
         setCameraActivityResultLauncher()
         cameraButton.setOnClickListener {
@@ -48,7 +60,9 @@ class ClosetActivity : AppCompatActivity() {
         }
 
         gotoCloset.setOnClickListener {
-            val typeIntent = Intent(this, EditItemsActivity::class.java)
+            val typeIntent = Intent(this, EditItemsActivity::class.java).apply {
+                putExtra("CATEGORY_NAME", "ALL")
+            }
             try {
                 startActivity(typeIntent)
             } catch (ex: ActivityNotFoundException) {
@@ -65,7 +79,16 @@ class ClosetActivity : AppCompatActivity() {
             }
         }
     }
-
+    private fun navigateToCategory(category: String) {
+        val intent = Intent(this, EditItemsActivity::class.java).apply {
+            putExtra("CATEGORY_NAME", category)
+        }
+        try {
+            startActivity(intent)
+        } catch (ex: ActivityNotFoundException) {
+            Log.e(TAG, "Unable to navigate to category: $category")
+        }
+    }
     private fun createImageFile(imageName: String): File {
         val storageDir = File(getExternalFilesDir(null), "UserMedia")
         if (!storageDir.exists()) {
