@@ -43,7 +43,7 @@
         android:id="@+id/back_button"
         android:layout_width="343dp"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/md_theme_onSecondaryFixedVariant"
+        android:backgroundTint="#6e00b3"
         android:textSize="35sp"
         android:textStyle="bold"
         android:gravity="center"
