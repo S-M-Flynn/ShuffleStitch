@@ -1,5 +1,6 @@
 package ca.unb.mobiledev.shufflestitch
 
+import android.app.AlertDialog
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
@@ -9,11 +10,13 @@ import android.util.Log
 import android.view.MenuItem
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
+import ca.unb.mobiledev.shufflestitch.DB.DatabaseHelper
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -27,14 +30,18 @@ class ClosetActivity : AppCompatActivity() {
     private lateinit var imageName: String
     private lateinit var imageView: ImageView
     private lateinit var photoURI: Uri
+    private lateinit var databaseHelper: DatabaseHelper
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.closet_activity)
         val gotoCloset = findViewById<Button>(R.id.goto_closet)
+
         val cameraButton = findViewById<Button>(R.id.camera_button)
         val homeButton = findViewById<Button>(R.id.home_button)
+
         val topsButton = findViewById<Button>(R.id.tops_label)
         val accessoriesButton = findViewById<Button>(R.id.accessories_label)
         val bottomsButton = findViewById<Button>(R.id.bottoms_label)
@@ -47,7 +54,7 @@ class ClosetActivity : AppCompatActivity() {
         bottomsButton.setOnClickListener { navigateToCategory("BOTTOMS") }
         shoesButton.setOnClickListener { navigateToCategory("SHOES") }
         fullBodyButton.setOnClickListener { navigateToCategory("FULL_BODY") }
-        outerwearButton.setOnClickListener { navigateToCategory("OUTERWEAR") }
+        outerwearButton.setOnClickListener { navigateToCategory("OUTER_WEAR") }
 
         setCameraActivityResultLauncher()
         cameraButton.setOnClickListener {
@@ -61,6 +68,7 @@ class ClosetActivity : AppCompatActivity() {
 
         gotoCloset.setOnClickListener {
             val typeIntent = Intent(this, EditItemsActivity::class.java)
+                .putExtra("CATEGORY_NAME", "ALL")
             try {
                 startActivity(typeIntent)
             } catch (ex: ActivityNotFoundException) {
@@ -78,7 +86,7 @@ class ClosetActivity : AppCompatActivity() {
         }
     }
     private fun navigateToCategory(category: String) {
-        val intent = Intent(this, ShuffleFilterActivity::class.java).apply {
+        val intent = Intent(this, EditItemsActivity::class.java).apply {
             putExtra("CATEGORY_NAME", category)
         }
         try {
@@ -96,6 +104,8 @@ class ClosetActivity : AppCompatActivity() {
             currentPhotoPath = absolutePath
         }
     }
+
+
 
     private fun dispatchTakePictureIntent() {
         val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(Date())

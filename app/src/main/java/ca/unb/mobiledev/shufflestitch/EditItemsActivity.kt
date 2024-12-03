@@ -30,23 +30,48 @@ class EditItemsActivity : AppCompatActivity() {
         setContentView(R.layout.edit_items)
         orgButton = findViewById(R.id.item_type)
         orgButton.isEnabled = false
-        val filterButton = findViewById<Button>(R.id.filter)
+        //val filterButton = findViewById<Button>(R.id.filter)
         val backButton = findViewById<Button>(R.id.back_button)
-
-        val filesList = getImagesFromUserMedia()
-        Log.d(TAG, "Files in UserMedia: ${filesList.joinToString { it.name }}")
-
         recyclerView = findViewById(R.id.recyclerView)
         imageView = findViewById(R.id.closet_photo)
-        adapter = ImageAdapter(filesList) { file ->
-            imageView.setImageURI(Uri.fromFile(file))
-            imageUri = Uri.fromFile(file)
-            fileName = imageUri.lastPathSegment.toString()
-            checkImageLoaded()
-        }
-        recyclerView.adapter = adapter
+
         recyclerView.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        val category = intent.getStringExtra("CATEGORY_NAME").toString()
+
+        databaseHelper = DatabaseHelper(this)
+        var filesList = emptyList<String>()
+
+        if(category == "ALL"){
+            resetRecyclerViewWithAllImages()
+        }
+        else {
+            val filters = mutableMapOf(
+                category to "1"
+            )
+            val itemMap = databaseHelper.getAllData(filters)
+            val topsList = itemMap["tops"] ?: emptyList()
+            val bottomsList = itemMap["bottoms"] ?: emptyList()
+            val fullBodyList = itemMap["fullBody"] ?: emptyList()
+            val shoesList = itemMap["shoes"] ?: emptyList()
+            val outerwear = itemMap["outerWear"] ?: emptyList()
+            val accessories = itemMap["accessories"] ?: emptyList()
+            filesList = topsList + bottomsList + fullBodyList + shoesList + accessories + outerwear
+
+            updateRecyclerViewWithImages(filesList)
+
+        }
+
+//        recyclerView = findViewById(R.id.recyclerView)
+//        adapter = ImageAdapter(filesList) { file ->
+//            imageView.setImageURI(Uri.fromFile(file))
+//            imageUri = Uri.fromFile(file)
+//            fileName = imageUri.lastPathSegment.toString()
+//            checkImageLoaded()
+//        }
+//        recyclerView.adapter = adapter
+//        recyclerView.layoutManager =
+//            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
         orgButton.setOnClickListener {
             val typeIntent = Intent(this@EditItemsActivity, TagItemsActivity::class.java)
@@ -60,9 +85,9 @@ class EditItemsActivity : AppCompatActivity() {
             }
         }
 
-        filterButton.setOnClickListener {
-            launchFilterMenu()
-        }
+//        filterButton.setOnClickListener {
+//            launchFilterMenu()
+//        }
 
         backButton.setOnClickListener {
             try {
@@ -79,45 +104,45 @@ class EditItemsActivity : AppCompatActivity() {
         resetRecyclerViewWithAllImages()
     }
 
-    private fun launchFilterMenu() {
-        val items = arrayOf("Tops", "Bottoms", "One-Piece", "Shoes","Outerwear", "Accessories", "All")
-        var selectedItem = 0
-        val builder = AlertDialog.Builder(this)
-        builder.setTitle("Select Options")
-            .setSingleChoiceItems(items, selectedItem) { _, which ->
-                selectedItem = which
-            }
-            .setPositiveButton("OK") { _, _ ->
-                if (selectedItem == 6) {
-                    resetRecyclerViewWithAllImages()
-                } else {
-                    databaseHelper = DatabaseHelper(this)
-                    val filters = mutableMapOf(
-                        "TOPS" to if (selectedItem == 0) "1" else "0",
-                        "BOTTOMS" to if (selectedItem == 1) "1" else "0",
-                        "FULL_BODY" to if (selectedItem == 2) "1" else "0",
-                        "SHOES" to if (selectedItem == 3) "1" else "0",
-                        "OUTER_WEAR" to if (selectedItem == 4) "1" else "0",
-                        "ACCESSORIES" to if (selectedItem == 5) "1" else "0",
-                    )
-                    val itemMap = databaseHelper.getAllData(filters)
-                    val topsList = itemMap["tops"] ?: emptyList()
-                    val bottomsList = itemMap["bottoms"] ?: emptyList()
-                    val fullBodyList = itemMap["fullBody"] ?: emptyList()
-                    val shoesList = itemMap["shoes"] ?: emptyList()
-                    val outerwear = itemMap["outerWear"]?: emptyList()
-                    val accessories = itemMap["accessories"]?: emptyList()
-                    val filesList = topsList + bottomsList + fullBodyList + shoesList + accessories + outerwear
-
-                    updateRecyclerViewWithImages(filesList)
-                    Log.d(TAG, "Category selected")
-                }
-            }
-            .setNegativeButton("Cancel") { dialog, _ ->
-               dialog.dismiss()
-            }
-        builder.create().show()
-    }
+//    private fun launchFilterMenu() {
+//        val items = arrayOf("Tops", "Bottoms", "One-Piece", "Shoes","Outerwear", "Accessories", "All")
+//        var selectedItem = 0
+//        val builder = AlertDialog.Builder(this)
+//        builder.setTitle("Select Options")
+//            .setSingleChoiceItems(items, selectedItem) { _, which ->
+//                selectedItem = which
+//            }
+//            .setPositiveButton("OK") { _, _ ->
+//                if (selectedItem == 6) {
+//                    resetRecyclerViewWithAllImages()
+//                } else {
+//                    databaseHelper = DatabaseHelper(this)
+//                    val filters = mutableMapOf(
+//                        "TOPS" to if (selectedItem == 0) "1" else "0",
+//                        "BOTTOMS" to if (selectedItem == 1) "1" else "0",
+//                        "FULL_BODY" to if (selectedItem == 2) "1" else "0",
+//                        "SHOES" to if (selectedItem == 3) "1" else "0",
+//                        "OUTER_WEAR" to if (selectedItem == 4) "1" else "0",
+//                        "ACCESSORIES" to if (selectedItem == 5) "1" else "0",
+//                    )
+//                    val itemMap = databaseHelper.getAllData(filters)
+//                    val topsList = itemMap["tops"] ?: emptyList()
+//                    val bottomsList = itemMap["bottoms"] ?: emptyList()
+//                    val fullBodyList = itemMap["fullBody"] ?: emptyList()
+//                    val shoesList = itemMap["shoes"] ?: emptyList()
+//                    val outerwear = itemMap["outerWear"]?: emptyList()
+//                    val accessories = itemMap["accessories"]?: emptyList()
+//                    val filesList = topsList + bottomsList + fullBodyList + shoesList + accessories + outerwear
+//
+//                    updateRecyclerViewWithImages(filesList)
+//                    Log.d(TAG, "Category selected")
+//                }
+//            }
+//            .setNegativeButton("Cancel") { dialog, _ ->
+//               dialog.dismiss()
+//            }
+//        builder.create().show()
+//    }
 
     private fun updateRecyclerViewWithImages(itemList: List<String>) {
         val filesList = getImagesFromDatabase(itemList)
