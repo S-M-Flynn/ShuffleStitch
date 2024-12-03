@@ -19,22 +19,24 @@
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:layout_marginStart="20dp"
+            android:layout_marginTop="25dp"
             android:contentDescription="Tops Icon"
             android:src="@drawable/top"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintBottom_toTopOf="@id/tops_label" />
 
         <Button
             android:id="@+id/tops_label"
             android:layout_width="150dp"
             android:layout_height="48dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="20dp"
             android:backgroundTint="#6e00b3"
             android:text="Tops"
             android:textColor="#FFFFFF"
             android:textSize="14sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@id/tops_icon"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tops_icon" />
 
         <ImageView
@@ -42,16 +44,17 @@
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:layout_marginEnd="20dp"
+            android:layout_marginTop="25dp"
             android:contentDescription="Accessories Icon"
             android:src="@drawable/accessories"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintBottom_toTopOf="@id/accessories_label" />
 
         <Button
             android:id="@+id/accessories_label"
             android:layout_width="150dp"
             android:layout_height="48dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="5dp"
             android:backgroundTint="#6e00b3"
             android:text="Accessories"
             android:textColor="#FFFFFF"
@@ -69,7 +72,7 @@
             android:contentDescription="Bottoms Icon"
             app:layout_constraintTop_toBottomOf="@id/tops_label"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="5dp"
             android:layout_marginStart="20dp" />
 
         <Button
@@ -77,12 +80,13 @@
             android:layout_width="150dp"
             android:layout_height="48dp"
             android:layout_marginTop="8dp"
+            android:layout_marginStart="20dp"
             android:backgroundTint="#6e00b3"
             android:text="Bottoms"
             android:textColor="#FFFFFF"
             android:textSize="14sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@id/bottoms_icon"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/bottoms_icon" />
 
         <ImageView
@@ -93,7 +97,7 @@
             android:contentDescription="Shoes Icon"
             app:layout_constraintTop_toBottomOf="@id/accessories_label"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="5dp"
             android:layout_marginEnd="20dp" />
 
         <Button
@@ -101,12 +105,13 @@
             android:layout_width="150dp"
             android:layout_height="48dp"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="20dp"
             android:backgroundTint="#6e00b3"
             android:text="Shoes"
             android:textColor="#FFFFFF"
             android:textSize="14sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="@id/shoes_icon"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/shoes_icon" />
 
         <!-- Row 3: Full Body and Outerwear -->
@@ -115,7 +120,7 @@
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="5dp"
             android:contentDescription="Full Body Icon"
             android:src="@drawable/fullbody"
             app:layout_constraintStart_toStartOf="parent"
@@ -125,13 +130,14 @@
             android:id="@+id/full_body_label"
             android:layout_width="150dp"
             android:layout_height="48dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="20dp"
             android:backgroundTint="#6e00b3"
             android:text="Full Body"
             android:textColor="#FFFFFF"
             android:textSize="14sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@id/full_body_icon"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/full_body_icon" />
 
         <ImageView
@@ -142,19 +148,21 @@
             android:contentDescription="Outerwear Icon"
             app:layout_constraintTop_toBottomOf="@id/shoes_label"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="5dp"
             android:layout_marginEnd="20dp" />
 
         <Button
             android:id="@+id/outerwear_label"
             android:layout_width="150dp"
             android:layout_height="48dp"
+            android:layout_marginEnd="20dp"
             android:backgroundTint="#6e00b3"
             android:text="Outerwear"
             android:textColor="#FFFFFF"
             android:textSize="14sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="@id/outerwear_icon"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/camera_button"
             app:layout_constraintTop_toBottomOf="@+id/outerwear_icon" />
 
         <!-- Bottom Buttons -->
@@ -162,41 +170,38 @@
             android:id="@+id/camera_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="70dp"
-            android:layout_marginBottom="63dp"
             android:backgroundTint="#DB56A6"
             android:drawableBottom="@drawable/baseline_add_a_photo_24"
             android:text="@string/button_camera"
             android:textAppearance="@android:style/TextAppearance.Material.Widget.Button.Colored"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/goto_closet"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/full_body_icon" />
+            app:layout_constraintTop_toBottomOf="@+id/full_body_label" />
 
         <Button
             android:id="@+id/goto_closet"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
+            android:layout_marginTop="5dp"
             android:backgroundTint="#DB56A6"
             android:text="Closet"
             android:textAppearance="@android:style/TextAppearance.Material.Widget.Button.Colored"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.064"
+            app:layout_constraintTop_toBottomOf="@id/camera_button"
+            app:layout_constraintEnd_toStartOf="@id/home_button"
             app:layout_constraintStart_toStartOf="parent" />
 
         <Button
             android:id="@+id/home_button"
-            android:layout_width="90dp"
-            android:layout_height="49dp"
-            android:layout_marginBottom="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="100dp"
             android:backgroundTint="#DB56A6"
             android:text="HOME"
             android:textAppearance="@android:style/TextAppearance.Material.Widget.Button.Colored"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.937"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/camera_button"
+            app:layout_constraintStart_toEndOf="@id/goto_closet" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
