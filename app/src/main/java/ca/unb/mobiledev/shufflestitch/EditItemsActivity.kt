@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ca.unb.mobiledev.shufflestitch.DB.DatabaseHelper
 import java.io.File
+import java.util.Locale.Category
 
 class EditItemsActivity : AppCompatActivity() {
     private lateinit var imageUri: Uri
@@ -23,6 +24,7 @@ class EditItemsActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: ImageAdapter
     private lateinit var orgButton: Button
+    private  lateinit var filterOnCategory: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,15 +32,43 @@ class EditItemsActivity : AppCompatActivity() {
         setContentView(R.layout.edit_items)
         orgButton = findViewById(R.id.item_type)
         orgButton.isEnabled = false
-        val filterButton = findViewById<Button>(R.id.filter)
+//        val filterButton = findViewById<Button>(R.id.filter)
         val backButton = findViewById<Button>(R.id.back_button)
         recyclerView = findViewById(R.id.recyclerView)
         imageView = findViewById(R.id.closet_photo)
         recyclerView.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
-        val filterOnCategory = intent.getStringExtra("CATEGORY_NAME")
-        if (filterOnCategory != null) {
+        filterOnCategory = intent.getStringExtra("CATEGORY_NAME").toString()
+
+
+        orgButton.setOnClickListener {
+            val typeIntent = Intent(this@EditItemsActivity, TagItemsActivity::class.java)
+            typeIntent.putExtra("uri", imageUri.path.toString())
+            try {
+                startActivity(typeIntent)
+            } catch (ex: ActivityNotFoundException) {
+                Toast.makeText(this@EditItemsActivity, "No item selected", Toast.LENGTH_SHORT)
+                    .show()
+                Log.e(TAG, "Unable to start tagging activity")
+            }
+        }
+
+//        filterButton.setOnClickListener {
+//            launchFilterMenu()
+//        }
+
+        backButton.setOnClickListener {
+            try {
+                finish()
+            } catch (ex: ActivityNotFoundException) {
+                Log.e(TAG, "Error on back button")
+            }
+        }
+    }
+
+    private fun getAllImagesForThisCategory(filterOnCategory: String){
+        if (filterOnCategory != "ALL") {
             if (filterOnCategory.isNotEmpty()) {
                 databaseHelper = DatabaseHelper(this)
                 val filters = mutableMapOf(
@@ -72,80 +102,54 @@ class EditItemsActivity : AppCompatActivity() {
             Log.d(TAG, "Files in UserMedia: ${filesList.joinToString { it.name }}")
             recyclerView.adapter = adapter
         }
-
-        orgButton.setOnClickListener {
-            val typeIntent = Intent(this@EditItemsActivity, TagItemsActivity::class.java)
-            typeIntent.putExtra("uri", imageUri.path.toString())
-            try {
-                startActivity(typeIntent)
-            } catch (ex: ActivityNotFoundException) {
-                Toast.makeText(this@EditItemsActivity, "No item selected", Toast.LENGTH_SHORT)
-                    .show()
-                Log.e(TAG, "Unable to start tagging activity")
-            }
-        }
-
-        filterButton.setOnClickListener {
-            launchFilterMenu()
-        }
-
-        backButton.setOnClickListener {
-            try {
-                finish()
-            } catch (ex: ActivityNotFoundException) {
-                Log.e(TAG, "Error on back button")
-            }
-        }
     }
 
     override fun onResume() {
         super.onResume()
-        imageView.setImageDrawable(null)
-        checkImageLoaded()
-        resetRecyclerViewWithAllImages()
+        getAllImagesForThisCategory(filterOnCategory)
     }
 
-    private fun launchFilterMenu() {
-        val items =
-            arrayOf("Tops", "Bottoms", "One-Piece", "Shoes", "Outerwear", "Accessories", "All")
-        var selectedItem = 0
-        val builder = AlertDialog.Builder(this)
-        builder.setTitle("Select Options")
-            .setSingleChoiceItems(items, selectedItem) { _, which ->
-                selectedItem = which
-            }
-            .setPositiveButton("OK") { _, _ ->
-                if (selectedItem == 6) {
-                    resetRecyclerViewWithAllImages()
-                } else {
-                    databaseHelper = DatabaseHelper(this)
-                    val filters = mutableMapOf(
-                        "TOPS" to if (selectedItem == 0) "1" else "0",
-                        "BOTTOMS" to if (selectedItem == 1) "1" else "0",
-                        "FULL_BODY" to if (selectedItem == 2) "1" else "0",
-                        "SHOES" to if (selectedItem == 3) "1" else "0",
-                        "OUTER_WEAR" to if (selectedItem == 4) "1" else "0",
-                        "ACCESSORIES" to if (selectedItem == 5) "1" else "0",
-                    )
-                    val itemMap = databaseHelper.getAllData(filters)
-                    val topsList = itemMap["tops"] ?: emptyList()
-                    val bottomsList = itemMap["bottoms"] ?: emptyList()
-                    val fullBodyList = itemMap["fullBody"] ?: emptyList()
-                    val shoesList = itemMap["shoes"] ?: emptyList()
-                    val outerwear = itemMap["outerWear"] ?: emptyList()
-                    val accessories = itemMap["accessories"] ?: emptyList()
-                    val filesList =
-                        topsList + bottomsList + fullBodyList + shoesList + accessories + outerwear
-
-                    updateRecyclerViewWithImages(filesList)
-                    Log.d(TAG, "Category selected")
-                }
-            }
-            .setNegativeButton("Cancel") { dialog, _ ->
-                dialog.dismiss()
-            }
-        builder.create().show()
-    }
+//    private fun launchFilterMenu() {
+//        val items =
+//            arrayOf("Tops", "Bottoms", "One-Piece", "Shoes", "Outerwear", "Accessories", "All")
+//        var selectedItem = 0
+//        val builder = AlertDialog.Builder(this)
+//        builder.setTitle("Select Options")
+//            .setSingleChoiceItems(items, selectedItem) { _, which ->
+//                selectedItem = which
+//            }
+//            .setPositiveButton("OK") { _, _ ->
+//                if (selectedItem == 6) {
+//                    resetRecyclerViewWithAllImages()
+//                } else {
+//                    databaseHelper = DatabaseHelper(this)
+//                    val filters = mutableMapOf(
+//                        "TOPS" to if (selectedItem == 0) "1" else "0",
+//                        "BOTTOMS" to if (selectedItem == 1) "1" else "0",
+//                        "FULL_BODY" to if (selectedItem == 2) "1" else "0",
+//                        "SHOES" to if (selectedItem == 3) "1" else "0",
+//                        "OUTER_WEAR" to if (selectedItem == 4) "1" else "0",
+//                        "ACCESSORIES" to if (selectedItem == 5) "1" else "0",
+//                    )
+//                    val itemMap = databaseHelper.getAllData(filters)
+//                    val topsList = itemMap["tops"] ?: emptyList()
+//                    val bottomsList = itemMap["bottoms"] ?: emptyList()
+//                    val fullBodyList = itemMap["fullBody"] ?: emptyList()
+//                    val shoesList = itemMap["shoes"] ?: emptyList()
+//                    val outerwear = itemMap["outerWear"] ?: emptyList()
+//                    val accessories = itemMap["accessories"] ?: emptyList()
+//                    val filesList =
+//                        topsList + bottomsList + fullBodyList + shoesList + accessories + outerwear
+//
+//                    updateRecyclerViewWithImages(filesList)
+//                    Log.d(TAG, "Category selected")
+//                }
+//            }
+//            .setNegativeButton("Cancel") { dialog, _ ->
+//                dialog.dismiss()
+//            }
+//        builder.create().show()
+//    }
 
     private fun updateRecyclerViewWithImages(itemList: List<String>) {
         val filesList = getImagesFromDatabase(itemList)
@@ -165,6 +169,13 @@ class EditItemsActivity : AppCompatActivity() {
                 Log.e(TAG, "Error Setting Adapter", ex)
             }
         } else {
+            adapter = ImageAdapter(filesList) { file ->
+                imageView.setImageURI(Uri.fromFile(file))
+                imageUri = Uri.fromFile(file)
+                fileName = imageUri.lastPathSegment.toString()
+                checkImageLoaded()
+            }
+            recyclerView.adapter = adapter
             Toast.makeText(
                 this@EditItemsActivity,
                 "No images found with the selected filters",

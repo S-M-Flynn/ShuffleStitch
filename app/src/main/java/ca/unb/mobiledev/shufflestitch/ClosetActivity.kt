@@ -60,7 +60,9 @@ class ClosetActivity : AppCompatActivity() {
         }
 
         gotoCloset.setOnClickListener {
-            val typeIntent = Intent(this, EditItemsActivity::class.java)
+            val typeIntent = Intent(this, EditItemsActivity::class.java).apply {
+                putExtra("CATEGORY_NAME", "ALL")
+            }
             try {
                 startActivity(typeIntent)
             } catch (ex: ActivityNotFoundException) {
