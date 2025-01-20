@@ -31,6 +31,3 @@ ShuffleStitch is an Android application that allows users to shuffle and select 
 - https://github.com/mzoghaibUNB3035
 - https://github.com/pononokp
 - https://github.com/S-M-Flynn
-
-## Contact
-For any questions or feedback, please contact sarah.flynn@unb.ca.
